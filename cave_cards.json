@@ -1,0 +1,1337 @@
+[
+    {
+        "number": 1,
+        "text": "Activate the [OncePerRound-v2] ability on any dragon on your player mat.",
+        "when_played": {
+            "other_ability_on_mat": {
+                "type": "once_per_round"
+            }
+        }
+    },
+    {
+        "number": 2,
+        "text": "Activate the [WhenPlayed] ability on any dragon on your player mat.",
+        "when_played": {
+            "other_ability_on_mat": {
+                "type": "when_played"
+            }
+        }
+    },
+    {
+        "number": 3,
+        "text": "Cache [AnyResource][AnyResource] from the general supply onto any dragon(s).",
+        "when_played": {
+            "max_uses": 2,
+            "adv_effects": {
+                "cache_from": {
+                    "type": "any",
+                    "L1": "general_supply",
+                    "L2": "any_dragon"
+                }
+            }
+        }
+    },
+    {
+        "number": 4,
+        "text": "Cache [AnyResource][AnyResource] from the general supply onto any dragon(s).",
+        "when_played": {
+            "max_uses": 2,
+            "adv_effects": {
+                "cache_from": {
+                    "type": "any",
+                    "L1": "general_supply",
+                    "L2": "any_dragon"
+                }
+            }
+        }
+    },
+    {
+        "number": 5,
+        "text": "Gain [AnyResource]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 6,
+        "text": "Gain [AnyResource]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 7,
+        "text": "Gain [CaveCard][AnyResource].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "any"
+                        }
+                    },
+                    {
+                        "gain_cave": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 8,
+        "text": "Gain [CaveCard][DragonGuild].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_cave": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_guild": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 9,
+        "text": "Gain [CaveCard][AnyResource].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_cave": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 10,
+        "text": "Gain [CaveCard]. Lay [Egg][Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_cave": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 11,
+        "text": "Gain [CaveCard]. Lay [Egg][Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_cave": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 12,
+        "text": "Gain [Coin].",
+        "when_played": {
+            "gain_coin": {
+                "amount": 1
+            }
+        }
+    },
+    {
+        "number": 13,
+        "text": "Gain [Coin].",
+        "when_played": {
+            "gain_coin": {
+                "amount": 1
+            }
+        }
+    },
+    {
+        "number": 14,
+        "text": "Gain [Coin].",
+        "when_played": {
+            "gain_coin": {
+                "amount": 1
+            }
+        }
+    },
+    {
+        "number": 15,
+        "text": "Gain [Crystal][DragonCard].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    },
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 16,
+        "text": "Gain [Crystal][Crystal].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 17,
+        "text": "Gain [Crystal][Milk].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "milk"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 18,
+        "text": "Gain [Crystal]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 19,
+        "text": "Gain [Crystal]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 20,
+        "text": "Gain [DragonCard][DragonCard].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 21,
+        "text": "Gain [DragonCard][DragonCard].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 22,
+        "text": "Gain [DragonCard][DragonGuild].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_guild": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 23,
+        "text": "Gain [DragonCard][DragonGuild].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_guild": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 24,
+        "text": "Gain [DragonCard][DragonGuild].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "gain_guild": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 25,
+        "text": "Gain [DragonCard]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 26,
+        "text": "Gain [DragonCard]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 27,
+        "text": "Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].",
+        "when_played": {
+            "max_uses": 2,
+            "adv_effects": {
+                "gain_guild": {
+                    "source": "any"
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 28,
+        "text": "Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].",
+        "when_played": {
+            "max_uses": 2,
+            "adv_effects": {
+                "gain_guild": {
+                    "source": "any"
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 29,
+        "text": "Gain [DragonGuild]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence":[{"lay_egg": {"location": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_guild": {"source": "any"}}, {"lay_egg": {"location": "any"}}]}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 30,
+        "text": "Gain [DragonGuild]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence":[{"lay_egg": {"location": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_guild": {"source": "any"}}, {"lay_egg": {"location": "any"}}]}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 31,
+        "text": "Gain [DragonGuild]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence":[{"lay_egg": {"location": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_guild": {"source": "any"}}, {"lay_egg": {"location": "any"}}]}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 32,
+        "text": "Gain [Gold][DragonCard].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 33,
+        "text": "Gain [Gold][Crystal].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 34,
+        "text": "Gain [Gold][Gold].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 35,
+        "text": "Gain [Gold][Milk].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "milk"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 36,
+        "text": "Gain [Gold]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 37,
+        "text": "Gain [Gold]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 38,
+        "text": "Gain [Meat][DragonCard].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 39,
+        "text": "Gain [Meat][DragonCard].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_dragon": {
+                            "source": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 40,
+        "text": "Gain [Meat][Crystal].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 41,
+        "text": "Gain [Meat][Crystal].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "crystal"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 42,
+        "text": "Gain [Meat][Gold].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 43,
+        "text": "Gain [Meat][Gold].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 44,
+        "text": "Gain [Meat][Meat].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 45,
+        "text": "Gain [Meat][Meat].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 46,
+        "text": "Gain [Meat][Milk].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "milk"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 47,
+        "text": "Gain [Meat]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 48,
+        "text": "Gain [Meat]. Lay [Egg].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 49,
+        "text": "Gain [Milk][Milk].",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "milk"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "milk"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 50,
+        "text": "Gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource]. Each opponent gains 1 benefit of their choice.",
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_cave": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_resource": {"type": "any"}}, {"gain_guild": {"source": "any"}}]}}
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 51,
+        "text": "Gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource]. Each opponent gains 1 benefit of their choice.",
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_cave": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_resource": {"type": "any"}}, {"gain_guild": {"source": "any"}}]}}
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 52,
+        "text": "Immediately play [DragonCard] with a discount of 1 [Egg] or [AnyResource].",
+        "when_played": {
+            "play_dragon": {
+                "L1": "hand",
+                "L2": "any",
+                "discount": "1off"
+            }
+        }
+    },
+    {
+        "number": 53,
+        "text": "Immediately play [DragonCard] with a discount of 1 [Egg] or [AnyResource].",
+        "when_played": {
+            "play_dragon": {
+                "L1": "hand",
+                "L2": "any",
+                "discount": "1off"
+            }
+        }
+    },
+    {
+        "number": 54,
+        "text": "Immediately play [DragonCard] with a discount of 1 [Egg] or [AnyResource].",
+        "when_played": {
+            "play_dragon": {
+                "L1": "hand",
+                "L2": "any",
+                "discount": "1off"
+            }
+        }
+    },
+    {
+        "number": 55,
+        "text": "Lay [Egg][Egg][Egg].",
+        "when_played": {
+            "max_uses": 3,
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 56,
+        "text": "Lay [Egg][Egg][Egg].",
+        "when_played": {
+            "max_uses": 3,
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 57,
+        "text": "Lay [Egg][Egg][Egg].",
+        "when_played": {
+            "max_uses": 3,
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 58,
+        "text": "Pay [AnyResource][AnyResource], then draw [CaveCard] from the deck and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "deck"
+                }
+            },
+            "cost": {
+                "resource": {
+                    "type": "any",
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 59,
+        "text": "Pay [AnyResource][AnyResource], then gain [CaveCard] from the display and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "display"
+                }
+            },
+            "cost": {
+                "resource": {
+                    "type": "any",
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 60,
+        "text": "Pay [CaveCard][CaveCard], then draw [CaveCard] from the deck and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "deck"
+                }
+            },
+            "cost": {
+                "cave_card": {
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 61,
+        "text": "Pay [CaveCard][CaveCard], then gain [CaveCard] from the display and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "display"
+                }
+            },
+            "cost": {
+                "cave_card": {
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 62,
+        "text": "Pay [DragonCard][DragonCard], then draw [CaveCard] from the deck and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "deck"
+                }
+            },
+            "cost": {
+                "dragon_card": {
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 63,
+        "text": "Pay [DragonCard][DragonCard], then gain [CaveCard] from the display and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "display"
+                }
+            },
+            "cost": {
+                "dragon_card": {
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 64,
+        "text": "Pay [Egg][Egg], then draw [CaveCard] from the deck and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "deck"
+                }
+            },
+            "cost": {
+                "egg": {
+                    "amount": 2,
+                    "location": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 65,
+        "text": "Pay [Egg][Egg], then gain [CaveCard] from the display and immediately play it for free.",
+        "when_played": {
+            "adv_effects": {
+                "play_cave": {
+                    "source": "display"
+                }
+            },
+            "cost": {
+                "egg": {
+                    "amount": 2,
+                    "location": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 66,
+        "text": "Swap the location of any 2 dragons on your player mat. Ignore normal cave preferences.",
+        "when_played": {
+            "swap_dragons": {
+                "L1": "any",
+                "L2": "any"
+            }
+        }
+    },
+    {
+        "number": 67,
+        "text": "Tuck [DragonCard][DragonCard] from the deck behind any dragon(s).",
+        "when_played": {
+            "max_uses": 2,
+            "adv_effects": {
+                "tuck_from": {
+                    "L1": "deck",
+                    "L2": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 68,
+        "text": "Tuck [DragonCard][DragonCard] from the deck behind any dragon(s).",
+        "when_played": {
+            "max_uses": 2,
+            "adv_effects": {
+                "tuck_from": {
+                    "L1": "deck",
+                    "L2": "any"
+                }
+            }
+        }
+    },
+    {
+        "number": 69,
+        "text": "Up to 3x, pay [AnyResource] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "gain_guild": {
+                    "source": "any"
+                }
+            },
+            "max_uses": 3,
+            "cost": {
+                "resource": {
+                    "type": "any",
+                    "amount": 1
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 70,
+        "text": "Up to 3x, pay [AnyResource] to lay [Egg][Egg]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            },
+            "max_uses": 3,
+            "cost": {
+                "resource": {
+                    "type": "any",
+                    "amount": 1
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 71,
+        "text": "Up to 3x, pay [CaveCard] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "gain_guild": {
+                    "source": "any"
+                }
+            },
+            "max_uses": 3,
+            "cost": {
+                "cave_card": {
+                    "amount": 1
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 72,
+        "text": "Up to 3x, pay [DragonCard] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "gain_guild": {
+                    "source": "any"
+                }
+            },
+            "max_uses": 3,
+            "cost": {
+                "dragon_card": {
+                    "amount": 1
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 73,
+        "text": "Up to 3x, pay [DragonCard] to lay [Egg][Egg]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "any"
+                        }
+                    }
+                ]
+            },
+            "max_uses": 3,
+            "cost": {
+                "dragon_card": {
+                    "amount": 1
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 74,
+        "text": "Up to 3x, pay [Egg] to gain [AnyResource][AnyResource]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "any"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "any"
+                        }
+                    }
+                ]
+            },
+            "max_uses": 3,
+            "cost": {
+                "egg": {
+                    "amount": 1,
+                    "location": "any"
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 75,
+        "text": "Up to 3x, pay [Egg] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "when_played": {
+            "adv_effects": {
+                "gain_guild": {
+                    "source": "any"
+                }
+            },
+            "max_uses": 3,
+            "cost": {
+                "egg": {
+                    "amount": 1,
+                    "location": "any"
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    }
+]

@@ -1,0 +1,5995 @@
+[
+    {
+        "number": 1,
+        "name": "White-Bellied Grazer",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [CaveCard]. When the 3rd [Milk] is cached, also lay [Egg][Egg].",
+        "VP": 4,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [cavecard]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also lay [egg][egg]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 2,
+        "name": "Genial Mothdragon",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, lay [Egg]. When the 3rd [DragonCard] is tucked, also gain [Coin].",
+        "VP": 5,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " lay [egg]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 3,
+        "name": "Algal Lindworm",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [AnyResource]. When the 3rd [Milk] is cached, also gain [DragonGuild][DragonGuild].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [anyresource]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragonguild][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 4,
+        "name": "Frugivorous Grazer",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Crystal]. When the 3rd [Milk] is cached, also gain [Coin].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [crystal]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 5,
+        "name": "Fanged Feydragon",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [DragonGuild]. When the 3rd [Meat] is cached, also gain [Gold][Crystal][Meat].",
+        "VP": 0,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [dragonguild]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [gold][crystal][meat]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 6,
+        "name": "Flocking Dragonette",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [DragonGuild]. When the 3rd [DragonCard] is tucked, also gain [Coin].",
+        "VP": 0,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [dragonguild]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 7,
+        "name": "Temperate Bamboo Dragon",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Gold]. When the 3rd [Milk] is cached, also gain [DragonGuild][DragonGuild].",
+        "VP": 5,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [gold]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragonguild][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 8,
+        "name": "Loyal Feydragon",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [AnyResource]. When the 3rd [DragonCard] is tucked, also gain [DragonCard][DragonGuild].",
+        "VP": 4,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [anyresource]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragoncard][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 9,
+        "name": "Leafeating Cricketcatcher",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [DragonCard]. When the 3rd [Milk] is cached, also gain [Crystal][Crystal].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [dragoncard]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [crystal][crystal]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 10,
+        "name": "Melodious Firedragon",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [CaveCard]. When the 3rd [DragonCard] is tucked, also excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [cavecard]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 11,
+        "name": "Seedeating Drake",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, lay [Egg]. When the 3rd [Milk] is cached, also gain [Meat][Meat].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " lay [egg]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [meat][meat]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 12,
+        "name": "Savanna Dragonette",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Crystal]. When the 3rd [Milk] is cached, also gain [DragonGuild][DragonGuild].",
+        "VP": 5,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [crystal]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragonguild][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 13,
+        "name": "Mellifera Feydragon",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Milk]. When the 3rd [Meat] is cached, also gain [CaveCard][CaveCard].",
+        "VP": 4,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [milk]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [cavecard][cavecard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 14,
+        "name": "Scavenging Cricketcatcher",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Meat]. When the 3rd [Meat] is cached, also gain [Coin].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [meat]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 15,
+        "name": "Redwood Lung Dragon",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Milk]. When the 3rd [Milk] is cached, also lay [Egg][Egg].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [milk]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also lay [egg][egg]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 16,
+        "name": "Peregrine Firedragon",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [CaveCard]. When the 3rd [Meat] is cached, also excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [cavecard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 17,
+        "name": "Common Grass Lindworm",
+        "ability_text": "Cache [Milk] from your supply here. Each [Milk] on this dragon is worth + [VP-1] at game end. When the 3rd [Milk] is cached, also gain [DragonCard][DragonCard].",
+        "VP": 1,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 18,
+        "name": "Keening Amphiptere",
+        "ability_text": "Tuck [DragonCard] from your hand here. Each [DragonCard] tucked under this dragon is worth [VP-1] at game end. When the 3rd [DragonCard] is tucked, also gain [DragonGuild][DragonGuild].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 19,
+        "name": "Chittering Dragonette",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [DragonCard]. When the 3rd [DragonCard] is tucked, also gain [AnyResource][AnyResource].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [dragoncard]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [anyresource][anyresource]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 20,
+        "name": "Miniature Rex",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Gold]. When the 3rd [Meat] is cached, also gain [DragonCard][DragonCard].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [gold]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragoncard][dragoncard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 21,
+        "name": "Fae Tamarin",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, lay [Egg]. When the 3rd [Milk] is cached, also excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " lay [egg]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 22,
+        "name": "Cheshire Dragon",
+        "ability_text": "Tuck [DragonCard] from your supply here. Any time you tuck [DragonCard] here, gain [Meat]. When the 3rd [DragonCard] is tucked, also gain [DragonCard][DragonCard].",
+        "VP": 4,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your supply here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [meat]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragoncard][dragoncard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 23,
+        "name": "Ravenous Granite Dragon",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, lay [Egg]. When the 3rd [Meat] is cached, also gain [Gold][Meat].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " lay [egg]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [gold][meat]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 24,
+        "name": "Vampiric Horned Dragon",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Meat]. When the 3rd [Milk] is cached, also gain [Coin].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [meat]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 25,
+        "name": "Spotted Licheneater",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [DragonGuild]. When the 3rd [Milk] is cached, also gain [Gold][Gold].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [dragonguild]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [gold][gold]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 26,
+        "name": "Bargaining Grazer",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [DragonCard]. When the 3rd [Milk] is cached, also gain [Coin].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 1,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [dragoncard]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 27,
+        "name": "Frilled Cobrette",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Crystal]. When the 3rd [Meat] is cached, also gain [DragonCard][DragonGuild].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [crystal]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragoncard][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 28,
+        "name": "Silent Cobrette",
+        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [AnyResource]. When the 3rd [Meat] is cached, also gain [DragonGuild][DragonGuild].",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [anyresource]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [dragonguild][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 29,
+        "name": "Singeing Remora",
+        "ability_text": "Cache [Meat] from your supply here. Each [Meat] on this dragon is worth + [VP-1] at game end. When the 3rd [Meat] is cached, also gain [Coin].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 30,
+        "name": "Cackling Dragonette",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [DragonGuild]. When the 3rd [DragonCard] is tucked, also lay [Egg][Egg].",
+        "VP": 2,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [dragonguild]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also lay [egg][egg]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 31,
+        "name": "Guiding Feydragon",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [Crystal]. When the 3rd [DragonCard] is tucked, also gain [CaveCard][CaveCard].",
+        "VP": 5,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [crystal]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [cavecard][cavecard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 32,
+        "name": "Chameleon Dragonette",
+        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Meat]. When the 3rd [Milk] is cached, also excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 5,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [meat]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 33,
+        "name": "\"Friendly\" Ruffed Red Dragon",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, lay [Egg]. When the 3rd [DragonCard] is tucked, also gain [Crystal][Meat].",
+        "VP": 6,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " lay [egg]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " also gain [crystal][meat]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 34,
+        "name": "Kindly Sea Serpent",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [Milk]. When the 3rd [DragonCard] is tucked, also excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 3,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 2,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [milk]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 35,
+        "name": "Lawndrake",
+        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [Gold]. When the 3rd [DragonCard] is tucked, also excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 4,
+        "size": "Hatchling",
+        "capacity": 0,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 1,
+        "milk_cost": 3,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " any time you tuck [dragoncard] here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " gain [gold]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " when the 3rd [dragoncard] is tucked",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        },
+        "on_feed": {
+            "gain_": {
+                "type": "",
+                "amount": 1
+            }
+        },
+        "on_grow_up": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "vp",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 36,
+        "name": "Sentinel Flyer",
+        "ability_text": "Pay [DragonCard] to gain [AnyResource].",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "pay [dragoncard] to gain [anyresource]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "cost": {
+                "pay [dragoncard] to gain [anyresource]": 1
+            }
+        }
+    },
+    {
+        "number": 37,
+        "name": "Subterranean Basilisk",
+        "ability_text": "Lay [Egg][Egg]. Each opponent lays [Egg].",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "lay [egg][egg]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 38,
+        "name": "Swift Lung Dragon",
+        "ability_text": "Gain [Coin][Coin].",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 3,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [coin][coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 39,
+        "name": "Weary Gryphdragon",
+        "ability_text": "Gain [VP-2] if this dragon is between two other dragons in this cave.",
+        "VP": 6,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-2] if this dragon is between two other dragons in this cave"
+                ]
+            }
+        }
+    },
+    {
+        "number": 40,
+        "name": "Aged Sea Serpent",
+        "ability_text": "Gain [DragonGuild]",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 41,
+        "name": "Striped Dragonette",
+        "ability_text": "Gain [VP-2] for each objective where your marker is placed the lowest (include ties).",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 42,
+        "name": "Great Golden Lung Dragon",
+        "ability_text": "Gain [VP-3] for each other dragon in this cave.",
+        "VP": 2,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 43,
+        "name": "Blue Forest Spirit",
+        "ability_text": "Lay [Egg] here.",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 5,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "lay [egg] here",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 44,
+        "name": "Tawny Northern Drake",
+        "ability_text": "Gain [VP-2] for each marker you have placed on the Dragon Guild.",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 45,
+        "name": "Tranquil Wyrm",
+        "ability_text": "Pay [Coin] to lay [Egg][Egg][Egg].",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 5,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "pay [coin] to lay [egg][egg][egg]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "cost": {
+                "pay [coin] to lay [egg][egg][egg]": 1
+            }
+        }
+    },
+    {
+        "number": 46,
+        "name": "Rainbow Guardian",
+        "ability_text": "Gain [VP-3] if this dragon's column is full.",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-3] if this dragon's column is full"
+                ]
+            }
+        }
+    },
+    {
+        "number": 47,
+        "name": "Owlatic Amphiptere",
+        "ability_text": "If you have at least as many dragons in your Golden Grotto as your left neighbor, gain [DragonCard].",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [dragoncard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    "if you have at least as many dragons in your golden grotto as your left neighbor"
+                ]
+            }
+        }
+    },
+    {
+        "number": 48,
+        "name": "Spry Horned Lung Dragon",
+        "ability_text": "Gain [Coin].",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 49,
+        "name": "Standard Horned Lung Dragon",
+        "ability_text": "Gain [VP-4] for each *set* of dragon traits on your player mat (1 *set* = 1 of each: AGGRESSIVE, PLAYFUL , HELPFUL, SHY ).",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 50,
+        "name": "Wise Anteldragon",
+        "ability_text": "Gain [DragonCard].",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [dragoncard]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 51,
+        "name": "Aloof Gryphdragon",
+        "ability_text": "Gain [VP-1] for each SHY dragon in an orthogonally adjacent space.",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 52,
+        "name": "Chromatic Blue Lung Dragon",
+        "ability_text": "Gain [VP-2] for each [OncePerRound] dragon on your player mat (max [VP-8]).",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 53,
+        "name": "Tawny Steppe Wyvern",
+        "ability_text": "Cache [AnyResource] from your supply here.",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 54,
+        "name": "Colorful Gryphdragon",
+        "ability_text": "Gain [VP-4] if there are no AGGRESSIVE dragons in this cave.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 4,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-4] if there are no aggressive dragons in this cave"
+                ]
+            }
+        }
+    },
+    {
+        "number": 55,
+        "name": "Calm Loch Serpent",
+        "ability_text": "Lay [Egg] anywhere in this cave.",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 4,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "lay [egg] anywhere in this cave",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 56,
+        "name": "Hoarding Flyer",
+        "ability_text": "Gain [Gold].",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [gold]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 57,
+        "name": "Eternal Feydragon",
+        "ability_text": "Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [dragonguild][dragonguild]",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " each opponent gains [dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 58,
+        "name": "Caustic Wyrm",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is a *hatchling*, tuck it here. Otherwise, add it to your hand.",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " tuck it here",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    " if it is a *hatchling*"
+                ]
+            }
+        }
+    },
+    {
+        "number": 59,
+        "name": "Haughty Wyvern",
+        "ability_text": "Gain [VP-2] for each other SHY dragon in this cave.",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 2,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 60,
+        "name": "Stealthy Rufftail",
+        "ability_text": "Gain [Milk][Milk].",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [milk][milk]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 61,
+        "name": "Primeval Wyrm",
+        "ability_text": "Pay [Egg][Egg] from any orthogonally adjacent dragon(s) to gain [DragonGuild][DragonGuild].",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "pay [egg][egg] from any orthogonally adjacent dragon(s) to gain [dragonguild][dragonguild]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "cost": {
+                "pay [egg][egg] from any orthogonally adjacent dragon(s) to gain [dragonguild][dragonguild]": 1
+            }
+        }
+    },
+    {
+        "number": 62,
+        "name": "Descending Firevern",
+        "ability_text": "Gain [Coin].",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 3,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "gain [coin]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "number": 63,
+        "name": "Guarding Horned Drake",
+        "ability_text": "Tuck [DragonCard] from your hand here. If you do, lay [Egg] here.",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 4,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": "tuck [dragoncard] from your hand here",
+                            "amount": 1
+                        }
+                    },
+                    {
+                        "gain_": {
+                            "type": " lay [egg] here",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    " if you do"
+                ]
+            }
+        }
+    },
+    {
+        "number": 64,
+        "name": "Scaly Rock Dragon",
+        "ability_text": "Excavate 1 space for free with [CaveCard] from the display.",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 3,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 65,
+        "name": "Perceptive Anteldragon",
+        "ability_text": "Pay [CaveCard][CaveCard] to play another dragon from your hand for free.",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "play_dragon": {
+                    "L1": "hand",
+                    "L2": "any",
+                    "discount": "free"
+                }
+            },
+            "cost": {
+                "cave_card": {
+                    "amount": 2
+                }
+            }
+        }
+    },
+    {
+        "number": 66,
+        "name": "Green Ghost",
+        "ability_text": "Pay [DragonCard] to lay [Egg] anywhere in this cave.",
+        "VP": 6,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "this_cave",
+                    "exclude": "none"
+                }
+            },
+            "cost": {
+                "dragon_card": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 67,
+        "name": "Ancient One",
+        "ability_text": "Pay [Egg] from anywhere in this cave to gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource].",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_cave": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_resource": {"type": "any"}}, {"gain_guild": {"source": "any"}}]}}
+                ]
+            },
+            "cost": {
+                "egg": {
+                    "location": "this_cave",
+                    "amount": 1
+                }
+            }
+        }
+    },
+    {
+        "number": 68,
+        "name": "Hostile Northern Fire Dragon",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is *large*, tuck it here. Otherwise, discard it and gain [Meat].",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "top_deck_reveal": {
+                "tuck_targets": ["Large"],
+                "fail_effect": "gain_meat"
+            }
+        }
+    },
+    {
+        "number": 69,
+        "name": "Prescient Gryphdragon",
+        "ability_text": "Draw [DragonCard] from the deck for each SHY dragon in this cave. You may tuck up to 2 of them here.",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "draw_decision": {
+                "amount": "shy_this_cave",
+                "limits": {
+                    "tuck_here": 2,
+                    "keep": 4
+                }
+            }
+        }
+    },
+    {
+        "number": 70,
+        "name": "Patient Redwyrm",
+        "ability_text": "Up to 2x, pay [AnyResource] to lay [Egg]. Each opponent may do this 1x.",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 5,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "any"
+                }
+            },
+            "max_uses": 2,
+            "cost": {
+                "resource": {
+                    "type": "any", "amount": 1
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 71,
+        "name": "Multicolor Flyer",
+        "ability_text": "Gain [VP-2] for each [WhenPlayed] dragon on your player mat (max [VP-8]).",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 72,
+        "name": "Primordiasaur",
+        "ability_text": "Pay [Egg] from anywhere in this cave to gain [DragonGuild][DragonGuild].",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
+                ]
+            },
+            "cost": {
+                "egg": {
+                    "amount": 1,
+                    "location": "this_cave"
+                }
+            }
+        }
+    },
+    {
+        "number": 73,
+        "name": "Marshy Webbed Dragon",
+        "ability_text": "Pay [CaveCard] to activate 1 [Adventurer] ability that is printed on your player mat.",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "other_ability_on_mat": {
+                    "type": "if_activated"
+                }
+            },
+            "cost": {
+                "cave_card": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 74,
+        "name": "Solitary Brown Drake",
+        "ability_text": "Gain [VP-3] if all spaces in this cave have been excavated.",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-3] if all spaces in this cave have been excavated"
+                ]
+            }
+        }
+    },
+    {
+        "number": 75,
+        "name": "Carboniferous Rockbreaker",
+        "ability_text": "Gain [DragonGuild].",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_guild": {"source": "any"}
+        }
+    },
+    {
+        "number": 76,
+        "name": "Keen Cricketcatcher",
+        "ability_text": "Pay [AnyResource] to activate the [WhenPlayed] ability on any dragon on your player mat.",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "other_ability_on_mat": {
+                    "type": "when_played"
+                }
+            },
+            "cost": {
+                "resource": {"type": "any", "amount": 1}
+            }
+        }
+    },
+    {
+        "number": 77,
+        "name": "Intractable Firevern",
+        "ability_text": "Gain [Meat]. You may cache it here.",
+        "VP": 1,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "meat"}},
+                    {"cache_from": {
+                        "type": "meat",
+                        "L1": "general_supply",
+                        "L2": "here"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 78,
+        "name": "Particularly Haughty Wyvern",
+        "ability_text": "Gain [Milk]. You may cache it here.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "milk"}},
+                    {"cache_from": {
+                        "type": "milk",
+                        "L1": "general_supply",
+                        "L2": "here"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 79,
+        "name": "Common Blue Gryphdragon",
+        "ability_text": "If you have at least 3 dragons in this cave, lay [Egg] on each dragon in this cave.",
+        "VP": 1,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "each_this_cave",
+                    "exclude": "none"
+                }
+            },
+            "condition": {
+                "min_dragons_this_cave": 3
+            }
+        }
+    },
+    {
+        "number": 80,
+        "name": "Hawkish Firevern",
+        "ability_text": "Tuck [DragonCard] from your hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Aggressive",
+        "meat_cost": 2,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here",
+                "gain_from_cost": true
+            }
+        }
+    },
+    {
+        "number": 81,
+        "name": "Stoic Gryphdragon",
+        "ability_text": "Gain [VP-3] if this is the last (farthest right) dragon in its cave.",
+        "VP": 7,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-3] if this is the last (farthest right) dragon in its cave"
+                ]
+            }
+        }
+    },
+    {
+        "number": 82,
+        "name": "Hushed Oak-Wing Feydragon",
+        "ability_text": "Lay [Egg] on any dragon in this column.",
+        "VP": 1,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "lay_egg": {
+                "location": "this_column",
+                "exclude": "none"
+            }
+        }
+    },
+    {
+        "number": 83,
+        "name": "Spirited Firevern",
+        "ability_text": "Gain [Coin][DragonGuild].",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 3,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_coin": {"amount": 1}},
+                    {"gain_guild": {"source": "any"}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 84,
+        "name": "Malcontent Venomous Wyrm",
+        "ability_text": "Tuck [DragonCard] from your hand here.",
+        "VP": 6,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
+            }
+        }
+    },
+    {
+        "number": 85,
+        "name": "Wealthy Koiwyrm",
+        "ability_text": "Gain [Crystal][Crystal]. Each opponent gains [Crystal].",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_resource": {"type": "crystal"}},
+                    {"gain_resource": {"type": "crystal"}}
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 86,
+        "name": "Northern Cavalier Wyvern",
+        "ability_text": "Pay [DragonCard] to gain [VP-1] or pay [DragonCard][DragonCard] to gain [VP-3].",
+        "VP": 8,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "cost": {
+                "pay [dragoncard] to gain [vp-1] or pay [dragoncard][dragoncard] to gain [vp-3]": 1
+            }
+        }
+    },
+    {
+        "number": 87,
+        "name": "Equatorial Cavalier Wyvern",
+        "ability_text": "Pay [CaveCard] to gain [VP-1] or pay [CaveCard][CaveCard] to gain [VP-3].",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "cost": {
+                "pay [cavecard] to gain [vp-1] or pay [cavecard][cavecard] to gain [vp-3]": 1
+            }
+        }
+    },
+    {
+        "number": 88,
+        "name": "Speedy Lung Dragon",
+        "ability_text": "Gain [Coin].",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 3,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "gain_coin": {
+                "amount": 1
+            }
+        }
+    },
+    {
+        "number": 89,
+        "name": "Erudite Lung Dragon",
+        "ability_text": "Pay [AnyResource] to play a dragon from the display for free.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "play_dragon": {
+                    "L1": "display",
+                    "L2": "any",
+                    "discount": "free"
+                }
+            },
+            "cost": {
+                "resource": {"type": "any", "amount": 1}
+            }
+        }
+    },
+    {
+        "number": 90,
+        "name": "Protective Amphiptere",
+        "ability_text": "Pay [Coin] to gain [Gold][Crystal][Meat].",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_resource": {"type": "gold"}},
+                    {"gain_resource": {"type": "crystal"}},
+                    {"gain_resource": {"type": "meat"}}
+                ]
+            },
+            "cost": {
+                "coin": {
+                    "amount": 1
+                }
+            }
+        }
+    },
+    {
+        "number": 91,
+        "name": "Ordinary Resplendent Coatl",
+        "ability_text": "Gain [VP-8] if you have a *hatchling*, a *small* dragon, and a *large* dragon in this cave.",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-8] if you have a *hatchling*"
+                ]
+            }
+        }
+    },
+    {
+        "number": 92,
+        "name": "Territorial Spitter",
+        "ability_text": "Gain [Crystal].",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "crystal"
+            }
+        }
+    },
+    {
+        "number": 93,
+        "name": "Miniature Crested Coatl",
+        "ability_text": "Gain [VP-5] if you have 4 dragons in your Golden Grotto.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-5] if you have 4 dragons in your golden grotto"
+                ]
+            }
+        }
+    },
+    {
+        "number": 94,
+        "name": "Northern Gryphdragon",
+        "ability_text": "Pay [DragonCard] or [CaveCard] to gain [DragonGuild].",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "gain_guild": {"source": "any"}
+            },
+            "cost": {
+                "choice": [
+                    {"dragon_card": {"amount": 1}},
+                    {"cave_card": {"amount": 1}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 95,
+        "name": "Pacifistic Web-Toed Serpent",
+        "ability_text": "Lay [Egg] on each dragon in this column.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 4,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "lay_egg": {
+                "location": "each_this_column",
+                "exclude": "none"
+            }
+        }
+    },
+    {
+        "number": 96,
+        "name": "Fastidious Horned Dragon",
+        "ability_text": "Gain [Milk]. You may cache it here.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "milk"}},
+                    {"cache_from": {
+                        "type": "milk",
+                        "L1": "general_supply",
+                        "L2": "here"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 97,
+        "name": "Dappled Glade Spirit",
+        "ability_text": "Gain [VP-1] for each [Adventurer] dragon on your player mat (including *hatchlings*).",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 98,
+        "name": "Little Amphiptere",
+        "ability_text": "Gain [VP-3] if this dragon's cave is full.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-3] if this dragon's cave is full"
+                ]
+            }
+        }
+    },
+    {
+        "number": 99,
+        "name": "Nimble Trilling Amphiptere",
+        "ability_text": "Gain [Coin][AnyResource][AnyResource].",
+        "VP": 2,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_coin": {"amount": 1}},
+                    {"gain_resource": {"type": "any"}},
+                    {"gain_resource": {"type": "any"}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 100,
+        "name": "Horned Venomous Wyrm",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is *small*, tuck it here. Otherwise discard it and gain [Milk].",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "top_deck_reveal": {
+                "tuck_targets": ["Small"],
+                "fail_effect": "gain_milk"
+            }
+        }
+    },
+    {
+        "number": 101,
+        "name": "Magnificent Amphiptere",
+        "ability_text": "Gain [VP-2] for each [EndGame] dragon on your player mat (max [VP-8]).",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 102,
+        "name": "Pocket Amphiptere",
+        "ability_text": "Gain [VP-3] if there is at least 1 other PLAYFUL dragon in this cave.",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-3] if there is at least 1 other playful dragon in this cave"
+                ]
+            }
+        }
+    },
+    {
+        "number": 103,
+        "name": "Miserly Amphiptere",
+        "ability_text": "If you have at least as many dragons in your Golden Grotto as your left neighbor, gain [Gold].",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [gold]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    "if you have at least as many dragons in your golden grotto as your left neighbor"
+                ]
+            }
+        }
+    },
+    {
+        "number": 104,
+        "name": "Gliding Taiga Drake",
+        "ability_text": "Up to 2x, tuck [DragonCard] from your hand here. Each time you do, gain [AnyResource].",
+        "VP": 0,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "sequence": [
+                    {"tuck_from": {
+                        "L1": "hand",
+                        "L2": "here"
+                    }},
+                    {"gain_resource": {
+                        "type": "any"
+                    }}
+                ]
+            },
+            "max_uses": 2
+        }
+    },
+    {
+        "number": 105,
+        "name": "Australopithecus Drakus",
+        "ability_text": "Up to 3x, pay [CaveCard] from your hand to lay [Egg] here.",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "here"
+                }
+            },
+            "max_uses": 3,
+            "cost": {
+                "cave_card": {
+                    "amount": 1
+                }
+            }
+        }
+    },
+    {
+        "number": 106,
+        "name": "Minor Sharpclaw",
+        "ability_text": "Lose [VP-2] for each other AGGRESSIVE dragon in this cave.",
+        "VP": 7,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 107,
+        "name": "Puck's Horned Drake",
+        "ability_text": "If you have at least 3 dragons in this cave, lay [Egg] on each dragon in this cave.",
+        "VP": 1,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "each_this_cave",
+                    "exclude": "none"
+                }
+            },
+            "condition": {
+                "min_dragons_this_cave": 3
+            }
+        }
+    },
+    {
+        "number": 108,
+        "name": "Good Drake",
+        "ability_text": "Pay [Coin] to gain [DragonGuild][AnyResource][CaveCard][DragonCard].",
+        "VP": 7,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence":[
+                    {"gain_dragon": {"source":"any"}},
+                    {"gain_cave": {"source":"any"}},
+                    {"gain_resource": {"type":"any"}},
+                    {"gain_guild": {"source":"any"}}
+                ]
+            },
+            "cost": {
+                "coin": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 109,
+        "name": "Bellicose Firevern",
+        "ability_text": "Pay [AnyResource] to draw [DragonCard][DragonCard][DragonCard] from the deck. Keep 1, discard 1, and tuck 1 here.",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "draw_decision": {
+                    "amount": 3,
+                    "limits": {
+                        "keep": 1,
+                        "discard": 1,
+                        "tuck_here": 1
+                    }
+                }
+            },
+            "cost": {
+                "resource": {"type": "any", "amount": 1}
+            }
+        }
+    },
+    {
+        "number": 110,
+        "name": "Stalking Drake",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is *medium* or *large*, tuck it here. Otherwise, add it to your hand.",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "top_deck_reveal": {
+                "tuck_targets": ["Medium","Large"],
+                "fail_effect": "keep_card"
+            }
+        }
+    },
+    {
+        "number": 111,
+        "name": "Penurious Red Wyrm",
+        "ability_text": "Gain [AnyResource] for each AGGRESSIVE dragon in this cave. You may cache up to 2 of them here.",
+        "VP": 1,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "any_resource_decision": {
+                "amount": "agg_this_cave",
+                "limits": {
+                    "cache_here": 2,
+                    "keep": 4
+                }
+            }
+        }
+    },
+    {
+        "number": 112,
+        "name": "Variegated Amphiptere",
+        "ability_text": "Gain [VP-2] for each dragon in an orthogonally adjacent space.",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 113,
+        "name": "Shaly Rockbreaker",
+        "ability_text": "Excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 8,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "play_cave": {"source": "hand"}
+        }
+    },
+    {
+        "number": 114,
+        "name": "Avaricious Amphiptere",
+        "ability_text": "If you have at least as many dragons in your Amethyst Abyss as your left neighbor, gain [Crystal].",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [crystal]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    "if you have at least as many dragons in your amethyst abyss as your left neighbor"
+                ]
+            }
+        }
+    },
+    {
+        "number": 115,
+        "name": "Custodial Koiwyrm",
+        "ability_text": "Gain [AnyResource][AnyResource]. Keep 1 and cache 1 onto any dragon.",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"cache_from": {
+                        "type": "any",
+                        "L1": "general_supply",
+                        "L2": "any_dragon"
+                    }},
+                    {"gain_resource": {
+                        "type": "any"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 116,
+        "name": "Splitting Golden Hydra",
+        "ability_text": "Draw [DragonCard][DragonCard] from the deck. Keep 1 and tuck 1 under any dragon.",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "draw_decision": {
+                "amount": 2,
+                "limits": {
+                    "keep": 1,
+                    "tuck_any": 1
+                }
+            }
+        }
+    },
+    {
+        "number": 117,
+        "name": "Antediluvian Basilisk",
+        "ability_text": "Tuck [DragonCard] from the deck here for each marker you have placed on the Dragon Guild.",
+        "VP": 2,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "max_uses": "guild_markers",
+            "adv_effects": {
+                "tuck_from": {
+                    "L1": "deck",
+                    "L2": "here"
+                }
+            }
+        }
+    },
+    {
+        "number": 118,
+        "name": "Spirited Hydraptere",
+        "ability_text": "Gain [Coin][Coin].",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "gain_coin": {
+                "amount": 2
+            }
+        }
+    },
+    {
+        "number": 119,
+        "name": "Chameleon Coatl",
+        "ability_text": "Gain [VP-2] for each *medium* dragon on your player mat (max [VP-8]).",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 120,
+        "name": "Knowing Guardian",
+        "ability_text": "Cache [AnyResource] from your supply here. If you do, draw [DragonCard] from the deck.",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "sequence": [
+                    {"cache_from": {
+                        "type": "any",
+                        "L1": "player_supply",
+                        "L2": "here"
+                    }},
+                    {"gain_dragon": {
+                        "source": "deck"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 121,
+        "name": "Archaic Whiskered Lung Dragon",
+        "ability_text": "Pay [Coin] to gain [DragonGuild][DragonGuild][DragonGuild].",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
+                ]
+            },
+            "cost": {
+                "coin": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 122,
+        "name": "Yellow-Bellied Lung Dragon",
+        "ability_text": "Lose [VP-1] for each other AGGRESSIVE dragon in this cave.",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 123,
+        "name": "Selfish Lung Dragon",
+        "ability_text": "Gain [Crystal].",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "crystal"
+            }
+        }
+    },
+    {
+        "number": 124,
+        "name": "Mosaic Guardian",
+        "ability_text": "Gain [VP-2] for each *large* dragon on your player mat (max [VP-8]).",
+        "VP": 6,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 125,
+        "name": "Red Guardian",
+        "ability_text": "Cache [AnyResource] from your supply onto any dragon in this column.",
+        "VP": 6,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "cache_from": {
+                "type": "any",
+                "L1": "player_supply",
+                "L2": "this_column"
+            }
+        }
+    },
+    {
+        "number": 126,
+        "name": "Quartzy Rockbreaker",
+        "ability_text": "Gain [CaveCard].",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_cave": {"source": "any"}
+        }
+    },
+    {
+        "number": 127,
+        "name": "Capricious Venomous Wyrm",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is *small* or a *hatchling*, tuck it here. Otherwise, add it to your hand.",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "top_deck_reveal": {
+                "tuck_targets": ["Small","Hatchling"],
+                "fail_effect": "keep_card"
+            }
+        }
+    },
+    {
+        "number": 128,
+        "name": "Sharp-Tongued Spitter",
+        "ability_text": "Gain [Meat].",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "meat"
+            }
+        }
+    },
+    {
+        "number": 129,
+        "name": "Red-Crested Gryphdragon",
+        "ability_text": "Gain [VP-3] for each PLAYFUL dragon in an orthogonally adjacent space.",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 130,
+        "name": "Smirking Ridgeback",
+        "ability_text": "Tuck [DragonCard] from the deck under each PLAYFUL dragon in this cave.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "tuck_from": {
+                "L1": "deck",
+                "L2": "each_this_cave",
+                "include": "Playful"
+            }
+        }
+    },
+    {
+        "number": 131,
+        "name": "Titanic Coatl",
+        "ability_text": "Gain [VP-4] for each *set* of dragon sizes on your player mat (1 *set*=1 of each: *hatchling*, *small*, *medium*, *large*).",
+        "VP": 7,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 132,
+        "name": "Lilliputian Fae",
+        "ability_text": "Gain [VP-2] for each small dragon on your player mat (max [VP-8]).",
+        "VP": 6,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 133,
+        "name": "Sossusvlei Wyvern",
+        "ability_text": "Gain [DragonGuild].",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_guild": {
+                "source": "any"
+            }
+        }
+    },
+    {
+        "number": 134,
+        "name": "Customary Grazer",
+        "ability_text": "Gain [VP-3] for each *hatchling* on your player mat (max [VP-9]).",
+        "VP": 6,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 135,
+        "name": "Churlish Firevern",
+        "ability_text": "If this dragon's column is full, draw [DragonCard][DragonCard] from the deck. You may tuck 1 or both here.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "draw_decision": {
+                    "amount": 2,
+                    "limits": {
+                        "keep": 2,
+                        "tuck_here": 2
+                    }
+                }
+            },
+            "condition": {
+                "this_col_full": true
+            }
+        }
+    },
+    {
+        "number": 136,
+        "name": "Impenetrable Redwyrm",
+        "ability_text": "Gain [Crystal]. You may cache it here.",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "crystal"}},
+                    {"cache_from": {
+                        "type": "crystal",
+                        "L1": "general_supply",
+                        "L2": "here"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 137,
+        "name": "Starlit Shepherd",
+        "ability_text": "Pay [CaveCard] to lay [Egg][Egg] anywhere in this cave.",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {"lay_egg": {"location": "this_cave"}},
+                    {"lay_egg": {"location": "this_cave"}}
+                ]
+            },
+            "cost": {
+                "cave_card": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 138,
+        "name": "Kind Mistvern",
+        "ability_text": "Lay [Egg] on each dragon in this cave that is not AGGRESSIVE.",
+        "VP": 1,
+        "size": "Large",
+        "capacity": 4,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "lay_egg": {
+                "location": "each_this_cave",
+                "exclude": "aggressive"
+            }
+        }
+    },
+    {
+        "number": 139,
+        "name": "Oracular Dragon",
+        "ability_text": "Lay [Egg] here.",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 4,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "lay_egg": {"location": "here"}
+        }
+    },
+    {
+        "number": 140,
+        "name": "Rocky Rockbreaker",
+        "ability_text": "Excavate 1 space for free with [CaveCard] from your hand.",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "play_cave": {"source": "hand"}
+        }
+    },
+    {
+        "number": 141,
+        "name": "Sea Viper",
+        "ability_text": "Tuck [DragonCard] from the deck under any dragon.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "tuck_from": {"L1": "deck", "L2": "any"}
+        }
+    },
+    {
+        "number": 142,
+        "name": "Royal Wyvern",
+        "ability_text": "Pay [CaveCard] to draw [DragonCard][DragonCard][DragonCard] from the deck. Keep 1, discard 1, and tuck 1 here.",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "draw_decision": {
+                    "amount": 3,
+                    "limits": {
+                        "keep": 1,
+                        "discard": 1,
+                        "tuck_here": 1
+                    }
+                }
+            },
+            "cost": {
+                "cave_card": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 143,
+        "name": "Lavender Feydragon",
+        "ability_text": "Gain [DragonCard].",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_dragon": {"source": "any"}
+        }
+    },
+    {
+        "number": 144,
+        "name": "Playful Hornwyrn",
+        "ability_text": "Pay [AnyResource] to gain [VP-1] or pay [AnyResource][AnyResource] to gain [VP-3].",
+        "VP": 9,
+        "size": "Medium",
+        "capacity": 4,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 1,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "cost": {
+                "pay [anyresource] to gain [vp-1] or pay [anyresource][anyresource] to gain [vp-3]": 1
+            }
+        }
+    },
+    {
+        "number": 145,
+        "name": "Southern Mammoth Ridgedragon",
+        "ability_text": "Gain [VP-5] if you have 4 dragons in your Amethyst Abyss.",
+        "VP": 2,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-5] if you have 4 dragons in your amethyst abyss"
+                ]
+            }
+        }
+    },
+    {
+        "number": 146,
+        "name": "Crafty Moray",
+        "ability_text": "Pay [AnyResource] to play another dragon from your hand for free.",
+        "VP": 1,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "play_dragon": {
+                    "L1": "hand",
+                    "L2": "any",
+                    "discount": "free"
+                }
+            },
+            "cost": {
+                "resource": {"type": "any", "amount": 1}
+            }
+        }
+    },
+    {
+        "number": 147,
+        "name": "Steely Fae",
+        "ability_text": "Pay [DragonCard] to play a dragon from the display for free.",
+        "VP": 1,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "play_dragon": {
+                    "L1": "display",
+                    "L2": "any",
+                    "discount": "free"
+                }
+            },
+            "cost": {
+                "dragon_card": {"amount": 1}
+            }
+        }
+    },
+    {
+        "number": 148,
+        "name": "Great Horned Wyvern",
+        "ability_text": "Draw [DragonCard] from the deck. You may tuck it here.",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "draw_decision": {
+                "amount": 1,
+                "limits": {
+                    "keep": 1,
+                    "tuck_here": 1
+                }
+            }
+        }
+    },
+    {
+        "number": 149,
+        "name": "Ophidian Recluse",
+        "ability_text": "Pay [AnyResource][CaveCard][DragonCard] to gain [VP-5].",
+        "VP": 6,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "cost": {
+                "pay [anyresource][cavecard][dragoncard] to gain [vp-5]": 1
+            }
+        }
+    },
+    {
+        "number": 150,
+        "name": "Aerial Recluse",
+        "ability_text": "Gain [VP-4] if there is another HELPFUL dragon in this column.",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-4] if there is another helpful dragon in this column"
+                ]
+            }
+        }
+    },
+    {
+        "number": 151,
+        "name": "Fanged Broadwyrm",
+        "ability_text": "Tuck [DragonCard] from your hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here",
+                "gain_from_cost": true
+            }
+        }
+    },
+    {
+        "number": 152,
+        "name": "Shrieking Amphiptere",
+        "ability_text": "Tuck [DragonCard] from your hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
+        "VP": 2,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here",
+                "gain_from_cost": true
+            }
+        }
+    },
+    {
+        "number": 153,
+        "name": "Blue Keeper",
+        "ability_text": "Cache [AnyResource] from your supply here. If you do, lay [Egg] here.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 4,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "sequence": [
+                    {"cache_from": {
+                        "type": "any",
+                        "L1": "player_supply",
+                        "L2": "here"
+                    }},
+                    {"lay_egg": {
+                        "location": "here"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 154,
+        "name": "Contrary Lung Dragon",
+        "ability_text": "Gain [Meat]. You may cache it onto any dragon.",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "meat"}},
+                    {"cache_from": {
+                        "type": "meat",
+                        "L1": "general_supply",
+                        "L2": "any"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 155,
+        "name": "Mercenary Wyvern",
+        "ability_text": "Gain [Gold].",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "gold"
+            }
+        }
+    },
+    {
+        "number": 156,
+        "name": "Brindled Frogmouth",
+        "ability_text": "Choose [AnyResource] and gain 2 of that resource. Each opponent gains 1 of the same resource.",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"adv_effects": {"sequence": [{"gain_resource": {"type": "meat"}}, {"gain_resource": {"type": "meat"}}]}},
+                    {"adv_effects": {"sequence": [{"gain_resource": {"type": "gold"}}, {"gain_resource": {"type": "gold"}}]}},
+                    {"adv_effects": {"sequence": [{"gain_resource": {"type": "crystal"}}, {"gain_resource": {"type": "crystal"}}]}},
+                    {"adv_effects": {"sequence": [{"gain_resource": {"type": "milk"}}, {"gain_resource": {"type": "milk"}}]}}
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 157,
+        "name": "Wily Lindworm",
+        "ability_text": "Swap the location of any 2 dragons on your player mat (ignore normal cave preferences).",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "swap_dragons": {
+                "L1": "any",
+                "L2": "any"
+            }
+        }
+    },
+    {
+        "number": 158,
+        "name": "Brushwood Dragonette",
+        "ability_text": "Lay [Egg] anywhere in this cave.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "lay_egg": {
+                "location": "this_cave"
+            }
+        }
+    },
+    {
+        "number": 159,
+        "name": "Jaunty Dragonette",
+        "ability_text": "Pay [Egg] from anywhere in this cave to gain [AnyResource][AnyResource].",
+        "VP": 1,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_resource": {"type": "any"}},
+                    {"gain_resource": {"type": "any"}}
+                ]
+            },
+            "cost": {
+                "egg": {
+                    "amount": 1,
+                    "location": "this_cave"
+                }
+            }
+        }
+    },
+    {
+        "number": 160,
+        "name": "Brushtail Fae",
+        "ability_text": "Draw [DragonCard] from the deck. You may tuck it here.",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 3,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "draw_decision": {
+                "amount": 1,
+                "limits": {
+                    "keep": 1,
+                    "tuck_here": 1
+                }
+            }
+        }
+    },
+    {
+        "number": 161,
+        "name": "Greater Scorpio",
+        "ability_text": "Gain [Milk]. You may cache it onto any dragon.",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "milk"}},
+                    {"cache_from": {
+                        "type": "milk",
+                        "L1": "general_supply",
+                        "L2": "any"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 162,
+        "name": "Cosmic Amphiptere",
+        "ability_text": "Excavate 1 space for free with [CaveCard] from the display",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 2,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "play_cave": {
+                "source": "display"
+            }
+        }
+    },
+    {
+        "number": 163,
+        "name": "Reticent Manta",
+        "ability_text": "Gain [Gold]. You may cache it here.",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "choice": [
+                    {"gain_resource": {"type": "gold"}},
+                    {"cache_from": {
+                        "type": "gold",
+                        "L1": "general_supply",
+                        "L2": "here"
+                    }}
+                ]
+            }
+        }
+    },
+    {
+        "number": 164,
+        "name": "Metamorphic Feydragon",
+        "ability_text": "If you have at least 3 dragons in this cave, lay [Egg] on each dragon in this cave.",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 4,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "lay_egg": {
+                    "location": "each_this_cave",
+                    "exclude": "none"
+                }
+            },
+            "condition": {
+                "min_dragons_this_cave": 3
+            }
+        }
+    },
+    {
+        "number": 165,
+        "name": "Clairvoyant Feydragon",
+        "ability_text": "Gain [DragonCard][DragonCard]. Each opponent draws [DragonCard] from the deck.",
+        "VP": 5,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_dragon": {"source": "any"}}
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 166,
+        "name": "Hyenic Serpent",
+        "ability_text": "Gain [Meat].",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "meat"
+            }
+        }
+    },
+    {
+        "number": 167,
+        "name": "Homely Fae",
+        "ability_text": "Gain [VP-5] if you have 4 dragons in your Crimson Cavern.",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {},
+            "condition": {
+                "and": [
+                    "gain [vp-5] if you have 4 dragons in your crimson cavern"
+                ]
+            }
+        }
+    },
+    {
+        "number": 168,
+        "name": "Ringtail Serpent",
+        "ability_text": "If you have at least as many dragons in your Crimson Cavern as your left neighbor, gain [Meat].",
+        "VP": 3,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [meat]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    "if you have at least as many dragons in your crimson cavern as your left neighbor"
+                ]
+            }
+        }
+    },
+    {
+        "number": 169,
+        "name": "Diving Moray",
+        "ability_text": "Gain [Gold].",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Playful",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "gold"
+            }
+        }
+    },
+    {
+        "number": 170,
+        "name": "Vanishing Creeper",
+        "ability_text": "If you have at least as many dragons in your Crimson Cavern as your left neighbor, gain [Milk].",
+        "VP": 6,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 2,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_": {
+                            "type": " gain [milk]",
+                            "amount": 1
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "and": [
+                    "if you have at least as many dragons in your crimson cavern as your left neighbor"
+                ]
+            }
+        }
+    },
+    {
+        "number": 171,
+        "name": "Macabre Lindworm",
+        "ability_text": "Tuck [DragonCard] from your hand under any dragon in this column.",
+        "VP": 6,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "this_column"
+            }
+        }
+    },
+    {
+        "number": 172,
+        "name": "Augural Fae",
+        "ability_text": "Activate 1 [Adventurer] or [OncePerRound] ability on any dragon on your player mat.",
+        "VP": 5,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "choice": [
+                    {"other_ability_on_mat": "if_activated"},
+                    {"other_ability_on_mat": "once_per_round"}
+                ]
+            }
+        }
+    },
+    {
+        "number": 173,
+        "name": "Solitary Remora",
+        "ability_text": "Lay [Egg] on any orthogonally adjacent dragon.",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "lay_egg": {"location": "ortho"}
+        }
+    },
+    {
+        "number": 174,
+        "name": "Steadfast Southern Drake",
+        "ability_text": "Pay [Egg] to gain [AnyResource][CaveCard][DragonCard]. Each opponent may pay [Egg] to gain  [AnyResource]/[CaveCard]/[DragonCard].",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_cave": {"source": "any"}},
+                    {"gain_resource": {"type": "any"}}
+                ]
+            },
+            "cost": {
+                "egg": {
+                    "amount": 1,
+                    "location": "any"
+                }
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 175,
+        "name": "Tendering Mothdragon",
+        "ability_text": "If you have at least 1 marker on the Dragon Guild, lay up to [Egg][Egg] here.",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Shy",
+        "meat_cost": 0,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 1,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "lay_egg": {
+                            "location": "here"
+                        }
+                    },
+                    {
+                        "lay_egg": {
+                            "location": "here"
+                        }
+                    }
+                ]
+            },
+            "condition": {
+                "min_guild_markers": 1
+            }
+        }
+    },
+    {
+        "number": 176,
+        "name": "Gnawing Seraph",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is *medium*, tuck it here. Otherwise, discard it and gain [Meat].",
+        "VP": 3,
+        "size": "Small",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 0,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "top_deck_reveal": {
+                "tuck_targets": ["Medium"],
+                "fail_effect": "gain_meat"
+            }
+        }
+    },
+    {
+        "number": 177,
+        "name": "Dowsing Fae",
+        "ability_text": "Gain [Crystal].",
+        "VP": 2,
+        "size": "Medium",
+        "capacity": 1,
+        "personality": "Shy",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "crystal"
+            }
+        }
+    },
+    {
+        "number": 178,
+        "name": "Watchful Wyvern",
+        "ability_text": "Gain [Gold][Gold]. Each opponent gains [Gold].",
+        "VP": 4,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "gold"
+                        }
+                    }
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 179,
+        "name": "Nurturing Feydragon",
+        "ability_text": "Gain an additional [VP-1] for every 2 [Egg] you have (round down).",
+        "VP": 2,
+        "size": "Small",
+        "capacity": 4,
+        "personality": "Helpful",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 1,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": true,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    },
+    {
+        "number": 180,
+        "name": "Beckoning Cricketcatcher",
+        "ability_text": "Gain [DragonCard]. You may tuck it under any dragon.",
+        "VP": 4,
+        "size": "Small",
+        "capacity": 2,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 1,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "once_per_round": {
+            "adv_effects": {
+                "choice": [
+                    {"draw_decision": {
+                        "amount": 1,
+                        "limits": {
+                            "keep": 1,
+                            "tuck_any": 1
+                        }
+                    }},
+                    {"gain_dragon": {"source": "display"}},
+                    {"tuck_from": {"L1": "display", "L2": "any"}}
+                ]
+            }
+        }
+    },
+    {
+        "number": 181,
+        "name": "Gamboling Landragon",
+        "ability_text": "Gain [Meat][Meat]. Each opponent gains [Meat].",
+        "VP": 3,
+        "size": "Large",
+        "capacity": 1,
+        "personality": "Playful",
+        "meat_cost": 1,
+        "gold_cost": 0,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": false,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "when_played": {
+            "adv_effects": {
+                "sequence": [
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    },
+                    {
+                        "gain_resource": {
+                            "type": "meat"
+                        }
+                    }
+                ]
+            },
+            "opponent_effect": {
+                "adv_effects": {}
+            }
+        }
+    },
+    {
+        "number": 182,
+        "name": "Waddy's Rufftail",
+        "ability_text": "Gain [Meat].",
+        "VP": 4,
+        "size": "Medium",
+        "capacity": 3,
+        "personality": "Aggressive",
+        "meat_cost": 1,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": false,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "if_activated": {
+            "gain_resource": {
+                "type": "meat"
+            }
+        }
+    },
+    {
+        "number": 183,
+        "name": "Warming Firevern",
+        "ability_text": "Gain [VP-1] for each HELPFUL dragon on your player mat.",
+        "VP": 5,
+        "size": "Large",
+        "capacity": 2,
+        "personality": "Helpful",
+        "meat_cost": 2,
+        "gold_cost": 2,
+        "crystal_cost": 0,
+        "coin_cost": 0,
+        "Crimson Cavern": true,
+        "Golden Grotto": true,
+        "Amethyst Abyss": false,
+        "egg_cost": 0,
+        "milk_cost": 0,
+        "end_game": {
+            "adv_effects": {}
+        }
+    }
+]
