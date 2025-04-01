@@ -2354,15 +2354,8 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "when_played": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "gain_coin": {
+                "amount": 1
             }
         }
     },
@@ -2405,15 +2398,8 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [dragoncard]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "gain_dragon": {
+                "source": "any"
             }
         }
     },
@@ -2477,7 +2463,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {}
+            "cache_from": {
+                "L1": "player_supply",
+                "L2": "here",
+                "type": "any"
+            }
         }
     },
     {
@@ -2524,15 +2514,8 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "lay [egg] anywhere in this cave",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "lay_egg": {
+                "location": "this_cave"
             }
         }
     },
@@ -2554,15 +2537,8 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [gold]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "gain_resource": {
+                "type": "gold"
             }
         }
     },
@@ -2586,18 +2562,8 @@
         "when_played": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [dragonguild][dragonguild]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " each opponent gains [dragonguild]",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             },
             "opponent_effect": {
@@ -2623,20 +2589,9 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " tuck it here",
-                            "amount": 1
-                        }
-                    }
-                ]
-            },
-            "condition": {
-                "and": [
-                    " if it is a *hatchling*"
-                ]
+            "top_deck_reveal": {
+                "tuck_targets": ["Hatchling"],
+                "fail_effect": "keep_card"
             }
         }
     },
@@ -2681,12 +2636,8 @@
         "when_played": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [milk][milk]",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "milk"}},
+                    {"gain_resource": {"type": "milk"}}
                 ]
             }
         }
@@ -2711,16 +2662,15 @@
         "if_activated": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "pay [egg][egg] from any orthogonally adjacent dragon(s) to gain [dragonguild][dragonguild]",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             },
             "cost": {
-                "pay [egg][egg] from any orthogonally adjacent dragon(s) to gain [dragonguild][dragonguild]": 1
+                "egg": {
+                    "location": "ortho",
+                    "amount": 2
+                }
             }
         }
     },
@@ -2742,15 +2692,8 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "when_played": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "gain_coin": {
+                "amount": 1
             }
         }
     },
@@ -2774,23 +2717,13 @@
         "once_per_round": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " lay [egg] here",
-                            "amount": 1
-                        }
-                    }
-                ]
-            },
-            "condition": {
-                "and": [
-                    " if you do"
+                    {"tuck_from": {
+                        "L1": "hand",
+                        "L2": "here"
+                    }},
+                    {"lay_egg": {
+                        "location": "here"
+                    }}
                 ]
             }
         }
@@ -2813,7 +2746,9 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "when_played": {
-            "adv_effects": {}
+            "play_cave": {
+                "source": "display"
+            }
         }
     },
     {
