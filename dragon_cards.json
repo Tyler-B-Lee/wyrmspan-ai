@@ -17,38 +17,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [cavecard]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also lay [egg][egg]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_cave": {"source": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"lay_egg": {"location": "any"}},
+                    {"lay_egg": {"location": "any"}}
                 ]
             }
         }
@@ -71,58 +54,17 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " lay [egg]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"lay_egg": {"location": "any"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 1}
         }
     },
     {
@@ -143,38 +85,21 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [anyresource]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragonguild][dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -197,40 +122,18 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [crystal]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "crystal"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 1}
         }
     },
     {
@@ -251,38 +154,22 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [dragonguild]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [gold][crystal][meat]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_guild": {"source": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "gold"}},
+                    {"gain_resource": {"type": "crystal"}},
+                    {"gain_resource": {"type": "meat"}}
                 ]
             }
         }
@@ -305,58 +192,17 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [dragonguild]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_guild": {"source": "any"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 1}
         }
     },
     {
@@ -377,38 +223,21 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [gold]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragonguild][dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "gold"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -431,56 +260,20 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [anyresource]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragoncard][dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_resource": {"type": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -503,38 +296,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [dragoncard]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [crystal][crystal]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_dragon": {"source": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "crystal"}},
+                    {"gain_resource": {"type": "crystal"}}
                 ]
             }
         }
@@ -557,52 +333,17 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [cavecard]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_cave": {"source": "any"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "play_cave": {"source": "hand"}
         }
     },
     {
@@ -623,38 +364,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " lay [egg]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [meat][meat]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"lay_egg": {"location": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "meat"}},
+                    {"gain_resource": {"type": "meat"}}
                 ]
             }
         }
@@ -677,38 +401,21 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [crystal]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragonguild][dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "crystal"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -731,38 +438,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [milk]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [cavecard][cavecard]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_resource": {"type": "milk"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_cave": {"source": "any"}},
+                    {"gain_cave": {"source": "any"}}
                 ]
             }
         }
@@ -785,40 +475,18 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [meat]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_resource": {"type": "meat"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 1}
         }
     },
     {
@@ -839,38 +507,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [milk]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also lay [egg][egg]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "milk"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"lay_egg": {"location": "any"}},
+                    {"lay_egg": {"location": "any"}}
                 ]
             }
         }
@@ -893,34 +544,18 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [cavecard]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_cave": {"source": "any"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "play_cave": {"source": "hand"}
         }
     },
     {
@@ -940,21 +575,18 @@
         "Amethyst Abyss": true,
         "egg_cost": 1,
         "milk_cost": 1,
-        "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
+        "if_activated": {
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_dragon": {"source": "any"}}
                 ]
             }
         }
@@ -976,21 +608,17 @@
         "Amethyst Abyss": false,
         "egg_cost": 1,
         "milk_cost": 2,
-        "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
+        "if_activated": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -1013,56 +641,20 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [dragoncard]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [anyresource][anyresource]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_dragon": {"source": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "any"}},
+                    {"gain_resource": {"type": "any"}}
                 ]
             }
         }
@@ -1085,38 +677,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [gold]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragoncard][dragoncard]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_resource": {"type": "gold"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_dragon": {"source": "any"}}
                 ]
             }
         }
@@ -1139,34 +714,18 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " lay [egg]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"lay_egg": {"location": "any"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "play_cave": {"source": "hand"}
         }
     },
     {
@@ -1187,56 +746,20 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your supply here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [meat]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragoncard][dragoncard]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_resource": {"type": "meat"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_dragon": {"source": "any"}}
                 ]
             }
         }
@@ -1259,38 +782,21 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " lay [egg]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [gold][meat]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"lay_egg": {"location": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "gold"}},
+                    {"gain_resource": {"type": "meat"}}
                 ]
             }
         }
@@ -1313,40 +819,18 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [meat]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "meat"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 1}
         }
     },
     {
@@ -1367,38 +851,21 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [dragonguild]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [gold][gold]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_guild": {"source": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "gold"}},
+                    {"gain_resource": {"type": "gold"}}
                 ]
             }
         }
@@ -1421,40 +888,18 @@
         "egg_cost": 1,
         "milk_cost": 1,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [dragoncard]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_dragon": {"source": "any"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 1}
         }
     },
     {
@@ -1475,38 +920,21 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [crystal]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragoncard][dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_resource": {"type": "crystal"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_dragon": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -1529,38 +957,21 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [anyresource]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [dragonguild][dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "meat",
+            "effect": {"gain_resource": {"type": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_guild": {"source": "any"}},
+                    {"gain_guild": {"source": "any"}}
                 ]
             }
         }
@@ -1582,21 +993,17 @@
         "Amethyst Abyss": true,
         "egg_cost": 1,
         "milk_cost": 2,
-        "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
+        "if_activated": {
+            "cache_from": {
+                "type": "meat",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "coin"}}
                 ]
             }
         }
@@ -1619,56 +1026,20 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [dragonguild]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also lay [egg][egg]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_guild": {"source": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"lay_egg": {"location": "any"}},
+                    {"lay_egg": {"location": "any"}}
                 ]
             }
         }
@@ -1691,56 +1062,20 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [crystal]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [cavecard][cavecard]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_resource": {"type": "crystal"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_cave": {"source": "any"}},
+                    {"gain_cave": {"source": "any"}}
                 ]
             }
         }
@@ -1763,34 +1098,18 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": " gain [meat]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "cache_from": {
+                "type": "milk",
+                "L1": "player_supply",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "milk",
+            "effect": {"gain_resource": {"type": "meat"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "play_cave": {"source": "hand"}
         }
     },
     {
@@ -1811,56 +1130,20 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " lay [egg]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " also gain [crystal][meat]",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"lay_egg": {"location": "any"}}
         },
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
+                    {"gain_resource": {"type": "crystal"}},
+                    {"gain_resource": {"type": "meat"}}
                 ]
             }
         }
@@ -1883,52 +1166,17 @@
         "egg_cost": 1,
         "milk_cost": 2,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [milk]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_resource": {"type": "milk"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "play_cave": {"source": "hand"}
         }
     },
     {
@@ -1949,52 +1197,17 @@
         "egg_cost": 1,
         "milk_cost": 3,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "tuck [dragoncard] from your hand here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " any time you tuck [dragoncard] here",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " gain [gold]",
-                            "amount": 1
-                        }
-                    },
-                    {
-                        "gain_": {
-                            "type": " when the 3rd [dragoncard] is tucked",
-                            "amount": 1
-                        }
-                    }
-                ]
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "here"
             }
         },
         "on_feed": {
-            "gain_": {
-                "type": "",
-                "amount": 1
-            }
+            "type": "tuck",
+            "effect": {"gain_resource": {"type": "gold"}}
         },
         "on_grow_up": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "vp",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "play_cave": {"source": "hand"}
         }
     },
     {
@@ -2016,17 +1229,10 @@
         "milk_cost": 0,
         "if_activated": {
             "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "pay [dragoncard] to gain [anyresource]",
-                            "amount": 1
-                        }
-                    }
-                ]
+                "gain_resource": {"type": "any"}
             },
             "cost": {
-                "pay [dragoncard] to gain [anyresource]": 1
+                "dragon_card": {"amount": 1}
             }
         }
     },
@@ -2050,12 +1256,8 @@
         "when_played": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "lay [egg][egg]",
-                            "amount": 1
-                        }
-                    }
+                    {"lay_egg": {"location": "any"}},
+                    {"lay_egg": {"location": "any"}}
                 ]
             },
             "opponent_effect": {
@@ -2081,16 +1283,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "when_played": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [coin][coin]",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_coin": {"amount": 2}
         }
     },
     {
@@ -2137,16 +1330,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "gain [dragonguild]",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "gain_guild": {"source": "any"}
         }
     },
     {
@@ -2209,16 +1393,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "adv_effects": {
-                "sequence": [
-                    {
-                        "gain_": {
-                            "type": "lay [egg] here",
-                            "amount": 1
-                        }
-                    }
-                ]
-            }
+            "lay_egg": {"location": "here"}
         }
     },
     {
@@ -2262,16 +1437,15 @@
         "if_activated": {
             "adv_effects": {
                 "sequence": [
-                    {
-                        "gain_": {
-                            "type": "pay [coin] to lay [egg][egg][egg]",
-                            "amount": 1
-                        }
-                    }
+                    {"lay_egg": {"location": "any"}},
+                    {"lay_egg": {"location": "any"}},
+                    {"lay_egg": {"location": "any"}}
                 ]
             },
             "cost": {
-                "pay [coin] to lay [egg][egg][egg]": 1
+                "coin": {
+                    "amount": 1
+                }
             }
         }
     },
@@ -3174,7 +2348,10 @@
                 }
             },
             "condition": {
-                "min_dragons_this_cave": 3
+                "min_dragons_in_cave": {
+                    "amount": 3,
+                    "cave": "this_cave"
+                }
             }
         }
     },
@@ -3912,7 +3089,10 @@
                 }
             },
             "condition": {
-                "min_dragons_this_cave": 3
+                "min_dragons_in_cave": {
+                    "amount": 3,
+                    "cave": "this_cave"
+                }
             }
         }
     },
@@ -4864,11 +4044,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-5] if you have 4 dragons in your amethyst abyss"
-                ]
+            "if_true": {
+                "amount": 5,
+                "condition": {
+                    "min_dragons_in_cave": {
+                        "amount": 4,
+                        "cave": "amethyst_abyss"
+                    }
+                }
             }
         }
     },
@@ -4977,10 +4160,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "cost": {
-                "pay [anyresource][cavecard][dragoncard] to gain [vp-5]": 1
-            }
+            "payments": [{
+                "cost": {
+                    "any_resource": 1,
+                    "cave_card": 1,
+                    "dragon_card": 1
+                },
+                "amount": 5
+            }]
         }
     },
     {
@@ -5001,11 +4188,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-4] if there is another helpful dragon in this column"
-                ]
+            "if_true": {
+                "amount": 4,
+                "condition": {
+                    "min_dragons_this_column": {
+                        "amount": 2,
+                        "include": "Helpful"
+                    }
+                }
             }
         }
     },
@@ -5389,7 +4579,10 @@
                 }
             },
             "condition": {
-                "min_dragons_this_cave": 3
+                "min_dragons_in_cave": {
+                    "amount": 3,
+                    "cave": "this_cave"
+                }
             }
         }
     },
@@ -5463,11 +4656,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-5] if you have 4 dragons in your crimson cavern"
-                ]
+            "if_true": {
+                "condition": {
+                    "min_dragons_in_cave": {
+                        "amount": 4,
+                        "cave": "crimson_cavern"
+                    }
+                },
+                "amount": 5
             }
         }
     },
@@ -5810,7 +5006,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "egg_pairs",
+                "amount": 1
+            }
         }
     },
     {
@@ -5924,7 +5123,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Helpful",
+                "amount": 1
+            }
         }
     }
 ]
