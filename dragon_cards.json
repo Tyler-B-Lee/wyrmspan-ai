@@ -1304,11 +1304,23 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-2] if this dragon is between two other dragons in this cave"
-                ]
+            "if_true": {
+                "amount": 2,
+                "condition": {
+                    "or": [
+                        {"and": [
+                            {"min_dragons_in_cave": {"amount": 3, "cave":"this_cave"}},
+                            {"this_position": 1}
+                        ]},
+                        {"and": [
+                            {"min_dragons_in_cave": {"amount": 4, "cave":"this_cave"}},
+                            {"or": [
+                                {"this_position": 1},
+                                {"this_position": 2}
+                            ]}
+                        ]}
+                    ]
+                }
             }
         }
     },
@@ -1351,7 +1363,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "lowest_objectives",
+                "amount": 2
+            }
         }
     },
     {
@@ -1372,7 +1387,12 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "amount": 3,
+                "type": "any_dragon",
+                "location": "this_cave",
+                "exclude_self": true
+            }
         }
     },
     {
@@ -1414,7 +1434,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "guild_markers",
+                "amount": 2
+            }
         }
     },
     {
@@ -1467,11 +1490,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-3] if this dragon's column is full"
-                ]
+            "if_true": {
+                "amount": 3,
+                "condition": {
+                    "min_dragons_this_column": {
+                        "amount": 3,
+                        "include": "any_dragon"
+                    }
+                }
             }
         }
     },
@@ -1551,7 +1577,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "set_of_traits",
+                "amount": 4
+            }
         }
     },
     {
@@ -1595,7 +1624,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Shy",
+                "amount": 1,
+                "location": "ortho"
+            }
         }
     },
     {
@@ -1616,7 +1649,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "once_per_round",
+                "amount": 2,
+                "max": 8
+            }
         }
     },
     {
@@ -1662,11 +1699,15 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-4] if there are no aggressive dragons in this cave"
-                ]
+            "if_true": {
+                "amount": 4,
+                "condition": {
+                    "max_dragons_in_cave": {
+                        "amount": 0,
+                        "cave": "this_cave",
+                        "include": "aggressive"
+                    }
+                }
             }
         }
     },
@@ -1787,7 +1828,12 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "amount": 2,
+                "type": "Shy",
+                "exclude_self": true,
+                "location": "this_cave"
+            }
         }
     },
     {
@@ -2125,7 +2171,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "when_played",
+                "amount": 2,
+                "max": 8
+            }
         }
     },
     {
@@ -2206,11 +2256,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-3] if all spaces in this cave have been excavated"
-                ]
+            "if_true": {
+                "amount": 3,
+                "condition": {
+                    "min_spaces_excavated": {
+                        "amount": 4,
+                        "cave": "this_cave"
+                    }
+                }
             }
         }
     },
@@ -2398,11 +2451,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-3] if this is the last (farthest right) dragon in its cave"
-                ]
+            "if_true": {
+                "amount": 3,
+                "condition": {
+                    "this_position": 3
+                }
             }
         }
     },
@@ -2527,10 +2580,18 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "cost": {
-                "pay [dragoncard] to gain [vp-1] or pay [dragoncard][dragoncard] to gain [vp-3]": 1
-            }
+            "payments": [{
+                "cost": {
+                    "dragon_card": 1
+                },
+                "amount": 1
+            },
+            {
+                "cost": {
+                    "dragon_card": 2
+                },
+                "amount": 3
+            }]
         }
     },
     {
@@ -2551,10 +2612,18 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "cost": {
-                "pay [cavecard] to gain [vp-1] or pay [cavecard][cavecard] to gain [vp-3]": 1
-            }
+            "payments": [{
+                "cost": {
+                    "cave_card": 1
+                },
+                "amount": 1
+            },
+            {
+                "cost": {
+                    "cave_card": 2
+                },
+                "amount": 3
+            }]
         }
     },
     {
@@ -2660,11 +2729,27 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-8] if you have a *hatchling*"
-                ]
+            "if_true": {
+                "amount": 8,
+                "condition": {
+                    "and": [
+                        {"min_dragons_in_cave": {
+                            "amount": 1,
+                            "cave": "this_cave",
+                            "include": "Hatchling"
+                        }},
+                        {"min_dragons_in_cave": {
+                            "amount": 1,
+                            "cave": "this_cave",
+                            "include": "Small"
+                        }},
+                        {"min_dragons_in_cave": {
+                            "amount": 1,
+                            "cave": "this_cave",
+                            "include": "Large"
+                        }}
+                    ]
+                }
             }
         }
     },
@@ -2709,11 +2794,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-5] if you have 4 dragons in your golden grotto"
-                ]
+            "if_true": {
+                "amount": 5,
+                "condition": {
+                    "min_dragons_in_cave": {
+                        "amount": 4,
+                        "cave": "golden_grotto"
+                    }
+                }
             }
         }
     },
@@ -2818,7 +2906,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "if_activated",
+                "amount": 1
+            }
         }
     },
     {
@@ -2839,11 +2930,14 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-3] if this dragon's cave is full"
-                ]
+            "if_true": {
+                "amount": 3,
+                "condition": {
+                    "min_dragons_in_cave": {
+                        "amount": 4,
+                        "cave": "this_cave"
+                    }
+                }
             }
         }
     },
@@ -2916,7 +3010,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "end_game",
+                "amount": 2,
+                "max": 8
+            }
         }
     },
     {
@@ -2937,11 +3035,15 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "condition": {
-                "and": [
-                    "gain [vp-3] if there is at least 1 other playful dragon in this cave"
-                ]
+            "if_true": {
+                "amount": 3,
+                "condition": {
+                    "min_dragons_in_cave": {
+                        "amount": 2,
+                        "cave": "this_cave",
+                        "include": "Playful"
+                    }
+                }
             }
         }
     },
@@ -3061,7 +3163,12 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "amount": -2,
+                "type": "Aggressive",
+                "exclude_self": true,
+                "location": "this_cave"
+            }
         }
     },
     {
@@ -3229,7 +3336,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "amount": 2,
+                "type": "any_dragon",
+                "location": "ortho"
+            }
         }
     },
     {
@@ -3306,17 +3417,12 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "when_played": {
-            "adv_effects": {
-                "sequence": [
-                    {"cache_from": {
-                        "type": "any",
-                        "L1": "general_supply",
-                        "L2": "any_dragon"
-                    }},
-                    {"gain_resource": {
-                        "type": "any"
-                    }}
-                ]
+            "any_resource_decision": {
+                "amount": 2,
+                "limits": {
+                    "keep": 1,
+                    "cache_any": 1
+                }
             }
         }
     },
@@ -3415,7 +3521,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Medium",
+                "amount": 2,
+                "max": 8
+            }
         }
     },
     {
@@ -3498,7 +3608,12 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Aggressive",
+                "amount": -1,
+                "location": "this_cave",
+                "exclude_self": true
+            }
         }
     },
     {
@@ -3542,7 +3657,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Large",
+                "amount": 2,
+                "max": 8
+            }
         }
     },
     {
@@ -3656,7 +3775,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Playful",
+                "amount": 3,
+                "location": "ortho"
+            }
         }
     },
     {
@@ -3702,7 +3825,10 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "set_of_sizes",
+                "amount": 4
+            }
         }
     },
     {
@@ -3723,7 +3849,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Small",
+                "amount": 2,
+                "max": 8
+            }
         }
     },
     {
@@ -3767,7 +3897,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {}
+            "for_each": {
+                "type": "Hatchling",
+                "amount": 3,
+                "max": 9
+            }
         }
     },
     {
@@ -4020,10 +4154,18 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "end_game": {
-            "adv_effects": {},
-            "cost": {
-                "pay [anyresource] to gain [vp-1] or pay [anyresource][anyresource] to gain [vp-3]": 1
-            }
+            "payments": [{
+                "cost": {
+                    "any_resource": 1
+                },
+                "amount": 1
+            },
+            {
+                "cost": {
+                    "any_resource": 2
+                },
+                "amount": 3
+            }]
         }
     },
     {
