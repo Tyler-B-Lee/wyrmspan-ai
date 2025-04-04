@@ -589,6 +589,9 @@
                     {"gain_dragon": {"source": "any"}}
                 ]
             }
+        },
+        "end_game": {
+            "double_value": "milk"
         }
     },
     {
@@ -621,6 +624,9 @@
                     {"gain_guild": {"source": "any"}}
                 ]
             }
+        },
+        "end_game": {
+            "double_value": "tuck"
         }
     },
     {
@@ -1006,6 +1012,9 @@
                     {"gain_resource": {"type": "coin"}}
                 ]
             }
+        },
+        "end_game": {
+            "double_value": "meat"
         }
     },
     {

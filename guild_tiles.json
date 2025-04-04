@@ -1,0 +1,238 @@
+[
+    {
+        "number": 1,
+        "name": "Plains Guild",
+        "abilities": [
+            {
+                "ability_number": 1,
+                "uses": 2,
+                "effect": {
+                    "adv_effects": {
+                        "play_cave": {"source": "deck"}
+                    },
+                    "cost": {
+                        "egg": {"amount": 1, "location": "any"}
+                    }
+                }
+            },
+            {
+                "ability_number": 2,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "play_dragon": {
+                            "L1": "hand",
+                            "L2": "any",
+                            "discount": "free"
+                        }
+                    },
+                    "cost": {
+                        "egg": {"amount": 2, "location": "any"}
+                    }
+                }
+            },
+            {
+                "ability_number": 3,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "sequence": [
+                            {"gain_coin": {"amount": 1}},
+                            {"lay_egg": {"location": "any"}},
+                            {"lay_egg": {"location": "any"}}
+                        ]
+                    }
+                }
+            },
+            {
+                "ability_number": 4,
+                "uses": 1,
+                "effect": {
+                    "end_game": {
+                        "for_each": {
+                            "type": "egg_pairs",
+                            "amount": 1
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "number": 2,
+        "name": "Guild of Seafarers",
+        "abilities": [
+            {
+                "ability_number": 1,
+                "uses": 1,
+                "effect": {
+                    "play_cave": {"source": "hand"}
+                }
+            },
+            {
+                "ability_number": 2,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "play_dragon": {
+                            "L1": "hand",
+                            "L2": "any",
+                            "discount": "free"
+                        }
+                    },
+                    "cost": {
+                        "dragon_card": {"amount": 1}
+                    }
+                }
+            },
+            {
+                "ability_number": 3,
+                "uses": 2,
+                "effect": {
+                    "adv_effects": {
+                        "sequence": [
+                            {"gain_coin": {"amount": 1}},
+                            {"gain_dragon": {"source": "any"}},
+                            {"gain_dragon": {"source": "any"}}
+                        ]
+                    }
+                }
+            },
+            {
+                "ability_number": 4,
+                "uses": 1,
+                "effect": {
+                    "end_game": {
+                        "for_each": {
+                            "type": "filled_column",
+                            "amount": 3
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "number": 3,
+        "name": "Guild of Highlands",
+        "abilities": [
+            {
+                "ability_number": 1,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "play_cave": {"source": "hand"}
+                    },
+                    "max_uses": 2,
+                    "total_cost": {
+                        "coin": {"amount": 1}
+                    }
+                }
+            },
+            {
+                "ability_number": 2,
+                "uses": 2,
+                "effect": {
+                    "adv_effects": {
+                        "play_dragon": {
+                            "L1": "hand",
+                            "L2": "dragon_on_mat",
+                            "discount": "free"
+                        }
+                    },
+                    "cost": {
+                        "cave_card": {"amount": 1}
+                    }
+                }
+            },
+            {
+                "ability_number": 3,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "sequence": [
+                            {"gain_coin": {"amount": 1}},
+                            {"gain_cave": {"source": "any"}},
+                            {"gain_cave": {"source": "any"}}
+                        ]
+                    }
+                }
+            },
+            {
+                "ability_number": 4,
+                "uses": 1,
+                "effect": {
+                    "end_game": {
+                        "for_each": {
+                            "type": "cave_cards_played",
+                            "amount": 1
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "number": 4,
+        "name": "Rainforest Guild",
+        "abilities": [
+            {
+                "ability_number": 1,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "choice": [
+                            {"play_cave": {"source": "hand"}},
+                            {"play_cave": {"source": "display"}}
+                        ]
+                    },
+                    "cost": {
+                        "resource": {"amount": 1, "type": "any"}
+                    }
+                }
+            },
+            {
+                "ability_number": 2,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "choice": [
+                            {"play_dragon": {
+                                "L1": "hand",
+                                "L2": "any",
+                                "discount": "no_resources"
+                            }},
+                            {"play_dragon": {
+                                "L1": "display",
+                                "L2": "any",
+                                "discount": "no_resources"
+                            }}
+                        ]
+                    }
+                }
+            },
+            {
+                "ability_number": 3,
+                "uses": 1,
+                "effect": {
+                    "adv_effects": {
+                        "sequence": [
+                            {"gain_coin": {"amount": 1}},
+                            {"gain_resource": {"type": "any"}},
+                            {"gain_resource": {"type": "any"}}
+                        ]
+                    }
+                }
+            },
+            {
+                "ability_number": 4,
+                "uses": 2,
+                "effect": {
+                    "end_game": {
+                        "amount": "highest_total_res_costs_one_cave"
+                    }
+                }
+            }
+        ]
+    }
+]
