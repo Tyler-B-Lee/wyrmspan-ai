@@ -1,0 +1,181 @@
+[
+    {
+        "number": 1,
+        "side_a": {
+            "text": "Cave Cards on your player mat, including those covered by a dragon.",
+            "automa_values": [1,2,4,7],
+            "for_each": {
+                "type": "cave_cards_played"
+            }
+        },
+        "side_b": {
+            "text": "Dragons & cave cards in your Amethyst Abyss, including cave cards covered by a dragon.",
+            "automa_values": [1,2,4,5],
+            "for_each": {
+                "type": "total_cards_in_cave",
+                "location": "amethyst_abyss"
+            }
+        }
+    },
+    {
+        "number": 2,
+        "side_a": {
+            "text": "Dragons & cave cards in your Crimson Cavern, including cave cards covered by a dragon.",
+            "automa_values": [1,2,4,5],
+            "for_each": {
+                "type": "total_cards_in_cave",
+                "location": "crimson_cavern"
+            }
+        },
+        "side_b": {
+            "text": "Dragons & cave cards in your Golden Grotto, including cave cards covered by a dragon.",
+            "automa_values": [1,2,4,5],
+            "for_each": {
+                "type": "total_cards_in_cave",
+                "location": "golden_grotto"
+            }
+        }
+    },
+    {
+        "number": 3,
+        "side_a": {
+            "text": "Total Egg Capacity on your dragons (not eggs themselves).",
+            "automa_values": [4,7,10,17],
+            "for_each": {
+                "type": "egg_capacity"
+            }
+        },
+        "side_b": {
+            "text": "Eggs on your player mat.",
+            "automa_values": [1,2,5,10],
+            "for_each": {
+                "type": "eggs"
+            }
+        }
+    },
+    {
+        "number": 4,
+        "side_a": {
+            "text": "Cached Resources on your player mat.",
+            "automa_values": [0,1,3,5],
+            "for_each": {
+                "type": "cached_resources"
+            }
+        },
+        "side_b": {
+            "text": "Position on Dragon Guild (Count # of markers on the Guild for each player, then use position to break ties.",
+            "automa_values": ["N/A"],
+            "for_each": {
+                "type": "guild_position"
+            }
+        }
+    },
+    {
+        "number": 5,
+        "side_a": {
+            "text": "Dragons that have a printed cost of 0 to 2 resources/coins/eggs.",
+            "automa_values": [1,2,3,4],
+            "for_each": {
+                "type": "dragon_cost",
+                "min_cost": 0,
+                "max_cost": 2
+            }
+        },
+        "side_b": {
+            "text": "Dragons that have a printed cost of 3+ resources/coins/eggs.",
+            "automa_values": [0,1,2,3],
+            "for_each": {
+                "type": "dragon_cost",
+                "min_cost": 3,
+                "max_cost": 100
+            }
+        }
+    },
+    {
+        "number": 6,
+        "side_a": {
+            "text": "Dragons with When Played or Once Per Round abilities on your player mat.",
+            "automa_values": [0,0,1,2],
+            "for_each": {
+                "type": "dragon_abilities",
+                "ability_types": ["when_played", "once_per_round"]
+            }
+        },
+        "side_b": {
+            "text": "Dragons with If Activated ability on your player mat.",
+            "automa_values": [1,1,3,5],
+            "for_each": {
+                "type": "dragon_abilities",
+                "ability_types": ["if_activated"]
+            }
+        }
+    },
+    {
+        "number": 7,
+        "side_a": {
+            "text": "Hatchlings on your player mat.",
+            "automa_values": [0,0,1,2],
+            "for_each": {
+                "type": "Hatchling"
+            }
+        },
+        "side_b": {
+            "text": "Small Dragons on your player mat.",
+            "automa_values": [0,1,2,3],
+            "for_each": {
+                "type": "Small"
+            }
+        }
+    },
+    {
+        "number": 8,
+        "side_a": {
+            "text": "Medium Dragons on your player mat.",
+            "automa_values": [0,1,2,3],
+            "for_each": {
+                "type": "Medium"
+            }
+        },
+        "side_b": {
+            "text": "Large Dragons on your player mat.",
+            "automa_values": [0,1,2,3],
+            "for_each": {
+                "type": "Large"
+            }
+        }
+    },
+    {
+        "number": 9,
+        "side_a": {
+            "text": "Aggressive Dragons on your player mat.",
+            "automa_values": [0,0,1,2],
+            "for_each": {
+                "type": "Aggressive"
+            }
+        },
+        "side_b": {
+            "text": "Playful Dragons on your player mat.",
+            "automa_values": [0,0,1,2],
+            "for_each": {
+                "type": "Playful"
+            }
+        }
+    },
+    {
+        "number": 10,
+        "side_a": {
+            "text": "Shy Dragons on your player mat.",
+            "automa_values": [0,0,1,2],
+            "for_each": {
+                "type": "Shy"
+            }
+        },
+        "side_b": {
+            "text": "Helpful Dragons on your player mat.",
+            "automa_values": [0,0,1,2],
+            "for_each": {
+                "type": "Helpful"
+            }
+        }
+    }
+]

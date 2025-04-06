@@ -1,0 +1,194 @@
+[
+    {
+        "number": 1,
+        "corner_id": "1",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": 0,
+        "guild_advancement": [1,2,2,2],
+        "brown_space": {
+            "dragon_card": 3,
+            "guild_ability": 3
+        }
+    },
+    {
+        "number": 2,
+        "corner_id": "2",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": -1,
+        "guild_advancement": [1,1,2,3],
+        "brown_space": {
+            "dragon_card": 2,
+            "cave_card": 2
+        }
+    },
+    {
+        "number": 3,
+        "corner_id": "3",
+        "pass": true,
+        "refresh": false,
+        "adjust_objective": 1,
+        "guild_advancement": [2,1,2,2],
+        "brown_space": {
+            "dragon_card": 1,
+            "cave_card": 1
+        }
+    },
+    {
+        "number": 4,
+        "corner_id": "4",
+        "pass": true,
+        "refresh": false,
+        "adjust_objective": 0,
+        "guild_advancement": [1,1,1,2],
+        "brown_space": {
+            "dragon_card": 3,
+            "cave_card": 3
+        }
+    },
+    {
+        "number": 5,
+        "corner_id": "5",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": -1,
+        "guild_advancement": [2,1,2,1],
+        "brown_space": {
+            "dragon_card": 2,
+            "guild_ability": 4
+        }
+    },
+    {
+        "number": 6,
+        "corner_id": "6",
+        "pass": true,
+        "refresh": false,
+        "adjust_objective": 1,
+        "guild_advancement": [1,1,1,2],
+        "brown_space": {
+            "dragon_card": 1,
+            "cave_card": 1
+        }
+    },
+    {
+        "number": 7,
+        "corner_id": "7",
+        "pass": true,
+        "refresh": true,
+        "adjust_objective": 1,
+        "guild_advancement": [1,1,2,3],
+        "brown_space": {
+            "dragon_card": 2,
+            "guild_ability": 2
+        }
+    },
+    {
+        "number": 8,
+        "corner_id": "8",
+        "pass": true,
+        "refresh": false,
+        "adjust_objective": 0,
+        "guild_advancement": [1,1,2,3],
+        "brown_space": {
+            "dragon_card": 1,
+            "guild_ability": 3
+        }
+    },
+    {
+        "number": 9,
+        "corner_id": "1/4",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": 0,
+        "guild_advancement": [2,2,3,4],
+        "brown_space": {
+            "dragon_card": 3,
+            "guild_ability": 3
+        }
+    },
+    {
+        "number": 10,
+        "corner_id": "2/5",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": 1,
+        "guild_advancement": [2,2,2,3],
+        "brown_space": {
+            "dragon_card": 2,
+            "cave_card": 2
+        }
+    },
+    {
+        "number": 11,
+        "corner_id": "3/6",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": -1,
+        "guild_advancement": [2,1,4,3],
+        "brown_space": {
+            "dragon_card": 1,
+            "cave_card": 1
+        }
+    },
+    {
+        "number": 12,
+        "corner_id": "R 1/4",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": 0,
+        "guild_advancement": "deepest_cave",
+        "brown_space": {
+            "dragon_card": 3,
+            "guild_ability": 4
+        }
+    },
+    {
+        "number": 13,
+        "corner_id": "R 2",
+        "pass": true,
+        "refresh": false,
+        "adjust_objective": 1,
+        "guild_advancement": "shallowest_cave",
+        "brown_space": {
+            "dragon_card": 2,
+            "cave_card": 2
+        }
+    },
+    {
+        "number": 14,
+        "corner_id": "R 3/6",
+        "pass": false,
+        "refresh": false,
+        "adjust_objective": -1,
+        "guild_advancement": "deepest_cave",
+        "brown_space": {
+            "dragon_card": 1,
+            "cave_card": 1
+        }
+    },
+    {
+        "number": 15,
+        "corner_id": "R 8",
+        "pass": true,
+        "refresh": true,
+        "adjust_objective": 0,
+        "guild_advancement": "deepest_cave",
+        "brown_space": {
+            "dragon_card": 1,
+            "guild_ability": 3
+        }
+    },
+    {
+        "number": 16,
+        "corner_id": "R 2/5",
+        "pass": true,
+        "refresh": false,
+        "adjust_objective": 1,
+        "guild_advancement": "deepest_cave_plus_1",
+        "brown_space": {
+            "dragon_card": 2,
+            "cave_card": 2
+        }
+    }
+]

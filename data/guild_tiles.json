@@ -121,10 +121,15 @@
                 "uses": 1,
                 "effect": {
                     "adv_effects": {
-                        "play_cave": {"source": "hand"}
+                        "choice": [
+                            {"play_cave": {"source": "hand"}},
+                            {"sequence": [
+                                {"play_cave": {"source": "hand"}},
+                                {"play_cave": {"source": "hand"}}
+                            ]}
+                        ]
                     },
-                    "max_uses": 2,
-                    "total_cost": {
+                    "cost": {
                         "coin": {"amount": 1}
                     }
                 }
