@@ -6,7 +6,71 @@ import typing
 
 
 # Constants for the game
+GUILD_SPACE_EFFECTS = [
+    {"brown_space": "any"}, # space 0
+    {"lay_egg": {"location": "any"}}, # space 1
+    {"gain_resource": {"type": "meat"}}, # space 2
+    {"gain_dragon": {"source": "any"}}, # space 3
+    {"gain_cave": {"source": "any"}}, # space 4
+    {"gain_resource": {"type": "crystal"}}, # space 5
+    {"brown_space": "any"}, # space 6
+    {"lay_egg": {"location": "any"}}, # space 7
+    {"gain_resource": {"type": "gold"}}, # space 8
+    {"gain_dragon": {"source": "any"}}, # space 9
+    {"gain_coin": {"amount": 1}}, # space 10
+    {"gain_resource": {"type": "milk"}}, # space 11
+]
 
+OBJECTIVE_POSITION_SCORES = [
+    {"1st": 4, "2nd": 1, "3rd": 0, "Other": 0}, # round 1
+    {"1st": 5, "2nd": 2, "3rd": 1, "Other": 0}, # round 2
+    {"1st": 6, "2nd": 3, "3rd": 2, "Other": 0}, # round 3
+    {"1st": 7, "2nd": 4, "3rd": 3, "Other": 0}, # round 4
+]
+
+EXPLORE_CAVE_EFFECTS = {
+    "crimson_cavern": {
+        0: {"gain_resource": {"type": "any"}},
+        1: {"gain_guild": {"source": "any"}},
+        2: {"gain_resource": {"type": "any"}},
+        3: {"lay_egg": {"location": "any"}},
+        4: {"adv_effects": {
+            "cache_from": {
+                "type": "any",
+                "L1": "player_supply",
+                "L2": "any"
+            }},
+            "max_uses": 2
+        }
+    },
+    "golden_grotto": {
+        0: {"gain_dragon": {"source": "any"}},
+        1: {"gain_guild": {"source": "any"}},
+        2: {"gain_dragon": {"source": "any"}},
+        3: {"lay_egg": {"location": "any"}},
+        4: {"adv_effects": {
+            "tuck_from": {
+                "L1": "hand",
+                "L2": "any"
+            }},
+            "max_uses": 2
+        }
+    },
+    "amethyst_abyss": {
+        0: {"gain_cave": {"source": "any"}},
+        1: {"gain_guild": {"source": "any"}},
+        2: {"gain_cave": {"source": "any"}},
+        3: {"lay_egg": {"location": "any"}},
+        4: {"adv_effects": {
+            "sequence": [
+                {"lay_egg": {"location": "any"}},
+                {"lay_egg": {"location": "any"}}
+            ]},
+            "max_uses": 2,
+            "cost": {"cave_card": 1}
+        }
+    }
+}
 
 # load the game data saved in multiple json files
 with open('data/dragon_cards.json', 'r') as f:
@@ -127,7 +191,7 @@ class GameState:
     """
     def __init__(self):
         self.turn = 0
-        self.phase = 0
+        self.phase = "setup"
         self.board = {}
         self.dragon_deck = list(range(1, 184))  # Set of dragon cards IDs
         self.cave_deck = list(range(1, 76)) # Cave cards IDs

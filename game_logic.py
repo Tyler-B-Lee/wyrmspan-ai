@@ -4,6 +4,14 @@ CaveName = str
 DragonNumber = int
 CaveNumber = int
 
+# Constants
+PHASE_SETUP = "setup"
+PHASE_BEFORE_PASS = "before_pass"
+PHASE_EXCAVATING = "excavating"
+PHASE_ENTICING = "enticing"
+PHASE_EXPLORING = "exploring"
+
+
 # state conversion functions
 def player_state_to_dict(player_state: PlayerState) -> dict:
     return {
@@ -217,8 +225,20 @@ def lay_egg(player_state: PlayerState, coords:tuple) -> None:
     The cave is a string representing the cave name.
     """
     cave_name, col = coords
-    player_state.nested_eggs[cave_name][col][0] += 1 # increment the number of eggs laid
+    if cave_name != "mat_slots":
+        player_state.nested_eggs[cave_name][col][0] += 1 # increment the number of eggs laid
     player_state.egg_totals[cave_name] += 1 # increment the total number of eggs laid
+
+def pay_egg(player_state: PlayerState, coords:tuple) -> None:
+    """
+    Pay an egg at the specified location.
+    The location is specified as a tuple (cave:str, col:int).
+    The cave is a string representing the cave name.
+    """
+    cave_name, col = coords
+    if cave_name != "mat_slots":
+        player_state.nested_eggs[cave_name][col][0] -= 1 # decrement the number of eggs laid
+    player_state.egg_totals[cave_name] -= 1 # decrement the total number of eggs laid
 
 def discard_dragon(player_state: PlayerState, game_state: GameState, dragon: DragonNumber) -> None:
     """
@@ -233,3 +253,168 @@ def discard_cave(player_state: PlayerState, game_state: GameState, cave: CaveNum
     """
     player_state.cave_hand.remove(cave) # remove the cave from the hand
     game_state.cave_discard.append(cave) # add the cave to the discard pile
+
+def gain_resources(player_state: PlayerState, amount_dict:dict) -> None:
+    """
+    Gain the specified amount of some resources given by the amount_dict.
+    """
+    for resource, amount in amount_dict.items():
+        player_state.resources[resource] += amount
+
+def deduct_resources(player_state: PlayerState, cost_dict:dict) -> None:
+    """
+    Deduct the specified resources from the player's resources.
+    It is assumed that the player has enough resources for the cost.
+
+    The cost is a dictionary with the resource names as keys and the amounts as values.
+    The costs are for meat, gold, crystal, and milk.
+    """
+    for resource, cost_amount in cost_dict.items():
+        player_state.resources[resource] -= cost_amount
+        assert player_state.resources[resource] >= 0, f"Player has negative resources: {player_state.resources}"
+
+def cache_resource(player_state: PlayerState, resource:str, coords:tuple) -> None:
+    """
+    Cache a resource at the specified location.
+    Does not affect the player's resources.
+
+    The location is specified as a tuple (cave:str, col:int).
+    The cave is a string representing the cave name.
+    """
+    cave_name, col = coords
+    player_state.cached_resources[cave_name][col][resource] += 1 # increment the cached resource
+    
+def tuck_dragon(player_state: PlayerState, dragon: DragonNumber, coords:tuple) -> None:
+    """
+    Tuck a dragon at the specified location.
+    Does not affect the player's hand.
+
+    The location is specified as a tuple (cave:str, col:int).
+    The cave is a string representing the cave name.
+    """
+    cave_name, col = coords
+    player_state.tucked_dragons[cave_name][col].append(dragon) # add the dragon to the tucked dragons
+
+# main game functions
+def get_current_player(game_state:GameState) -> PlayerState:
+    """
+    Get the current player from the game state.
+    The current player is the player whose turn it is.
+    """
+    if isinstance(game_state, SoloGameState):
+        return game_state.player
+    # for multiplayer game, return the current player
+    return game_state.players[game_state.current_player]
+
+def get_available_actions(game_state:GameState) -> list[dict]:
+    """
+    Given a game_state, return a list of available actions.
+    Each action is represented as a dictionary with the action name and the parameters.
+    """
+    actions = []
+    player = get_current_player(game_state)
+
+    # check for actions by phase
+    current_phase = game_state.phase
+    if current_phase == PHASE_SETUP:
+        # setup phase - player must discard down to 4 total cards
+        # and then choose any 3 resources
+        if len(player.dragon_hand) + len(player.cave_hand) > 4:
+            # discard dragons and caves
+            for dragon in player.dragon_hand:
+                actions.append({"discard_dragon": {"dragon": dragon}})
+            for cave in player.cave_hand:
+                actions.append({"discard_cave": {"cave": cave}})
+            return actions
+        # choose resources
+        for resource in player.resources.keys():
+            actions.append({"gain_resource": {"type": resource}})
+    
+    return actions
+
+def handle_event(game_state:GameState, event:dict, player:PlayerState=None) -> None:
+    """
+    Handle the given event in the game state with the target player.
+    The event is a dictionary with the event name and the parameters.
+    The player is the player who triggered the event, if applicable.
+
+    Events are basic game events that are not tied to a specific phase
+    or action. They are used to modify the game state in a generic way.
+    There should be no further choices to be made for the event.
+    For example, discarding a dragon or cave, or gaining resources.
+    The event is handled irrespective of the game phase.
+
+    The states input are modified in place, so no return value is needed.
+    """
+    if "discard_dragon" in event:
+        # discard dragon
+        dragon = event["discard dragon"]["dragon"]
+        discard_dragon(player, game_state, dragon)
+    elif "discard_cave" in event:
+        # discard cave
+        cave = event["discard cave"]["cave"]
+        discard_cave(player, game_state, cave)
+    elif "gain_resource" in event:
+        # gain resources
+        resource = event["gain resource"]["type"]
+        player.resources[resource] += 1
+    
+
+def apply_action(game_state:GameState, action:dict) -> GameState:
+    """
+    Apply the given action to the game_state and return a new game state
+    from after the action is applied.
+    """
+    new_game_state = copy.deepcopy(game_state) # make a copy of the game state
+    player = get_current_player(new_game_state) # get the current player
+
+    # check for actions by phase
+    current_phase = new_game_state.phase
+    if current_phase == PHASE_SETUP:
+        # setup phase - player must discard down to 4 total cards
+        # and then choose any 3 resources
+        if "discard_dragon" in action:
+            # discard dragon
+            dragon = action["discard_dragon"]["dragon"]
+            discard_dragon(player, new_game_state, dragon)
+        elif "discard_cave" in action:
+            # discard cave
+            cave = action["discard_cave"]["cave"]
+            discard_cave(player, new_game_state, cave)
+        elif "gain_resource" in action:
+            # gain resources
+            resource = action["gain_resource"]["type"]
+            player.resources[resource] += 1
+            # check if the player has already chosen 3 resources
+            if sum(player.resources.values()) >= 3:
+                if isinstance(new_game_state, SoloGameState):
+                    new_game_state.phase = PHASE_BEFORE_PASS
+                else:
+                    new_game_state.current_player += 1 # move to the next player
+                    if new_game_state.current_player >= len(new_game_state.players):
+                        # we are done with the setup phase
+                        new_game_state.current_player = new_game_state.round_start_player
+                        new_game_state.phase = PHASE_BEFORE_PASS
+
+    return new_game_state
+
+if __name__ == "__main__":
+    # Testing the functions
+    game = SoloGameState()
+    game.create_game()
+    while game.phase != PHASE_BEFORE_PASS:
+        a = get_available_actions(game)
+        print("Action list:")
+        for action in a:
+            print(f"\t{action}")
+        print("Game state:")
+
+        chosen_action = random.choice(a)
+        print(f"Chosen action: {chosen_action}")
+        game = apply_action(game, chosen_action)
+        print("Game state after action:")
+        print(game.dragon_discard)
+        print(game.cave_discard)
+        print(get_current_player(game).resources)
+        print(get_current_player(game).dragon_hand)
+        print(get_current_player(game).cave_hand)
