@@ -6,6 +6,9 @@ import typing
 
 
 # Constants for the game
+RESOURCES = ["meat", "gold", "crystal", "milk"]
+CAVE_NAMES = ["crimson_cavern", "golden_grotto", "amethyst_abyss"]
+
 GUILD_SPACE_EFFECTS = [
     {"brown_space": "any"}, # space 0
     {"lay_egg": {"location": "any"}}, # space 1
@@ -144,6 +147,7 @@ class PlayerState:
             "amethyst_abyss": 0,
         }
         self.adventurer_position = None
+        self.passed_this_round = False
 
 class AutomaState:
     """
@@ -175,6 +179,7 @@ class AutomaState:
         self.score = 0
         self.difficulty = difficulty
         self.reset_decision_deck()
+        self.passed_this_round = False
 
     def reset_decision_deck(self):
         """

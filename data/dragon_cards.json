@@ -1708,7 +1708,7 @@
                     "max_dragons_in_cave": {
                         "amount": 0,
                         "cave": "this_cave",
-                        "include": "aggressive"
+                        "include": "Aggressive"
                     }
                 }
             }
@@ -4010,7 +4010,7 @@
         "once_per_round": {
             "lay_egg": {
                 "location": "each_this_cave",
-                "exclude": "aggressive"
+                "exclude": "Aggressive"
             }
         }
     },
