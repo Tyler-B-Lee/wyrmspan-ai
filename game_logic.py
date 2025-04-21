@@ -319,6 +319,32 @@ def tuck_dragon(player_state: PlayerState, dragon: DragonNumber, coords:tuple) -
     cave_name, col = coords
     player_state.tucked_dragons[cave_name][col].append(dragon) # add the dragon to the tucked dragons
 
+def excavate_cave(player_state: PlayerState, game_state:GameState, event:dict, cave_id:int) -> None:
+    """
+    Excavate a cave for the player specified by the event.
+    """
+    cave_location_name = event["play_cave"]["cave_location"]
+    index_to_excavate = min(i for i, x in enumerate(player_state.caves_played[cave_location_name]) if x is None)
+    # excavate the cave
+    player_state.caves_played[cave_location_name][index_to_excavate] = cave_id
+    # add effects from cave to the event queue
+    cave_effect = CAVE_CARDS[cave_id]["when_played"]
+    if index_to_excavate == 3:
+        # we must check if the player can do the 4th space exchange
+        if len(player.dragon_hand) + len(player.cave_hand) + sum(player.resources.values()) >= 3:
+            # add the cave effect to the event queue
+            event = {
+                "adv_effects": 
+                    {"choice": [
+                        {"adv_effects": {"sequence":[{"4th_space": "any"}, cave_effect]}},
+                        {"adv_effects": {"sequence":[cave_effect, {"4th_space": "any"}]}}
+                    ]}
+            }
+            game_state.event_queue.append(event)
+    else:
+        # add the cave effect to the event queue
+        game_state.event_queue.append(cave_effect)
+
 def refresh_cave_deck(game_state: GameState) -> None:
     """
     Refresh the cave deck by copying the discard pile back to the deck
@@ -439,7 +465,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             }
             game_state.event_queue.append({"adv_effects": new_event})
         else:
-            resource = event["gain resource"]["type"]
+            resource = event["gain_resource"]["type"]
             player.resources[resource] += 1
     elif "lay_egg" in event:
         # lay an egg
@@ -448,33 +474,153 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
         # pay an egg
         coords = event["pay_egg"]["coords"]
         pay_egg(player, coords)
+    elif "gain_guild" in event:
+        # assume we have a SoloGameState for now
+        pos = game_state.board["guild"]["player_position"]
+        new_pos = (pos + 1) % 12
+        game_state.board["guild"]["player_position"] = new_pos
+        game_state.event_queue.append(GUILD_SPACE_EFFECTS[new_pos])
     elif "cache_from" in event:
         # the player caches a resource, but we need
         # to check where this can happen
         handle_resource_caching(game_state, event, player)
-    elif "tuck_dragon" in event:
+    elif "tuck_from" in event:
         # tuck a dragon
-        dragon = event["tuck_dragon"]["dragon"]
-        coords = event["tuck_dragon"]["coords"]
-        tuck_dragon(player, dragon, coords)
+        handle_tuck_dragon(game_state, event, player)
     elif "gain_cave" in event:
         # gain a cave card
         handle_gain_cave_card(game_state, event, player)
     elif "gain_dragon" in event:
         # gain a dragon card
         handle_gain_dragon_card(game_state, event, player)
+    elif "gain_coin" in event:
+        player.coins += event["gain_coin"]["amount"]
+    elif "play_cave" in event:
+        # playing a cave card from somewhere to the player's mat
+        handle_play_cave(game_state, event, player)
     elif "deduct_resources" in event:
         # deduct resources
         cost_dict = event["deduct_resources"]["cost"]
         deduct_resources(player, cost_dict)
     elif "discard_dragon" in event:
         # discard dragon
-        dragon = event["discard dragon"]["dragon"]
+        dragon = event["discard_dragon"]["dragon"]
         discard_dragon(player, game_state, dragon)
     elif "discard_cave" in event:
         # discard cave
-        cave = event["discard cave"]["cave"]
+        cave = event["discard_cave"]["cave"]
         discard_cave(player, game_state, cave)
+
+def handle_play_cave(game_state:GameState, event:dict, player:PlayerState) -> None:
+    """
+    Handle the play cave event, changing states in place.
+    The event is a dictionary with the event name and the parameters.
+    
+    If the event parameters are specific enough, we play the cave.
+    Otherwise, we add a choice to the event queue.
+    """
+    # check if the event is a choice or random event
+    # first check if an outcome is already decided
+    if event.get("chosen_index", None) is not None:
+        # we have a specific cave from the display to use
+        cave_index = event["chosen_index"]
+        cave_id = game_state.board["card_display"]["cave_cards"][cave_index]
+        game_state.board["card_display"]["cave_cards"][cave_index] = None # remove the cave from the display
+        # play the cave card
+        tuck_dragon(player, dragon_id, event["coords"])
+        return
+    elif event.get("rand_outcome", None) is not None:
+        # we have a random dragon drawn from the deck
+        dragon_id = event["rand_outcome"]
+        # remove the dragon from the deck
+        game_state.dragon_deck.remove(dragon_id)
+        if len(game_state.dragon_deck) == 0:
+            # refresh the dragon deck
+            refresh_dragon_deck(game_state)
+        # tuck the dragon
+        tuck_dragon(player, dragon_id, event["coords"])
+        return
+    elif event.get("chosen_id", None) is not None:
+        # we have a specific dragon to tuck from the hand
+        dragon_id = event["chosen_id"]
+        # remove the dragon from the hand
+        player.dragon_hand.remove(dragon_id)
+        # tuck the dragon
+        tuck_dragon(player, dragon_id, event["coords"])
+        return
+    elif event.get("include", None) is not None:
+        # there is one case where we tuck from the deck under all playful in the given cave
+        cave_dragons = get_dragon_list(player, event["loc_info"])
+        new_event = {
+            "choice": [
+                {"sequence": [
+                    {"tuck_from": {
+                        "L1": "deck",
+                        "L2": "here",
+                        "coords": coords
+                        }
+                    } for dragon_id, coords in cave_dragons
+                        if DRAGON_CARDS[dragon_id]["personality"] == event["include"]
+                    ]
+                },
+                {"skip": None} # add a choice to skip the tucks
+            ]
+        }
+        game_state.event_queue.append({"adv_effects": new_event})
+        return
+    valid_locations = []
+    # we have a choice to construct
+    new_event = {"choice": [{"skip": None}]} # add a choice to skip the tuck
+    # go through each possibility
+    # add valid dragon sources to the event
+    if event["L1"] == "display":
+        choice_event = {"choice": []}
+        for dragon_index in range(3):
+            # use a dragon from the display
+            if game_state.board["card_display"]["dragon_cards"][dragon_index] is not None:
+                choice_event["choice"].append(
+                        {"tuck_from": {
+                            "L1": "display",
+                            "L2": "here",
+                            "chosen_index": dragon_index,
+                            "coords": coords
+                            } for coords in valid_locations
+                        }
+                    )
+        if len(choice_event["choice"]) > 0:
+            new_event["choice"].append(choice_event)
+    elif event["L1"] == "hand":
+        choice_event = {"choice": []}
+        for dragon_id in player.dragon_hand:
+            # use a dragon from the hand
+            choice_event["choice"].append(
+                    {"tuck_from": {
+                        "L1": "hand",
+                        "L2": "here",
+                        "chosen_id": dragon_id,
+                        "coords": coords
+                        } for coords in valid_locations
+                    }
+                )
+        if len(choice_event["choice"]) > 0:
+            new_event["choice"].append(choice_event)
+    elif event["L1"] == "deck":
+        # take a random dragon from the deck
+        for coords in valid_locations:
+            deck_outcomes = {"random": {
+                "event_name": "tuck_from",
+                "L1": "deck",
+                "L2": "here",
+                "coords": coords,
+                "possible_outcomes": "dragon_deck"
+                }
+            }
+            # add the random dragon to the choice
+            new_event["choice"].append(deck_outcomes)
+    # add the choice to the event queue
+    if len(new_event["choice"]) > 1:
+        # we have multiple choices to make, add the choice to the event queue
+        game_state.event_queue.append({"adv_effects": new_event})
 
 def handle_gain_cave_card(game_state:GameState, event:dict, player:PlayerState) -> None:
     """
@@ -504,15 +650,13 @@ def handle_gain_cave_card(game_state:GameState, event:dict, player:PlayerState) 
         player.cave_hand.append(cave_id)
     else:
         # we have a choice to make - add the choice to the event queue
-        new_event = {"choice": []}
+        new_event = {"choice": [{"skip": None}]}
         for cave_index in range(3):
             # take a cave from the display
             if game_state.board["card_display"]["cave_cards"][cave_index] is not None:
                 new_event["choice"].append({"gain_cave": {"chosen": cave_index}})
         # take a random cave from the deck
-        deck_outcomes = {"random": []}
-        for cave_id in game_state.cave_deck:
-            deck_outcomes["random"].append({"gain_cave": {"rand_outcome": cave_id}})
+        deck_outcomes = {"random": {"event_name": "gain_cave", "possible_outcomes": "cave_deck"}}
         # add the random cave to the choice
         new_event["choice"].append(deck_outcomes)
         # add the choice to the event queue
@@ -526,7 +670,41 @@ def handle_gain_dragon_card(game_state:GameState, event:dict, player:PlayerState
     If the event parameters are specific enough, we give the player a cave.
     Otherwise, we add a choice to the event queue.
     """
-    pass
+    # check if the event is a choice or random event
+    if event.get("chosen", None) is not None:
+        # we have a specific dragon to gain
+        dragon_index = event["chosen"]
+        dragon_id = game_state.board["card_display"]["dragon_cards"][dragon_index]
+        game_state.board["card_display"]["dragon_cards"][dragon_index] = None # remove the dragon from the display
+        # add the dragon to the player's hand
+        player.dragon_hand.append(dragon_id)
+    elif event.get("rand_outcome", None) is not None:
+        # we have a random dragon drawn from the deck
+        dragon_id = event["rand_outcome"]
+        # remove the dragon from the deck
+        game_state.dragon_deck.remove(dragon_id)
+        if len(game_state.dragon_deck) == 0:
+            # refresh the dragon deck
+            refresh_dragon_deck(game_state)
+        # add the dragon to the player's hand
+        player.dragon_hand.append(dragon_id)
+    else:
+        # we have a choice to make - add the choice to the event queue
+        new_event = {"choice": [{"skip": None}]}
+        if event["source"] == "any" or event["source"] == "display":
+            for dragon_index in range(3):
+                # take a dragon from the display
+                if game_state.board["card_display"]["dragon_cards"][dragon_index] is not None:
+                    new_event["choice"].append({"gain_dragon": {"chosen": dragon_index}})
+        if event["source"] == "any" or event["source"] == "deck":
+            # take a random dragon from the deck
+            deck_outcomes = {"random": {"event_name": "gain_dragon", "possible_outcomes": "dragon_deck"}}
+            # add the random dragon to the choice
+            new_event["choice"].append(deck_outcomes)
+
+        # add the choice to the event queue
+        if len(new_event["choice"]) > 1:
+            game_state.event_queue.append({"adv_effects": new_event})
 
 def handle_resource_caching(game_state:GameState, event:dict, player:PlayerState) -> None:
     """
@@ -578,13 +756,134 @@ def handle_resource_caching(game_state:GameState, event:dict, player:PlayerState
                     "type": resource,
                     "L1": event["L1"],
                     "L2": "here",
-                    "coords": coords
+                    "coords": coords,
+                    "chosen": True
                     }
                 } for resource in valid_resources for coords in valid_locations]
         }
         if event["L1"] == "player_supply":
             # add a choice to skip the caching
             new_event["choice"].append({"skip": None})
+        game_state.event_queue.append({"adv_effects": new_event})
+
+def handle_tuck_dragon(game_state:GameState, event:dict, player:PlayerState) -> None:
+    """
+    Handle the tuck dragon event, changing states in place.
+    The event is a dictionary with the event name and the parameters.
+
+    If the event parameters are specific enough, we perform the tuck.
+    Otherwise, we add a choice to the event queue.
+    """
+    # check if the event is a choice or random event
+    valid_locations = []
+    # find what dragon(s) we can tuck
+    # first check if an outcome is already decided
+    if event.get("chosen_index", None) is not None:
+        # we have a specific dragon to tuck from the display
+        dragon_index = event["chosen_index"]
+        dragon_id = game_state.board["card_display"]["dragon_cards"][dragon_index]
+        game_state.board["card_display"]["dragon_cards"][dragon_index] = None # remove the dragon from the display
+        # tuck the dragon
+        tuck_dragon(player, dragon_id, event["coords"])
+        return
+    elif event.get("rand_outcome", None) is not None:
+        # we have a random dragon drawn from the deck
+        dragon_id = event["rand_outcome"]
+        # remove the dragon from the deck
+        game_state.dragon_deck.remove(dragon_id)
+        if len(game_state.dragon_deck) == 0:
+            # refresh the dragon deck
+            refresh_dragon_deck(game_state)
+        # tuck the dragon
+        tuck_dragon(player, dragon_id, event["coords"])
+        return
+    elif event.get("chosen_id", None) is not None:
+        # we have a specific dragon to tuck from the hand
+        dragon_id = event["chosen_id"]
+        # remove the dragon from the hand
+        player.dragon_hand.remove(dragon_id)
+        # tuck the dragon
+        tuck_dragon(player, dragon_id, event["coords"])
+        return
+    elif event.get("include", None) is not None:
+        # there is one case where we tuck from the deck under all playful in the given cave
+        cave_dragons = get_dragon_list(player, event["loc_info"])
+        new_event = {
+            "choice": [
+                {"sequence": [
+                    {"tuck_from": {
+                        "L1": "deck",
+                        "L2": "here",
+                        "coords": coords
+                        }
+                    } for dragon_id, coords in cave_dragons
+                        if DRAGON_CARDS[dragon_id]["personality"] == event["include"]
+                    ]
+                },
+                {"skip": None} # add a choice to skip the tucks
+            ]
+        }
+        game_state.event_queue.append({"adv_effects": new_event})
+        return
+    # we have a choice to construct
+    new_event = {"choice": [{"skip": None}]} # add a choice to skip the tuck
+    # go through each possibility
+    if event["L2"] == "here":
+        valid_locations.append(event["coords"])
+    elif event["L2"] == "this_column":
+        # find all locations in the same column as coords given
+        main_cave, main_col = event["coords"]
+        valid_locations = [(cave_name, col_index) for (d, (cave_name, col_index)) in get_dragon_list(player, f"col{main_col}")]
+    elif event["L2"] == "any":
+        valid_locations = [(cave_name, col_index) for (d, (cave_name, col_index)) in get_dragon_list(player, "any")]
+    # add valid dragon sources to the event
+    if event["L1"] == "display":
+        choice_event = {"choice": []}
+        for dragon_index in range(3):
+            # use a dragon from the display
+            if game_state.board["card_display"]["dragon_cards"][dragon_index] is not None:
+                choice_event["choice"].append(
+                        {"tuck_from": {
+                            "L1": "display",
+                            "L2": "here",
+                            "chosen_index": dragon_index,
+                            "coords": coords
+                            } for coords in valid_locations
+                        }
+                    )
+        if len(choice_event["choice"]) > 0:
+            new_event["choice"].append(choice_event)
+    elif event["L1"] == "hand":
+        choice_event = {"choice": []}
+        for dragon_id in player.dragon_hand:
+            # use a dragon from the hand
+            choice_event["choice"].append(
+                    {"tuck_from": {
+                        "L1": "hand",
+                        "L2": "here",
+                        "chosen_id": dragon_id,
+                        "coords": coords
+                        } for coords in valid_locations
+                    }
+                )
+        if len(choice_event["choice"]) > 0:
+            new_event["choice"].append(choice_event)
+    elif event["L1"] == "deck":
+        # take a random dragon from the deck
+        for coords in valid_locations:
+            deck_outcomes = {"random": {
+                "event_name": "tuck_from",
+                "L1": "deck",
+                "L2": "here",
+                "coords": coords,
+                "possible_outcomes": "dragon_deck"
+                }
+            }
+            # add the random dragon to the choice
+            new_event["choice"].append(deck_outcomes)
+    # add the choice to the event queue
+    if len(new_event["choice"]) > 1:
+        # we have multiple choices to make, add the choice to the event queue
         game_state.event_queue.append({"adv_effects": new_event})
 
 def handle_egg_laying(game_state:GameState, event:dict, player:PlayerState) -> None:

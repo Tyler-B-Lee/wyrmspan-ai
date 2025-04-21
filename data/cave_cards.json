@@ -1,4 +1,5 @@
 [
+    {},
     {
         "number": 1,
         "text": "Activate the [OncePerRound-v2] ability on any dragon on your player mat.",
@@ -1001,7 +1002,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "deck"
+                    "source": "deck", "free": true
                 }
             },
             "cost": {
@@ -1018,7 +1019,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "display"
+                    "source": "display", "free": true
                 }
             },
             "cost": {
@@ -1035,7 +1036,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "deck"
+                    "source": "deck", "free": true
                 }
             },
             "cost": {
@@ -1049,7 +1050,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "display"
+                    "source": "display", "free": true
                 }
             },
             "cost": {
@@ -1063,7 +1064,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "deck"
+                    "source": "deck", "free": true
                 }
             },
             "cost": {
@@ -1077,7 +1078,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "display"
+                    "source": "display", "free": true
                 }
             },
             "cost": {
@@ -1091,7 +1092,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "deck"
+                    "source": "deck", "free": true
                 }
             },
             "cost": {
@@ -1108,7 +1109,7 @@
         "when_played": {
             "adv_effects": {
                 "play_cave": {
-                    "source": "display"
+                    "source": "display", "free": true
                 }
             },
             "cost": {
