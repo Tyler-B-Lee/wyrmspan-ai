@@ -81,7 +81,7 @@
                         }
                     },
                     "cost": {
-                        "dragon_card": {"amount": 1}
+                        "dragon_card": 1
                     }
                 }
             },
@@ -130,7 +130,7 @@
                         ]
                     },
                     "cost": {
-                        "coin": {"amount": 1}
+                        "coin": 1
                     }
                 }
             },
@@ -146,7 +146,7 @@
                         }
                     },
                     "cost": {
-                        "cave_card": {"amount": 1}
+                        "cave_card": 1
                     }
                 }
             },
@@ -192,7 +192,7 @@
                         ]
                     },
                     "cost": {
-                        "resource": {"amount": 1, "type": "any"}
+                        "any_resource": 1
                     }
                 }
             },

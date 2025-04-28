@@ -1808,9 +1808,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "top_deck_reveal": {
-                "tuck_targets": ["Hatchling"],
-                "fail_effect": "keep_card"
+            "random": {
+                "top_deck_reveal": {
+                    "tuck_targets": ["Hatchling"],
+                    "fail_effect": "keep_card"
+                }
             }
         }
     },
@@ -2087,9 +2089,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "top_deck_reveal": {
-                "tuck_targets": ["Large"],
-                "fail_effect": "gain_meat"
+            "random": {
+                "top_deck_reveal": {
+                    "tuck_targets": ["Large"],
+                    "fail_effect": "gain_meat"
+                }
             }
         }
     },
@@ -2145,9 +2149,7 @@
             },
             "max_uses": 2,
             "cost": {
-                "resource": {
-                    "type": "any", "amount": 1
-                }
+                "any_resource": 1
             },
             "opponent_effect": {
                 "adv_effects": {}
@@ -2313,7 +2315,7 @@
                 }
             },
             "cost": {
-                "resource": {"type": "any", "amount": 1}
+                "any_resource": 1
             }
         }
     },
@@ -2675,7 +2677,7 @@
                 }
             },
             "cost": {
-                "resource": {"type": "any", "amount": 1}
+                "any_resource": 1
             }
         }
     },
@@ -2984,9 +2986,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "top_deck_reveal": {
-                "tuck_targets": ["Small"],
-                "fail_effect": "gain_milk"
+            "random": {    
+                "top_deck_reveal": {
+                    "tuck_targets": ["Small"],
+                    "fail_effect": "gain_milk"
+                }
             }
         }
     },
@@ -3259,7 +3263,7 @@
                 }
             },
             "cost": {
-                "resource": {"type": "any", "amount": 1}
+                "any_resource": 1
             }
         }
     },
@@ -3281,9 +3285,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "top_deck_reveal": {
-                "tuck_targets": ["Medium","Large"],
-                "fail_effect": "keep_card"
+            "random": {
+                "top_deck_reveal": {
+                    "tuck_targets": ["Medium","Large"],
+                    "fail_effect": "keep_card"
+                }
             }
         }
     },
@@ -3724,9 +3730,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "top_deck_reveal": {
-                "tuck_targets": ["Small","Hatchling"],
-                "fail_effect": "keep_card"
+            "random": {
+                "top_deck_reveal": {
+                    "tuck_targets": ["Small","Hatchling"],
+                    "fail_effect": "keep_card"
+                }
             }
         }
     },
@@ -4152,13 +4160,13 @@
         "end_game": {
             "payments": [{
                 "cost": {
-                    "resource": {"type": "any", "amount": 1}
+                    "any_resource": 1
                 },
                 "amount": 1
             },
             {
                 "cost": {
-                    "resource": {"type": "any", "amount": 2}
+                    "any_resource": 2
                 },
                 "amount": 3
             }]
@@ -4219,7 +4227,7 @@
                 }
             },
             "cost": {
-                "resource": {"type": "any", "amount": 1}
+                "any_resource": 1
             }
         }
     },
@@ -4300,7 +4308,7 @@
         "end_game": {
             "payments": [{
                 "cost": {
-                    "resource": {"type": "any", "amount": 1},
+                    "any_resource": 1,
                     "cave_card": 1,
                     "dragon_card": 1
                 },
@@ -5060,9 +5068,11 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "top_deck_reveal": {
-                "tuck_targets": ["Medium"],
-                "fail_effect": "gain_meat"
+            "random": {
+                "top_deck_reveal": {
+                    "tuck_targets": ["Medium"],
+                    "fail_effect": "gain_meat"
+                }
             }
         }
     },

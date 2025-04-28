@@ -1006,10 +1006,7 @@
                 }
             },
             "cost": {
-                "resource": {
-                    "type": "any",
-                    "amount": 2
-                }
+                "any_resource": 2
             }
         }
     },
@@ -1023,10 +1020,7 @@
                 }
             },
             "cost": {
-                "resource": {
-                    "type": "any",
-                    "amount": 2
-                }
+                "any_resource": 2
             }
         }
     },
@@ -1167,10 +1161,7 @@
             },
             "max_uses": 3,
             "cost": {
-                "resource": {
-                    "type": "any",
-                    "amount": 1
-                }
+                "any_resource": 1
             },
             "opponent_effect": {
                 "adv_effects": {}
@@ -1197,10 +1188,7 @@
             },
             "max_uses": 3,
             "cost": {
-                "resource": {
-                    "type": "any",
-                    "amount": 1
-                }
+                "any_resource": 1
             },
             "opponent_effect": {
                 "adv_effects": {}
