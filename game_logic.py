@@ -7,9 +7,7 @@ CaveNumber = int
 # Constants
 PHASE_SETUP = "setup"
 PHASE_BEFORE_PASS = "before_pass"
-PHASE_EXCAVATING = "excavating"
-PHASE_ENTICING = "enticing"
-PHASE_EXPLORING = "exploring"
+PHASE_END_ROUND = "end_round"
 
 
 # state conversion functions
@@ -224,7 +222,7 @@ def can_excavate_cave(player_state: PlayerState, cave_name: CaveName, free: bool
     # only slot 3 is available, since we saw this last slot is not excavated
     return num_eggs >= 2
 
-def can_entice_dragon(player_state: PlayerState, dragon_info: dict, cave_name:CaveName, discount:str="none") -> list[dict]:
+def get_dragon_enticement_options(player_state: PlayerState, dragon_info: dict, discount:str="none") -> list[dict]:
     """
     Check if the player can entice a specific dragon in a specific cave. Does not check
     where this dragon is coming from. The discount is described by a string, which can be:
@@ -234,9 +232,6 @@ def can_entice_dragon(player_state: PlayerState, dragon_info: dict, cave_name:Ca
     An empty dictionary means the player can entice the dragon for free.
     An empty list means the player cannot entice the dragon at all.
     """
-    # check habitat compatibility
-    if not dragon_info[cave_name]:
-        return []
     costs = []
     resource_cost_dict = {}
     for resource_name in RESOURCES:
@@ -452,44 +447,78 @@ def progress_game(game_state:GameState) -> GameState:
     If the queue is empty, return the game state as is.
     """
     new_state = copy.deepcopy(game_state) # make a copy of the game state
-    if new_state.event_queue:
-        # there are events in the queue, resolve the next one
-        event = new_state.event_queue.pop()
-        # check if the event is a choice or random event
-        if "adv_effects" in event:
-            # this is a choice or random event, add it to the queue
-            new_state.event_queue.append(event)
-    else:
-        # the queue is empty, we are in an active state
-        # we can try to find the next choice or random event to resolve
-        # or the game ends.
-        pass
-
-def get_available_actions(game_state:GameState) -> list[dict]:
-    """
-    Given a game_state, return a list of available actions.
-    Each action is represented as a dictionary with the action name and the parameters.
-    """
-    actions = []
-    player = get_current_player(game_state)
-
-    # check for actions by phase
-    current_phase = game_state.phase
+    # check game state phase
+    current_phase = new_state.phase
     if current_phase == PHASE_SETUP:
+        new_event = {"choice": []}
         # setup phase - player must discard down to 4 total cards
         # and then choose any 3 resources
         if len(player.dragon_hand) + len(player.cave_hand) > 4:
             # discard dragons and caves
             for dragon in player.dragon_hand:
-                actions.append({"discard_dragon": {"dragon": dragon}})
+                new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
             for cave in player.cave_hand:
-                actions.append({"discard_cave": {"cave": cave}})
-            return actions
-        # choose resources
-        for resource in player.resources.keys():
-            actions.append({"gain_resource": {"type": resource}})
+                new_event["choice"].append({"discard_cave": {"cave": cave}})
+            new_state.event_queue.append({"adv_effects": new_event})
+            return new_state
+        elif sum(player.resources.values()) < 3:
+            # choose resources
+            for resource in player.resources.keys():
+                new_event["choice"].append({"gain_resource": {"type": resource}})
+            new_state.event_queue.append({"adv_effects": new_event})
+            return new_state
+        else:
+            # we are done with the setup phase
+            if isinstance(new_state, SoloGameState):
+                new_state.phase = PHASE_BEFORE_PASS
+            else:
+                new_state.current_player += 1 # move to the next player
+                if new_state.current_player >= len(new_state.players):
+                    # we are done with the setup phase
+                    new_state.current_player = new_state.round_start_player
+                    new_state.phase = PHASE_BEFORE_PASS
     
-    return actions
+    # return the new state, which should either
+    # be in a Halted or Terminal state
+    return new_state
+
+def apply_action(game_state:GameState, action:dict) -> GameState:
+    """
+    Apply the given action to the game_state and return a new game state
+    from after the action is applied.
+    """
+    new_game_state = copy.deepcopy(game_state) # make a copy of the game state
+    player = get_current_player(new_game_state) # get the current player
+
+    # check for actions by phase
+    current_phase = new_game_state.phase
+    if current_phase == PHASE_SETUP:
+        # setup phase - player must discard down to 4 total cards
+        # and then choose any 3 resources
+        if "discard_dragon" in action:
+            # discard dragon
+            dragon = action["discard_dragon"]["dragon"]
+            discard_dragon(player, new_game_state, dragon)
+        elif "discard_cave" in action:
+            # discard cave
+            cave = action["discard_cave"]["cave"]
+            discard_cave(player, new_game_state, cave)
+        elif "gain_resource" in action:
+            # gain resources
+            resource = action["gain_resource"]["type"]
+            player.resources[resource] += 1
+            # check if the player has already chosen 3 resources
+            if sum(player.resources.values()) >= 3:
+                if isinstance(new_game_state, SoloGameState):
+                    new_game_state.phase = PHASE_BEFORE_PASS
+                else:
+                    new_game_state.current_player += 1 # move to the next player
+                    if new_game_state.current_player >= len(new_game_state.players):
+                        # we are done with the setup phase
+                        new_game_state.current_player = new_game_state.round_start_player
+                        new_game_state.phase = PHASE_BEFORE_PASS
+
+    return new_game_state
 
 def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=None) -> None:
     """
@@ -528,7 +557,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
         coords = event["pay_egg"]["coords"]
         pay_egg(player, coords)
     elif "gain_guild" in event:
-        # assume we have a SoloGameState for now
+        # NOTE - assume we have a SoloGameState for now
         pos = game_state.board["guild"]["player_position"]
         new_pos = (pos + 1) % 12
         game_state.board["guild"]["player_position"] = new_pos
@@ -551,9 +580,24 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
     elif "play_cave" in event:
         # playing a cave card from somewhere to the player's mat
         handle_play_cave(game_state, event, player)
+    elif "play_dragon" in event:
+        # playing a dragon card from somewhere to the player's mat
+        handle_play_dragon(game_state, event, player)
     elif "top_deck_reveal" in event:
         # we reveal the top card and do something based on it
         handle_top_deck_reveal(game_state, event, player)
+    elif "draw_decision" in event:
+        # the player draws some number of cards
+        # and chooses what to do with them
+        handle_draw_decision(game_state, event, player)
+    elif "other_ability_on_mat" in event:
+        # the player chooses to activate another ability
+        # of a dragon on their mat
+        handle_other_ability_on_mat(game_state, event, player)
+    elif "any_resource_decision" in event:
+        # the player chooses some resources
+        # and chooses what to do with them
+        handle_any_resource_decision(game_state, event, player)
     elif "deduct_resources" in event:
         # deduct resources
         cost_dict = event["deduct_resources"]["cost"]
@@ -566,6 +610,82 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
         # discard cave
         cave = event["discard_cave"]["cave"]
         discard_cave(player, game_state, cave)
+    elif "swap_dragons" in event:
+        # player chooses two dragons on their mat to swap
+        handle_swap_dragons(game_state, event, player)
+
+def handle_swap_dragons(game_state:GameState, event:dict, player:PlayerState) -> None:
+    """
+    Handle the rare event for swapping two dragons on the player's mat.
+    """
+    # check if we have chosen dragons to swap
+    if "coords1" in event:
+        # we have chosen two dragons to swap
+        coords1 = event["coords1"]
+        coords2 = event["coords2"]
+        dragon1 = player.dragons_played[coords1[0]][coords1[1]]
+        dragon2 = player.dragons_played[coords2[0]][coords2[1]]
+        # swap the dragons
+        player.dragons_played[coords1[0]][coords1[1]] = dragon2
+        player.dragons_played[coords2[0]][coords2[1]] = dragon1
+        # TODO check eggs / other effects
+        return
+    # else we need to create a choice event
+    all_dragons = get_dragon_list(player, "any")
+    new_event = {"choice": [{"skip": True}]}
+    for i,(dragon_id1, coords1) in enumerate(all_dragons):
+        for j in range(i+1, len(all_dragons)):
+            dragon_id2, coords2 = all_dragons[j]
+            # add the dragons to the list of choices
+            new_event["choice"].append(
+                {"swap_dragons": {
+                    "coords1": coords1,
+                    "coords2": coords2,
+                }}
+            )
+    if len(new_event["choice"]) > 1:
+        # add the event to the event queue
+        game_state.event_queue.append({"adv_effects": new_event})
+
+def handle_other_ability_on_mat(game_state:GameState, event:dict, player:PlayerState) -> None:
+    """
+    Handle the event where the player chooses to activate another ability
+    of a dragon on their mat. This is a special case where the player can
+    choose to activate an ability of a dragon that is not the one they are
+    currently playing. The event is a dictionary with the event name and
+    the parameters.
+    """
+    # check if the event is a choice or random event
+    if "coords" in event:
+        # we have chosen a specific dragon to activate
+        dragon_id = player.dragons_played[event["coords"][0]][event["coords"][1]]
+        event_ability = DRAGON_CARDS[dragon_id][event["type"]]
+        # add the event to the event queue
+        game_state.event_queue.append(event_ability)
+        return
+    # else we need to create a choice event
+    all_blacklists = {
+        "if_activated": [73],
+        "when_played": [76],
+    }
+    # get the list of dragons that can be activated
+    all_dragons = get_dragon_list(player, "any")
+    new_event = {"choice": []}
+    this_blacklist = all_blacklists.get(event["type"], [])
+    for dragon_id, coords in all_dragons:
+        # check dragon validity
+        dragon = DRAGON_CARDS[dragon_id]
+        if event["type"] in dragon and dragon_id not in this_blacklist:
+            # add the dragon to the list of choices
+            new_event["choice"].append(
+                {"other_ability_on_mat": {
+                    "coords": coords,
+                    "type": event["type"],
+                }}
+            )
+    if len(new_event["choice"]) > 0:
+        # add the event to the event queue
+        game_state.event_queue.append({"adv_effects": new_event})
 
 def handle_top_deck_reveal(game_state:GameState, event:dict, player:PlayerState) -> None:
     """
@@ -606,6 +726,237 @@ def handle_top_deck_reveal(game_state:GameState, event:dict, player:PlayerState)
             # refresh the dragon deck
             refresh_dragon_deck(game_state)
         player.resources["milk"] += 1 # add 1 milk to the player's resources
+
+def handle_draw_decision(game_state:GameState, event:dict, player:PlayerState) -> None:
+    """
+    Handle the "draw decision" event, where the player must draw some number of cards
+    from the deck and then choose what to do with them. This could involve keeping them,
+    tucking them under dragons, among other things.
+    
+    This will be a multi-stage event where we check for the decision to be made
+    and then create the decision for the next choice, if needed.
+
+    The possible choices will be handled in a certain order to reduce
+    the number of combinations of choices possible for the player, simplifying
+    the game tree. The order is:
+    - tuck_any -> tuck_here -> discard -> keep
+    """
+    ordered_choices = ["tuck_any", "tuck_here", "discard", "keep"]
+    # first handle any chosen action from the event
+    # NOTE - we assume the dragons have already been removed from the deck
+    # for safety involving the dragon deck running out
+    if "chosen_id" in event:
+        dragon_id = event["chosen_id"]
+        new_limits = event["limits"].copy()
+        # remove from list of dragons to choose from
+        event["remaining_dragons"].remove(dragon_id)
+        # find what to do with the dragon based on the order
+        if "tuck_any" in event["limits"]:
+            # tuck the dragon at the specified location
+            tuck_dragon(player, dragon_id, event["coords"])
+            if new_limits["tuck_any"] > 1:
+                new_limits["tuck_any"] -= 1
+            else:
+                new_limits.pop("tuck_any")
+        elif "tuck_here" in event["limits"]:
+            # tuck the dragon at the specified location
+            tuck_dragon(player, dragon_id, event["coords"])
+            if new_limits["tuck_here"] > 1:
+                new_limits["tuck_here"] -= 1
+            else:
+                new_limits.pop("tuck_here")
+        elif "discard" in event["limits"]:
+            # discard the dragon
+            game_state.dragon_discard.append(dragon_id)
+            if new_limits["discard"] > 1:
+                new_limits["discard"] -= 1
+            else:
+                new_limits.pop("discard")
+        elif "keep" in event["limits"]:
+            # add the dragon to the player's hand
+            player.dragon_hand.append(dragon_id)
+            if new_limits["keep"] > 1:
+                new_limits["keep"] -= 1
+            else:
+                new_limits.pop("keep")
+    elif "skip_choice" in event:
+        # we simply remove the current choice from the list of choices
+        # and move on to the next choice
+        for choice in ordered_choices:
+            if choice in event["limits"]:
+                new_limits = event["limits"].copy()
+                new_limits.pop(choice)
+                break
+    # check if we have any more dragons to choose from
+    if len(event["remaining_dragons"]) == 0:
+        # we are done with the event, so we can remove it from the queue
+        return
+    # we have more dragons to choose from, so we need to create the next event
+    new_event = {"choice": []}
+    for i,choice in enumerate(ordered_choices):
+        if choice in new_limits:
+            # we have a choice to make, so we need to create the event
+            for dragon_id in event["remaining_dragons"]:
+                if choice == "tuck_any":
+                    # loop through all possible locations to tuck the dragon
+                    all_dragons = get_dragon_list(player, "any")
+                    for dragon, coords in all_dragons:
+                        new_event["choice"].append(
+                            {"draw_decision": {
+                                "chosen_id": dragon_id,
+                                "coords": coords,
+                                "limits": new_limits,
+                                "remaining_dragons": event["remaining_dragons"],
+                                }
+                            }
+                        )
+                else:
+                    # we have a specific location to tuck the dragon
+                    new_event["choice"].append(
+                        {"draw_decision": {
+                            "chosen_id": dragon_id,
+                            "coords": event["coords"],
+                            "limits": new_limits,
+                            "remaining_dragons": event["remaining_dragons"],
+                            }
+                        }
+                    )
+            # check if we can skip the current choice
+            future_choice_amounts = 0
+            for j in range(i+1, len(ordered_choices)):
+                if ordered_choices[j] in new_limits:
+                    future_choice_amounts += new_limits[ordered_choices[j]]
+            if future_choice_amounts >= len(event["remaining_dragons"]):
+                # add the option to skip the current choice
+                new_event["choice"].append(
+                    {"draw_decision": {
+                        "skip_choice": True,
+                        "coords": event["coords"],
+                        "limits": new_limits,
+                        "remaining_dragons": event["remaining_dragons"],
+                        }
+                    }
+                )
+
+    # add the new event to the event queue
+    if len(new_event["choice"]) > 1:
+        # we have multiple choices to make, add the choice to the event queue
+        game_state.event_queue.append({"adv_effects": new_event})
+    elif len(new_event["choice"]) == 1:
+        # we have a single choice to make, so we can resolve it immediately
+        # and remove the event from the queue
+        game_state.event_queue.append(new_event["choice"][0])
+
+def handle_any_resource_decision(game_state:GameState, event:dict, player:PlayerState) -> None:
+    """
+    Handle the "any resource decision" event, where the player must choose some number of
+    resources and then choose what to do with them. This could involve keeping them or
+    caching them onto different dragons.
+    
+    This will be a multi-stage event where we check for the decision to be made
+    and then create the decision for the next choice, if needed.
+
+    The possible choices will be handled in a certain order to reduce
+    the number of combinations of choices possible for the player, simplifying
+    the game tree. The order is:
+    - cache_any -> cache_here -> keep
+    """
+    ordered_choices = ["cache_any", "cache_here", "keep"]
+    # first handle any chosen action from the event
+    if "chosen_type" in event:
+        resource_type = event["chosen_type"]
+        new_limits = event["limits"].copy()
+        # subtract from count of resources to choose from
+        event["remaining_resources"] -= 1
+        # find what to do with the resource based on the order
+        if "cache_any" in event["limits"]:
+            # cache the resource at the specified location
+            cache_resource(player, resource_type, event["coords"])
+            if new_limits["cache_any"] > 1:
+                new_limits["cache_any"] -= 1
+            else:
+                new_limits.pop("cache_any")
+        elif "cache_here" in event["limits"]:
+            # cache the resource at the specified location
+            cache_resource(player, resource_type, event["coords"])
+            if new_limits["cache_here"] > 1:
+                new_limits["cache_here"] -= 1
+            else:
+                new_limits.pop("cache_here")
+        elif "keep" in event["limits"]:
+            # add the resource to the player's supply
+            player.resources[resource_type] += 1
+            if new_limits["keep"] > 1:
+                new_limits["keep"] -= 1
+            else:
+                new_limits.pop("keep")
+    elif "skip_choice" in event:
+        # we simply remove the current choice from the list of choices
+        # and move on to the next choice
+        for choice in ordered_choices:
+            if choice in event["limits"]:
+                new_limits = event["limits"].copy()
+                new_limits.pop(choice)
+                break
+    # check if we have any more resources to choose from
+    if event["remaining_resources"] == 0:
+        # we are done with the event, so we can remove it from the queue
+        return
+    # we have more dragons to choose from, so we need to create the next event
+    new_event = {"choice": []}
+    for i,choice in enumerate(ordered_choices):
+        if choice in new_limits:
+            # we have a choice to make, so we need to create the event
+            for resource_type in RESOURCES:
+                if choice == "cache_any":
+                    # loop through all possible locations to cache
+                    all_dragons = get_dragon_list(player, "any")
+                    for dragon, coords in all_dragons:
+                        new_event["choice"].append(
+                            {"any_resource_decision": {
+                                "chosen_type": resource_type,
+                                "coords": coords,
+                                "limits": new_limits,
+                                "remaining_resources": event["remaining_resources"],
+                                }
+                            }
+                        )
+                else:
+                    # we have a specific location to tuck the dragon
+                    new_event["choice"].append(
+                        {"any_resource_decision": {
+                            "chosen_type": resource_type,
+                            "coords": event["coords"],
+                            "limits": new_limits,
+                            "remaining_resources": event["remaining_resources"],
+                            }
+                        }
+                    )
+            # check if we can skip the current choice
+            future_choice_amounts = 0
+            for j in range(i+1, len(ordered_choices)):
+                if ordered_choices[j] in new_limits:
+                    future_choice_amounts += new_limits[ordered_choices[j]]
+            if future_choice_amounts >= event["remaining_resources"]:
+                # add the option to skip the current choice
+                new_event["choice"].append(
+                    {"any_resource_decision": {
+                        "skip_choice": True,
+                        "coords": event["coords"],
+                        "limits": new_limits,
+                        "remaining_resources": event["remaining_resources"],
+                        }
+                    }
+                )
+
+    # add the new event to the event queue
+    if len(new_event["choice"]) > 1:
+        # we have multiple choices to make, add the choice to the event queue
+        game_state.event_queue.append({"adv_effects": new_event})
+    elif len(new_event["choice"]) == 1:
+        # we have a single choice to make, so we can resolve it immediately
+        # and remove the event from the queue
+        game_state.event_queue.append(new_event["choice"][0])
 
 def handle_play_cave(game_state:GameState, event:dict, player:PlayerState) -> None:
     """
@@ -657,28 +1008,30 @@ def handle_play_cave(game_state:GameState, event:dict, player:PlayerState) -> No
         for cave_index in range(3):
             # use a cave from the display
             if game_state.board["card_display"]["cave_cards"][cave_index] is not None:
-                new_event["choice"].append(
-                    {"play_cave": {
-                        "source": "display",
-                        "chosen_index": cave_index,
-                        "free": event.get("free", False),
-                        "cave_location": cave_name,
-                        } for cave_name in valid_locations
-                    }
-                )
+                for cave_name in valid_locations:
+                    new_event["choice"].append(
+                        {"play_cave": {
+                            "source": "display",
+                            "chosen_index": cave_index,
+                            "free": event.get("free", False),
+                            "cave_location": cave_name,
+                            }
+                        }
+                    )
     elif event["source"] == "hand":
         new_event = {"choice": []}
         for cave_id in player.cave_hand:
             # use a cave from the hand
-            new_event["choice"].append(
-                {"play_cave": {
-                        "source": "hand",
-                        "chosen_id": cave_id,
-                        "free": event.get("free", False),
-                        "cave_location": cave_name,
-                        } for cave_name in valid_locations
-                    }
-                )
+            for cave_name in valid_locations:
+                new_event["choice"].append(
+                    {"play_cave": {
+                            "source": "hand",
+                            "chosen_id": cave_id,
+                            "free": event.get("free", False),
+                            "cave_location": cave_name,
+                            }
+                        }
+                    )
     elif event["L1"] == "deck":
         # take a random dragon from the deck
         new_event = {"choice": []}
@@ -746,59 +1099,86 @@ def handle_play_dragon(game_state:GameState, event:dict, player:PlayerState) -> 
     If the event parameters are specific enough, we play the dragon.
     Otherwise, we add a choice to the event queue.
     """
-    # check if the event is a choice or random event
     # first check if an outcome is already decided
     if event.get("chosen_index", None) is not None:
         # we have a specific dragon from the display to use
-        cave_index = event["chosen_index"]
-        cave_id = game_state.board["card_display"]["cave_cards"][cave_index]
-        game_state.board["card_display"]["cave_cards"][cave_index] = None # remove the cave from the display
-        # play the cave card
-        excavate_cave(player, game_state, event, cave_id)
+        dragon_index = event["chosen_index"]
+        dragon_id = game_state.board["card_display"]["dragon_cards"][dragon_index]
+        game_state.board["card_display"]["dragon_cards"][dragon_index] = None # remove the dragon from the display
+        # play the dragon card
+        place_dragon(player, game_state, event, dragon_id)
         return
     elif event.get("chosen_id", None) is not None:
-        # we have a specific cave to use from the hand
-        cave_id = event["chosen_id"]
-        # remove the cave from the hand
-        player.cave_hand.remove(cave_id)
-        # play the cave card
-        excavate_cave(player, game_state, event, cave_id)
+        # we have a specific dragon to use from the hand
+        dragon_id = event["chosen_id"]
+        # remove the dragon from the hand
+        player.dragon_hand.remove(dragon_id)
+        # play the dragon card
+        place_dragon(player, game_state, event, dragon_id)
         return
     
     valid_locations = []
     for cave_name in CAVE_NAMES:
-        # check if the player can excavate the cave
-        if can_excavate_cave(player, cave_name, free=event.get("free", False)):
-            # add the cave to the list of valid locations
-            valid_locations.append(cave_name)
+        # check if the player can entice any dragon in the cave
+        # This is when the next slot is excavated and no dragon is there
+        for col in range(4):
+            if player.caves_played[cave_name][col] is not None:
+                # this cave is excavated
+                # check if there is a dragon in the cave
+                if player.dragons_played[cave_name][col] is None:
+                    # there is no dragon in the cave, so we can entice a dragon
+                    valid_locations.append((cave_name, col))
+                    break
+            else:
+                # cave is not excavated
+                break
+    new_event = {"choice": []}
     # go through each possibility
     if event["source"] == "display":
-        new_event = {"choice": []}
-        for cave_index in range(3):
+        for dragon_index in range(3):
             # use a cave from the display
-            if game_state.board["card_display"]["cave_cards"][cave_index] is not None:
-                new_event["choice"].append(
-                    {"play_cave": {
-                        "source": "display",
-                        "chosen_index": cave_index,
-                        "free": event.get("free", False),
-                        "cave_location": cave_name,
-                        } for cave_name in valid_locations
-                    }
-                )
+            dragon_id = game_state.board["card_display"]["dragon_cards"][dragon_index]
+            if dragon_id is not None:
+                costs = get_dragon_enticement_options(player, DRAGON_CARDS[dragon_id], discount=event.get("discount", "none"))
+                if len(costs) > 0:
+                    for cave_name, col in valid_locations:
+                        # check cave compatibility
+                        if not DRAGON_CARDS[dragon_id][cave_name]:
+                            continue
+                        for cost in costs:
+                            play_event = {"cost": cost}
+                            play_event["adv_effects"] = {
+                                "play_dragon": {
+                                    "L1": "display",
+                                    "L2": "any",
+                                    "discount": event.get("discount", "none"),
+                                    "chosen_index": dragon_index,
+                                    "coords": (cave_name, col),
+                                    }
+                                }
+                            new_event["choice"].append(play_event)
+
     elif event["source"] == "hand":
-        new_event = {"choice": []}
-        for cave_id in player.cave_hand:
-            # use a cave from the hand
-            new_event["choice"].append(
-                {"play_cave": {
-                        "source": "hand",
-                        "chosen_id": cave_id,
-                        "free": event.get("free", False),
-                        "cave_location": cave_name,
-                        } for cave_name in valid_locations
-                    }
-                )
+        for dragon_id in player.dragon_hand:
+            # use a dragon from the hand
+            costs = get_dragon_enticement_options(player, DRAGON_CARDS[dragon_id], discount=event.get("discount", "none"))
+            if len(costs) > 0:
+                for cave_name, col in valid_locations:
+                    # check cave compatibility
+                    if not DRAGON_CARDS[dragon_id][cave_name]:
+                        continue
+                    for cost in costs:
+                        play_event = {"cost": cost}
+                        play_event["adv_effects"] = {
+                            "play_dragon": {
+                                "L1": "hand",
+                                "L2": "any",
+                                "discount": event.get("discount", "none"),
+                                "chosen_id": dragon_id,
+                                "coords": (cave_name, col),
+                                }
+                            }
+                        new_event["choice"].append(play_event)
     # add the choice to the event queue
     if len(new_event["choice"]) > 0:
         # we have multiple choices to make, add the choice to the event queue
@@ -947,6 +1327,25 @@ def handle_tuck_dragon(game_state:GameState, event:dict, player:PlayerState) -> 
         player.dragon_hand.remove(dragon_id)
         # tuck the dragon
         tuck_dragon(player, dragon_id, event["coords"])
+        # possible gain_from_cost
+        if event.get("gain_from_cost", False):
+            # we gain a resource from the cost of the dragon
+            new_event = {"choice": []}
+            # check each resource type
+            for resource in RESOURCES:
+                if DRAGON_CARDS[dragon_id][f"{resource}_cost"] > 0:
+                    new_event["choice"].append(
+                        {"gain_resource": {
+                            "type": resource
+                            }
+                        }
+                    )
+            if len(new_event["choice"]) > 1:
+                # we have multiple choices to make, add the choice to the event queue
+                game_state.event_queue.append({"adv_effects": new_event})
+            elif len(new_event["choice"]) == 1:
+                # we have a single choice to make, so we can resolve it immediately
+                game_state.event_queue.append(new_event["choice"][0])
         return
     elif event.get("include", None) is not None:
         # there is one case where we tuck from the deck under all playful in the given cave
@@ -985,30 +1384,33 @@ def handle_tuck_dragon(game_state:GameState, event:dict, player:PlayerState) -> 
         for dragon_index in range(3):
             # use a dragon from the display
             if game_state.board["card_display"]["dragon_cards"][dragon_index] is not None:
-                choice_event["choice"].append(
-                        {"tuck_from": {
-                            "L1": "display",
-                            "L2": "here",
-                            "chosen_index": dragon_index,
-                            "coords": coords
-                            } for coords in valid_locations
-                        }
-                    )
+                for coords in valid_locations:
+                    choice_event["choice"].append(
+                            {"tuck_from": {
+                                "L1": "display",
+                                "L2": "here",
+                                "chosen_index": dragon_index,
+                                "coords": coords
+                                }
+                            }
+                        )
         if len(choice_event["choice"]) > 0:
             new_event["choice"].append(choice_event)
     elif event["L1"] == "hand":
         choice_event = {"choice": []}
         for dragon_id in player.dragon_hand:
             # use a dragon from the hand
-            choice_event["choice"].append(
-                    {"tuck_from": {
-                        "L1": "hand",
-                        "L2": "here",
-                        "chosen_id": dragon_id,
-                        "coords": coords
-                        } for coords in valid_locations
-                    }
-                )
+            for coords in valid_locations:
+                choice_event["choice"].append(
+                        {"tuck_from": {
+                            "L1": "hand",
+                            "L2": "here",
+                            "chosen_id": dragon_id,
+                            "coords": coords,
+                            "gain_from_cost": event.get("gain_from_cost", False),
+                            }
+                        }
+                    )
         if len(choice_event["choice"]) > 0:
             new_event["choice"].append(choice_event)
     elif event["L1"] == "deck":
@@ -1128,43 +1530,6 @@ def handle_egg_laying(game_state:GameState, event:dict, player:PlayerState) -> N
         }
         game_state.event_queue.append({"adv_effects": new_event})
 
-def apply_action(game_state:GameState, action:dict) -> GameState:
-    """
-    Apply the given action to the game_state and return a new game state
-    from after the action is applied.
-    """
-    new_game_state = copy.deepcopy(game_state) # make a copy of the game state
-    player = get_current_player(new_game_state) # get the current player
-
-    # check for actions by phase
-    current_phase = new_game_state.phase
-    if current_phase == PHASE_SETUP:
-        # setup phase - player must discard down to 4 total cards
-        # and then choose any 3 resources
-        if "discard_dragon" in action:
-            # discard dragon
-            dragon = action["discard_dragon"]["dragon"]
-            discard_dragon(player, new_game_state, dragon)
-        elif "discard_cave" in action:
-            # discard cave
-            cave = action["discard_cave"]["cave"]
-            discard_cave(player, new_game_state, cave)
-        elif "gain_resource" in action:
-            # gain resources
-            resource = action["gain_resource"]["type"]
-            player.resources[resource] += 1
-            # check if the player has already chosen 3 resources
-            if sum(player.resources.values()) >= 3:
-                if isinstance(new_game_state, SoloGameState):
-                    new_game_state.phase = PHASE_BEFORE_PASS
-                else:
-                    new_game_state.current_player += 1 # move to the next player
-                    if new_game_state.current_player >= len(new_game_state.players):
-                        # we are done with the setup phase
-                        new_game_state.current_player = new_game_state.round_start_player
-                        new_game_state.phase = PHASE_BEFORE_PASS
-
-    return new_game_state
 
 if __name__ == "__main__":
     # Testing the functions

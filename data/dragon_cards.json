@@ -2115,11 +2115,13 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "once_per_round": {
-            "draw_decision": {
-                "amount": "shy_this_cave",
-                "limits": {
-                    "tuck_here": 2,
-                    "keep": 4
+            "random": {
+                "draw_decision": {
+                    "amount": "shy_this_cave",
+                    "limits": {
+                        "tuck_here": 2,
+                        "keep": 4
+                    }
                 }
             }
         }
@@ -2986,7 +2988,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "random": {    
+            "random": {
                 "top_deck_reveal": {
                     "tuck_targets": ["Small"],
                     "fail_effect": "gain_milk"
@@ -3253,12 +3255,14 @@
         "milk_cost": 0,
         "once_per_round": {
             "adv_effects": {
-                "draw_decision": {
-                    "amount": 3,
-                    "limits": {
-                        "keep": 1,
-                        "discard": 1,
-                        "tuck_here": 1
+                "random": {
+                    "draw_decision": {
+                        "amount": 3,
+                        "limits": {
+                            "keep": 1,
+                            "discard": 1,
+                            "tuck_here": 1
+                        }
                     }
                 }
             },
@@ -3446,11 +3450,13 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "when_played": {
-            "draw_decision": {
-                "amount": 2,
-                "limits": {
-                    "keep": 1,
-                    "tuck_any": 1
+            "random": {
+                "draw_decision": {
+                    "amount": 2,
+                    "limits": {
+                        "keep": 1,
+                        "tuck_any": 1
+                    }
                 }
             }
         }
@@ -3927,12 +3933,14 @@
         "milk_cost": 0,
         "once_per_round": {
             "adv_effects": {
-                "draw_decision": {
-                    "amount": 2,
-                    "limits": {
-                        "keep": 2,
-                        "tuck_here": 2
-                    }
+                "random": {
+                    "draw_decision": {
+                        "amount": 2,
+                        "limits": {
+                            "keep": 2,
+                            "tuck_here": 2
+                        }
+                    }     
                 }
             },
             "condition": {
@@ -4105,12 +4113,14 @@
         "milk_cost": 0,
         "once_per_round": {
             "adv_effects": {
-                "draw_decision": {
-                    "amount": 3,
-                    "limits": {
-                        "keep": 1,
-                        "discard": 1,
-                        "tuck_here": 1
+                "random": {
+                    "draw_decision": {
+                        "amount": 3,
+                        "limits": {
+                            "keep": 1,
+                            "discard": 1,
+                            "tuck_here": 1
+                        }
                     }
                 }
             },
@@ -4279,11 +4289,13 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "draw_decision": {
-                "amount": 1,
-                "limits": {
-                    "keep": 1,
-                    "tuck_here": 1
+            "random": {
+                "draw_decision": {
+                    "amount": 1,
+                    "limits": {
+                        "keep": 1,
+                        "tuck_here": 1
+                    }
                 }
             }
         }
@@ -4608,11 +4620,13 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "once_per_round": {
-            "draw_decision": {
-                "amount": 1,
-                "limits": {
-                    "keep": 1,
-                    "tuck_here": 1
+            "random": {
+                "draw_decision": {
+                    "amount": 1,
+                    "limits": {
+                        "keep": 1,
+                        "tuck_here": 1
+                    }
                 }
             }
         }
@@ -5180,11 +5194,13 @@
         "once_per_round": {
             "adv_effects": {
                 "choice": [
-                    {"draw_decision": {
-                        "amount": 1,
-                        "limits": {
-                            "keep": 1,
-                            "tuck_any": 1
+                    {"random": {
+                        "draw_decision": {
+                            "amount": 1,
+                            "limits": {
+                                "keep": 1,
+                                "tuck_any": 1
+                            }
                         }
                     }},
                     {"gain_dragon": {"source": "display"}},

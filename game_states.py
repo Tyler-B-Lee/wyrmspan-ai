@@ -117,9 +117,9 @@ class PlayerState:
         self.guild_markers = 4
         self.coins = 0
         self.caves_played = { # numbers of the caves played
-            "crimson_cavern": [0, None, None, None],
-            "golden_grotto": [0, None, None, None],
-            "amethyst_abyss": [0, None, None, None],
+            "crimson_cavern": [-1, None, None, None],
+            "golden_grotto": [-1, None, None, None],
+            "amethyst_abyss": [-1, None, None, None],
         }
         self.dragons_played = { # numbers of the dragons played
             "crimson_cavern": [None, None, None, None],
@@ -321,7 +321,8 @@ class SoloGameState(GameState):
             "round": 0,
             "objectives": draw_random_objectives(is_solo=True),
             # objectives are a list of tuples (tile_index, side)
-            "scoring": [{"1st": [], "2nd": [], "Other": []} for _ in range(4)]
+            "scoring": [{"1st": [], "2nd": [], "Other": []} for _ in range(4)],
+            "automa_bonus": [0, 0, 0, 0],
         }
         
         self.player.coins = 6
@@ -336,8 +337,6 @@ class SoloGameState(GameState):
         """
         return copy.deepcopy(self)
     
-
-
 
 if __name__ == "__main__":
     # Test objectives drawing
