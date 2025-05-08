@@ -203,6 +203,15 @@ class GameState:
         self.dragon_discard = []  # Discard pile for dragon cards
         self.cave_discard = []  # Discard pile for cave cards
         self.event_queue = collections.deque()  # Use deque for the event queue
+        self.current_choice = None  # Current choice for the player
+        self.current_random_event = None  # Current random event for the game
+    
+    def make_copy(self) -> 'GameState':
+        """
+        Returns a deep copy of the current game state.
+        This is useful for undo/redo functionality or saving the game state.
+        """
+        return copy.deepcopy(self)
 
     def draw_random_dragon_cards(self, num:int=1) -> typing.List[int]:
         """
@@ -241,6 +250,13 @@ class GameState:
         for card in drawn_cards:
             self.cave_deck.remove(card)
         return drawn_cards
+    
+    def all_players_passed(self) -> bool:
+        """
+        Checks if all players have passed their turn in the current round.
+        Returns True if all players have passed, False otherwise.
+        """
+        return all(player.passed_this_round for player in self.players)
 
     def create_game(self, num_players=2):
         "Initializes a new game state. Includes random generation of objectives."
@@ -268,7 +284,8 @@ class GameState:
             "round": 0,
             "objectives": draw_random_objectives(is_solo=False),
             # objectives are a list of tuples (tile_index, side)
-            "scoring": [{"1st": [], "2nd": [], "3rd": [], "Other": []} for _ in range(4)]
+            "scoring": [{"1st": [], "2nd": [], "3rd": [], "Other": []} for _ in range(4)],
+            "finished_once_per_round": [False] * num_players,
         }
         for i in range(num_players):
             player = self.players[i]
@@ -289,6 +306,9 @@ class SoloGameState(GameState):
         super().__init__()
         self.automa_difficulty = automa_difficulty
         self.automa = AutomaState(self.automa_difficulty)
+
+    def all_players_passed(self):
+        return self.player.passed_this_round and self.automa.passed_this_round
     
     def create_game(self, num_players=2):
         "Initializes a new automa game state. Includes random generation of objectives."
@@ -301,7 +321,7 @@ class SoloGameState(GameState):
         chosen_guild = random.randint(0,3)
         self.board["guild"] = {
             "guild_index": chosen_guild,
-            "ability_uses": {i: [] for i in range(1, 5)},
+            "ability_uses": {i: [] for i in range(1, 6)},
             "player_position": 0,
             "automa_position": 0,
             "automa_markers_ready": 1
@@ -323,19 +343,14 @@ class SoloGameState(GameState):
             # objectives are a list of tuples (tile_index, side)
             "scoring": [{"1st": [], "2nd": [], "Other": []} for _ in range(4)],
             "automa_bonus": [0, 0, 0, 0],
+            "finished_opr": False,
+            "opr_remaining": None,
         }
         
         self.player.coins = 6
         self.player.egg_totals["mat_slots"] = 1
         self.player.dragon_hand = self.draw_random_dragon_cards(3)
         self.player.cave_hand = self.draw_random_cave_cards(3)
-
-    def make_copy(self) -> 'GameState':
-        """
-        Returns a deep copy of the current game state.
-        This is useful for undo/redo functionality or saving the game state.
-        """
-        return copy.deepcopy(self)
     
 
 if __name__ == "__main__":

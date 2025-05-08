@@ -6,9 +6,11 @@ CaveNumber = int
 
 # Constants
 PHASE_SETUP = "setup"
-PHASE_BEFORE_PASS = "before_pass"
+PHASE_BEFORE_ACTION = "before_pass"
 PHASE_END_ROUND = "end_round"
-
+PHASE_MAIN_ACTION = "main_action"
+PHASE_END_TURN = "end_turn"
+PHASE_END_GAME = "end_game"
 
 # state conversion functions
 def player_state_to_dict(player_state: PlayerState) -> dict:
@@ -276,6 +278,70 @@ def get_dragon_enticement_options(player_state: PlayerState, dragon_info: dict, 
                 }
     return costs
 
+def can_pay_cost(player_state: PlayerState, cost_dict:dict) -> bool:
+    """
+    Check if the player can pay the specified cost.
+    This is a generic checking function for cost parameters used for effects.
+
+    The cost is a dictionary with the resource names as keys and the amounts as values.
+    """
+    # check each cost in the cost dictionary
+    for name, value in cost_dict.items():
+        if name == "any_resource":
+            if not can_pay_resources(player_state, { "any": value }):
+                return False
+        elif name == "cave_card":
+            # check if the player has enough cave cards in hand
+            if len(player_state.cave_hand) < value:
+                return False
+        elif name == "dragon_card":
+            # check if the player has enough dragon cards in hand
+            if len(player_state.dragon_hand) < value:
+                return False
+        elif name == "egg":
+            # trickiest case, we must check for the location specified
+            amount = value["amount"]
+            location = value["location"]
+            coords = value["coords"] # assume there is a coords key
+            if location == "any":
+                # check if the player has enough eggs in any location
+                available_eggs = get_total_eggs(player_state)
+            elif location == "ortho":
+                # check orthogonally adjacent dragons
+                available_eggs = 0
+                main_cave, main_col = coords
+                mci = CAVE_NAMES.index(main_cave)
+                # check the 4 orthogonal directions
+                # up
+                if mci > 0:
+                    available_eggs += player_state.nested_eggs[CAVE_NAMES[mci-1]][main_col][0]
+                # down
+                if mci < 2:
+                    available_eggs += player_state.nested_eggs[CAVE_NAMES[mci+1]][main_col][0]
+                # left
+                if main_col > 0:
+                    available_eggs += player_state.nested_eggs[main_cave][main_col-1][0]
+                # right
+                if main_col < 3:
+                    available_eggs += player_state.nested_eggs[main_cave][main_col+1][0]
+            elif location == "this_cave":
+                # check the eggs in the specified cave
+                cave_eggs = player_state.nested_eggs[main_cave]
+                available_eggs = sum(eggs for eggs,nests in cave_eggs)
+            # check if the player has enough eggs for the cost
+            if available_eggs < amount:
+                return False
+        elif name == "coin":
+            # check if the player has enough coins for the cost
+            if player_state.coins < value:
+                return False
+        elif name == "choice":
+            # check possible costs to pay
+            # value is a list of cost dictionaries
+            return any(can_pay_cost(player_state, cost) for cost in value)
+    
+    return True
+
 # manipulation functions
 def lay_egg(player_state: PlayerState, coords:tuple) -> None:
     """
@@ -416,7 +482,7 @@ def get_current_player(game_state:GameState) -> PlayerState:
     The current player is the player whose turn it is.
     """
     if isinstance(game_state, SoloGameState):
-        return game_state.player
+        return game_state.player if game_state.current_player == 0 else game_state.automa
     # for multiplayer game, return the current player
     return game_state.players[game_state.current_player]
 
@@ -447,36 +513,178 @@ def progress_game(game_state:GameState) -> GameState:
     If the queue is empty, return the game state as is.
     """
     new_state = copy.deepcopy(game_state) # make a copy of the game state
-    # check game state phase
-    current_phase = new_state.phase
-    if current_phase == PHASE_SETUP:
-        new_event = {"choice": []}
-        # setup phase - player must discard down to 4 total cards
-        # and then choose any 3 resources
-        if len(player.dragon_hand) + len(player.cave_hand) > 4:
-            # discard dragons and caves
-            for dragon in player.dragon_hand:
-                new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
-            for cave in player.cave_hand:
-                new_event["choice"].append({"discard_cave": {"cave": cave}})
-            new_state.event_queue.append({"adv_effects": new_event})
-            return new_state
-        elif sum(player.resources.values()) < 3:
-            # choose resources
-            for resource in player.resources.keys():
-                new_event["choice"].append({"gain_resource": {"type": resource}})
-            new_state.event_queue.append({"adv_effects": new_event})
-            return new_state
-        else:
-            # we are done with the setup phase
-            if isinstance(new_state, SoloGameState):
-                new_state.phase = PHASE_BEFORE_PASS
+    # loop until we find a choice or random event to resolve (or game ends)
+    while True:
+        # check game state phase
+        current_phase = new_state.phase
+        player = get_current_player(new_state) # get the current player
+        if current_phase == PHASE_BEFORE_ACTION:
+            # this is the start of a player's turn,
+            # before they have chosen a main action or passed
+            if new_state.all_players_passed():
+                # all players have passed, so we move to the end of the round
+                new_state.phase = PHASE_END_ROUND
+                new_state.current_player = new_state.round_start_player
+            elif player.passed_this_round:
+                # this player has passed, so we move to the next player
+                if isinstance(new_state, SoloGameState):
+                    new_state.current_player = 1 - new_state.current_player
+                else:
+                    new_state.current_player = (new_state.current_player + 1) % len(new_state.players)
             else:
-                new_state.current_player += 1 # move to the next player
-                if new_state.current_player >= len(new_state.players):
-                    # we are done with the setup phase
-                    new_state.current_player = new_state.round_start_player
-                    new_state.phase = PHASE_BEFORE_PASS
+                # this player has not passed, so we need to give them a choice
+                new_event = get_main_action_choice(new_state, player)
+                if len(new_event["choice"]) > 1:
+                    # add the event to the event queue
+                    new_state.event_queue.append({"adv_effects": new_event})
+                    break
+                elif len(new_event["choice"]) == 1:
+                    # else we can add the event immediately
+                    new_state.event_queue.append(new_event["choice"][0])
+                    break
+                else:
+                    # no choice, so the player must pass
+                    player.passed_this_round = True
+                    new_state.phase = PHASE_END_TURN
+        
+        elif current_phase == PHASE_END_ROUND:
+            # first trigger once per round abilities
+            # in order starting from the round start player
+            # NOTE - Assume solo game for now
+            if not new_state.board["round_tracker"]["finished_opr"]:
+                # check if we need to find once per round abilities
+                if new_state.board["round_tracker"]["opr_remaining"] is None:
+                    player_dragons = get_dragon_list(player, "any")
+                    opr_list = []
+                    for item in player_dragons:
+                        dragon_id, coords = item
+                        if "once_per_round" in DRAGON_CARDS[dragon_id]:
+                            # add the dragon to the list of once per round abilities
+                            opr_list.append((dragon_id, coords))
+                else:
+                    opr_list = new_state.board["round_tracker"]["opr_remaining"]
+                # check if we have any once per round abilities to trigger
+                if len(opr_list) > 0:
+                    # add the event to the event queue
+                    new_event = {"choice": []}
+                    for dragon_id, coords in opr_list:
+                        new_event["choice"].append(
+                            {"opr_option": {
+                                "dragon_id": dragon_id,
+                                "coords": coords,
+                            }}
+                        )
+                    new_state.event_queue.append({"adv_effects": new_event})
+                    break
+                else:
+                    # we are done with the once per round abilities
+                    new_state.board["round_tracker"]["finished_opr"] = True
+            # we are done with the once per round abilities
+            # now score the round objective
+            curr_round = new_state.board["round_tracker"]["round"]
+            score_objective(new_state, curr_round)
+            # now we try moving to the next round
+            if curr_round == 3:
+                # we are done with the game
+                new_state.phase = PHASE_END_GAME
+            else:
+                # move to the next round
+                new_state.phase = PHASE_BEFORE_ACTION
+                new_state.board["round_tracker"]["round"] += 1
+                new_state.board["round_tracker"]["finished_opr"] = False
+                new_state.board["round_tracker"]["opr_remaining"] = None
+                new_state.current_player = new_state.round_start_player
+                # TODO other resetting effects / Automa effects
+        
+        elif current_phase == PHASE_END_TURN:
+            # the player's turn is over, so we check a few things
+            # discard down to 9 coins, cards, and resources if needed
+            player.coins = min(player.coins, 9)
+            if len(player.dragon_hand) + len(player.cave_hand) > 9:
+                # discard dragons and caves
+                new_event = {"choice": []}
+                for dragon in player.dragon_hand:
+                    new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
+                for cave in player.cave_hand:
+                    new_event["choice"].append({"discard_cave": {"cave": cave}})
+                new_state.event_queue.append({"adv_effects": new_event})
+                break
+            if sum(player.resources.values()) > 9:
+                # discard resources
+                new_event = {"choice": []}
+                for resource in player.resources.keys():
+                    if player.resources[resource] > 0:
+                        new_event["choice"].append({"deduct_resources": {"cost": {resource: 1}}})
+                new_state.event_queue.append({"adv_effects": new_event})
+                break
+            # refill card display from decks
+            # this would create a random event
+            for i in range(3):
+                if new_state.board["card_display"]["dragon_cards"][i] is None:
+                    # random event to draw dragon for this slot
+                    new_event = {
+                        "random": {
+                            "event_name": "refill_dragon_display",
+                            "slot": i,
+                            "possible_outcomes": "dragon_deck",
+                        }
+                    }
+                    new_state.event_queue.append(new_event)
+                    break
+                if new_state.board["card_display"]["cave_cards"][i] is None:
+                    # random event to draw cave for this slot
+                    new_event = {
+                        "random": {
+                            "event_name": "refill_cave_display",
+                            "slot": i,
+                            "possible_outcomes": "cave_deck",
+                        }
+                    }
+                    new_state.event_queue.append(new_event)
+                    break
+            # move to the next player
+            if isinstance(new_state, SoloGameState):
+                new_state.current_player = 1 - new_state.current_player
+            else:
+                new_state.current_player = (new_state.current_player + 1) % len(new_state.players)
+            new_state.phase = PHASE_BEFORE_ACTION
+
+        elif current_phase == PHASE_SETUP:
+            new_event = {"choice": []}
+            # setup phase - player must discard down to 4 total cards
+            # and then choose any 3 resources
+            if len(player.dragon_hand) + len(player.cave_hand) > 4:
+                # discard dragons and caves
+                for dragon in player.dragon_hand:
+                    new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
+                for cave in player.cave_hand:
+                    new_event["choice"].append({"discard_cave": {"cave": cave}})
+                new_state.event_queue.append({"adv_effects": new_event})
+                break
+            elif sum(player.resources.values()) < 3:
+                # choose resources
+                for resource in player.resources.keys():
+                    new_event["choice"].append({"gain_resource": {"type": resource}})
+                new_state.event_queue.append({"adv_effects": new_event})
+                break
+            else:
+                # we are done with the setup phase
+                if isinstance(new_state, SoloGameState):
+                    new_state.phase = PHASE_BEFORE_ACTION
+                else:
+                    new_state.current_player += 1 # move to the next player
+                    if new_state.current_player >= len(new_state.players):
+                        # we are done with the setup phase
+                        new_state.current_player = new_state.round_start_player
+                        new_state.phase = PHASE_BEFORE_ACTION
+        
+        elif current_phase == PHASE_END_GAME:
+            # we are done with the game, so we need to score the game
+            # and return the final game state
+            # NOTE - assume we have a SoloGameState for now
+            # score the game for the player and automa
+            score_game(new_state)
+            break # we are done with the game
     
     # return the new state, which should either
     # be in a Halted or Terminal state
@@ -484,41 +692,247 @@ def progress_game(game_state:GameState) -> GameState:
 
 def apply_action(game_state:GameState, action:dict) -> GameState:
     """
-    Apply the given action to the game_state and return a new game state
-    from after the action is applied.
+    Apply the given action to the game_state in place and return the game state.
     """
-    new_game_state = copy.deepcopy(game_state) # make a copy of the game state
-    player = get_current_player(new_game_state) # get the current player
+    player = get_current_player(game_state) # get the current player
 
-    # check for actions by phase
-    current_phase = new_game_state.phase
-    if current_phase == PHASE_SETUP:
-        # setup phase - player must discard down to 4 total cards
-        # and then choose any 3 resources
-        if "discard_dragon" in action:
-            # discard dragon
-            dragon = action["discard_dragon"]["dragon"]
-            discard_dragon(player, new_game_state, dragon)
-        elif "discard_cave" in action:
-            # discard cave
-            cave = action["discard_cave"]["cave"]
-            discard_cave(player, new_game_state, cave)
-        elif "gain_resource" in action:
-            # gain resources
-            resource = action["gain_resource"]["type"]
-            player.resources[resource] += 1
-            # check if the player has already chosen 3 resources
-            if sum(player.resources.values()) >= 3:
-                if isinstance(new_game_state, SoloGameState):
-                    new_game_state.phase = PHASE_BEFORE_PASS
-                else:
-                    new_game_state.current_player += 1 # move to the next player
-                    if new_game_state.current_player >= len(new_game_state.players):
-                        # we are done with the setup phase
-                        new_game_state.current_player = new_game_state.round_start_player
-                        new_game_state.phase = PHASE_BEFORE_PASS
+    # check the next action
+    # we need to process advanced effects if they exist
+    # otherwise we extract the action directly
+    if "adv_effects" in action:
+        # check for other parameters and variables for this action
+        if "max_uses" in action:
+            adjusted_action = copy.deepcopy(action)
+            max_uses = adjusted_action.pop("max_uses")
+            cloned_single_action = copy.deepcopy(adjusted_action)
+            if max_uses == "guild_markers":
+                # special case where the amount is equal to
+                # the number of guild markers placed by the player
+                guild_ability_uses = game_state.board["guild"]["ability_uses"]
+                max_uses = 0
+                for lst in guild_ability_uses.values():
+                    max_uses += lst.count(game_state.current_player)
+            # now we adjust the queue with a reduced max_uses count
+            # copy of this action and a single of this action after it
+            if max_uses > 1:
+                # add the adjusted action to the queue
+                adjusted_action["max_uses"] = max_uses - 1
+                game_state.event_queue.append(adjusted_action)
+            if max_uses > 0:
+                # add the single action to the queue
+                game_state.event_queue.append(cloned_single_action)
+            return game_state
+        elif "condition" in action:
+            # the condition must be true for the action to be applied
+            if condition_is_met(game_state, action["condition"], player):
+                # the condition is met, so we can apply the action
+                adjusted_action = copy.deepcopy(action)
+                adjusted_action.pop("condition")
+                game_state.event_queue.append(adjusted_action)
+            return game_state
+        elif "cost" in action:
+            # the adv_effect action has a cost, so we need to check if the player can pay it
+            if can_pay_cost(player, action["cost"]):
+                # the player can pay the cost, so we must
+                # now find all valid payments for the cost
+                payments_possible = get_all_payments(player, action["cost"])
+                # add the payments to the event queue
+                new_event = {"choice": [{"skip": True}]}
+                adjusted_action = copy.deepcopy(action)
+                adjusted_action.pop("cost")
+                for payment in payments_possible:
+                    new_event["choice"].append(
+                        {
+                            "make_payment": {
+                                "cost": payment,
+                                "action": adjusted_action,
+                            }
+                        }
+                    )
+                # add the event to the event queue
+                game_state.event_queue.append({"adv_effects": new_event})
+            return game_state
+        else:
+            # no other effects, so extract and add the action
+            action_effect = action["adv_effects"]
+    else:
+        action_effect = action
 
-    return new_game_state
+    # now process the raw action effect
+    if "sequence" in action_effect:
+        # we have a sequence of actions to apply
+        # check for some special cases
+        invalid = False
+        for seq_action in action_effect["sequence"]:
+            if "tuck_from" in seq_action and seq_action["tuck_from"]["L1"] == "hand":
+                # the player must have at least 1 dragon in hand
+                if len(player.dragon_hand) == 0:
+                    invalid = True
+                    break
+            elif "cache_from" in seq_action and seq_action["cache_from"]["L1"] == "player_supply":
+                # the player must have at least 1 resource in supply
+                if sum(player.resources.values()) == 0:
+                    invalid = True
+                    break
+        if not invalid:
+            # add the sequence of actions to the event queue
+            # in reverse order since it is like a stack
+            for seq_action in reversed(action_effect["sequence"]):
+                game_state.event_queue.append(seq_action)
+    elif "choice" in action_effect:
+        # extract the choice from the action
+        choice = action_effect["choice"]
+        game_state.current_choice = choice
+    elif "random" in action_effect:
+        # extract the random event from the action
+        random_event = action_effect["random"]
+        game_state.current_random_event = random_event
+    else:
+        # no other effects, so we can handle the action directly
+        handle_simple_event(game_state, action_effect, player)
+
+    return game_state
+
+def get_all_payments(player:PlayerState, cost_dict:dict) -> list[dict]:
+    """
+    Get all possible payments for the given cost dictionary.
+    The cost is a dictionary with the resource names as keys and the amounts as values.
+    """
+    # check each cost in the cost dictionary
+    payments = []
+    for name, value in cost_dict.items():
+        if name == "choice":
+            # check possible costs to pay
+            # value is a list of cost dictionaries
+            # assume this is the first item in cost_dict
+            for payment in value:
+                payments.extend(get_all_payments(player, payment))
+        elif name == "any_resource":
+            # get all resource payments for the cost
+            # a player can exchange 2 of any resource for 1 of any type
+            if can_pay_resources(player, { "any": value }):
+                payments.append({ "any": value })
+        elif name == "cave_card":
+            # check if the player has enough cave cards in hand
+            if len(player.cave_hand) >= value:
+                payments.append({ "cave_card": value })
+        elif name == "dragon_card":
+            # check if the player has enough dragon cards in hand
+            if len(player.dragon_hand) >= value:
+                payments.append({ "dragon_card": value })
+        elif name == "egg":
+            # check if the player has enough eggs for the cost
+            if can_pay_cost(player, { "egg": value }):
+                payments.append({ "egg": value })
+        elif name == "coin":
+            # check if the player has enough coins for the cost
+            if player.coins >= value:
+                payments.append({ "coin": value })
+    
+    return payments
+
+def condition_is_met(game_state:GameState, condition:dict, player:PlayerState, coords:tuple) -> bool:
+    """
+    Check if the given condition is met for the player.
+    The condition is a dictionary with the condition name and the parameters.
+    The player is the player who triggered the event, if applicable.
+    Assumes the condition is valid and can be checked.
+
+    The conditions are basic game conditions that are not tied to a specific phase
+    or action. They are used to check if a specific condition is met for the game state.
+    The input coords is a tuple (cave:str, col:int) that specifies the location of the condition.
+    """
+    # check cases
+    if "min_dragons_in_cave" in condition:
+        # check if the player has at least the specified number of dragons in the cave
+        cave_name = condition["min_dragons_in_cave"]["cave"]
+        if cave_name == "this_cave":
+            cave_name, col = coords
+        include_text = condition["min_dragons_in_cave"].get("include", "any")
+        count = 0
+        for dragon_id in player.dragons_played[cave_name]:
+            if dragon_id is not None:
+                if include_text == "any":
+                    count += 1
+                    continue
+                dragon = DRAGON_CARDS[dragon_id]
+                if dragon["personality"] == include_text or dragon["size"] == include_text:
+                    # check if the dragon is the same as the one in the condition
+                    count += 1
+        return (count >= condition["min_dragons_in_cave"]["amount"])
+    elif "max_dragons_in_cave" in condition:
+        # check if the player has at most the specified number of dragons in the cave
+        cave_name = condition["max_dragons_in_cave"]["cave"]
+        if cave_name == "this_cave":
+            cave_name, col = coords
+        include_text = condition["max_dragons_in_cave"].get("include", "any")
+        count = 0
+        for dragon_id in player.dragons_played[cave_name]:
+            if dragon_id is not None:
+                if include_text == "any":
+                    count += 1
+                    continue
+                dragon = DRAGON_CARDS[dragon_id]
+                if dragon["personality"] == include_text or dragon["size"] == include_text:
+                    # check if the dragon is the same as the one in the condition
+                    count += 1
+        return (count <= condition["max_dragons_in_cave"]["amount"])
+    elif "min_dragons_this_column" in condition:
+        # check if the player has at least the specified number of dragons in the column
+        this_cave, col = coords
+        count = 0
+        include_text = condition["min_dragons_this_column"].get("include", "any")
+        for cave_name in CAVE_NAMES:
+            dragon_id = player.dragons_played[cave_name][col]
+            if dragon_id is not None:
+                if include_text == "any":
+                    count += 1
+                    continue
+                dragon = DRAGON_CARDS[dragon_id]
+                if dragon["personality"] == include_text or dragon["size"] == include_text:
+                    # check if the dragon is the same as the one in the condition
+                    count += 1
+        return (count >= condition["min_dragons_this_column"]["amount"])
+    elif "min_spaces_excavated" in condition:
+        # check if the player has at least the specified number of spaces excavated
+        cave_name = condition["min_spaces_excavated"]["cave"]
+        if cave_name == "this_cave":
+            cave_name, col = coords
+        count = sum(1 for i in player.caves_played[cave_name] if i is not None)
+        return (count >= condition["min_spaces_excavated"]["amount"])
+    elif "this_position" in condition:
+        # check if the column is the same as the one in the condition
+        return (coords[1] == condition["this_position"])
+    elif "this_col_full" in condition:
+        # check if the column is full
+        this_cave, col = coords
+        count = 0
+        for cave_name in CAVE_NAMES:
+            if player.dragons_played[cave_name][col] is not None:
+                count += 1
+        return (count == 3)
+    elif "min_guild_markers" in condition:
+        player_num = game_state.current_player
+        guild_markers = game_state.board["guild"]["ability_uses"]
+        num_marks = 0
+        for lst in guild_markers.values():
+            num_marks += lst.count(player_num)
+            if num_marks >= condition["min_guild_markers"]:
+                return True
+        return False
+
+    elif "and" in condition:
+        return all(
+            condition_is_met(game_state, cond, player, coords)
+            for cond in condition["and"]
+        )
+    elif "or" in condition:
+        return any(
+            condition_is_met(game_state, cond, player, coords)
+            for cond in condition["or"]
+        )
+    else:
+        raise ValueError(f"Unknown condition: {condition}")
 
 def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=None) -> None:
     """
@@ -613,6 +1027,8 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
     elif "swap_dragons" in event:
         # player chooses two dragons on their mat to swap
         handle_swap_dragons(game_state, event, player)
+    else:
+        raise ValueError(f"Unknown event: {event}")
 
 def handle_swap_dragons(game_state:GameState, event:dict, player:PlayerState) -> None:
     """
@@ -1535,7 +1951,7 @@ if __name__ == "__main__":
     # Testing the functions
     game = SoloGameState()
     game.create_game()
-    while game.phase != PHASE_BEFORE_PASS:
+    while game.phase != PHASE_BEFORE_ACTION:
         a = get_available_actions(game)
         print("Action list:")
         for action in a:

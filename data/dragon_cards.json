@@ -1498,8 +1498,7 @@
                 "amount": 3,
                 "condition": {
                     "min_dragons_this_column": {
-                        "amount": 3,
-                        "include": "any_dragon"
+                        "amount": 3
                     }
                 }
             }
