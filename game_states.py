@@ -6,17 +6,24 @@ import typing
 
 
 # Constants for the game
+PHASE_SETUP = "setup"
+PHASE_BEFORE_ACTION = "before_pass"
+PHASE_END_ROUND = "end_round"
+PHASE_MAIN_ACTION = "main_action"
+PHASE_END_TURN = "end_turn"
+PHASE_END_GAME = "end_game"
+
 RESOURCES = ["meat", "gold", "crystal", "milk"]
 CAVE_NAMES = ["crimson_cavern", "golden_grotto", "amethyst_abyss"]
 
 GUILD_SPACE_EFFECTS = [
-    {"brown_space": "any"}, # space 0
+    {"brown_space": -1}, # space 0
     {"lay_egg": {"location": "any"}}, # space 1
     {"gain_resource": {"type": "meat"}}, # space 2
     {"gain_dragon": {"source": "any"}}, # space 3
     {"gain_cave": {"source": "any"}}, # space 4
     {"gain_resource": {"type": "crystal"}}, # space 5
-    {"brown_space": "any"}, # space 6
+    {"brown_space": -1}, # space 6
     {"lay_egg": {"location": "any"}}, # space 7
     {"gain_resource": {"type": "gold"}}, # space 8
     {"gain_dragon": {"source": "any"}}, # space 9
@@ -148,6 +155,22 @@ class PlayerState:
         }
         self.adventurer_position = None
         self.passed_this_round = False
+    
+    def __str__(self):
+        "Returns a string representation of the player state, with newlines and tabs for formatting."
+        return (
+            f"Player State:\n"
+            f"\tDragon Hand: {self.dragon_hand}\n"
+            f"\tCave Hand: {self.cave_hand}\n"
+            f"\tResources: {self.resources}\n"
+            f"\tEgg Totals: {self.egg_totals}\n"
+            f"\tDragons Played: {self.num_dragons_played}\n"
+            f"\tScore: {self.score}\n"
+            f"\tGuild Markers: {self.guild_markers}\n"
+            f"\tCoins: {self.coins}\n"
+            f"\tCaves Played: {self.caves_played}\n"
+            f"\tDragons Played: {self.dragons_played}\n"
+        )
 
 class AutomaState:
     """
@@ -181,6 +204,16 @@ class AutomaState:
         self.reset_decision_deck()
         self.passed_this_round = False
 
+    def __str__(self):
+        "Returns a string representation of the automa state, with newlines and tabs for formatting."
+        return (
+            f"Automa State:\n"
+            f"\tDragons: {self.dragons}\n"
+            f"\tCaves: {self.caves}\n"
+            f"\tScore: {self.score}\n"
+            f"\tDifficulty: {AutomaState.difficulty_names[self.difficulty]}\n"
+        )
+
     def reset_decision_deck(self):
         """
         Resets the automa's deck based on the current difficulty level.
@@ -196,7 +229,7 @@ class GameState:
     """
     def __init__(self):
         self.turn = 0
-        self.phase = "setup"
+        self.phase = PHASE_SETUP
         self.board = {}
         self.dragon_deck = list(range(1, 184))  # Set of dragon cards IDs
         self.cave_deck = list(range(1, 76)) # Cave cards IDs
@@ -212,6 +245,10 @@ class GameState:
         This is useful for undo/redo functionality or saving the game state.
         """
         return copy.deepcopy(self)
+    
+    def is_halted(self) -> bool:
+        "Checks if the game is halted. Either we have a choice, a random event, or the game is over."
+        return self.current_choice is not None or self.current_random_event is not None or self.phase == PHASE_END_GAME
 
     def draw_random_dragon_cards(self, num:int=1) -> typing.List[int]:
         """
@@ -306,6 +343,22 @@ class SoloGameState(GameState):
         super().__init__()
         self.automa_difficulty = automa_difficulty
         self.automa = AutomaState(self.automa_difficulty)
+
+    def __str__(self):
+        "Returns a string representation of the game state, with newlines and tabs for formatting."
+        return (
+            f"Game State:\n"
+            f"\tTurn: {self.turn}\n"
+            f"\tPhase: {self.phase}\n"
+            f"\tDragon Deck: {self.dragon_deck}\n"
+            f"\tCave Deck: {self.cave_deck}\n"
+            f"\tDragon Discard: {self.dragon_discard}\n"
+            f"\tCave Discard: {self.cave_discard}\n"
+            f"\tEvent Queue: {self.event_queue}\n"
+            f"\tCurrent Choice: {self.current_choice}\n"
+            f"\tCurrent Random Event: {self.current_random_event}\n"
+            f"{self.player}\n{self.automa}"
+        )
 
     def all_players_passed(self):
         return self.player.passed_this_round and self.automa.passed_this_round
