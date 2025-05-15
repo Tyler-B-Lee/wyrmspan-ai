@@ -27,7 +27,7 @@
                 "cache_from": {
                     "type": "any",
                     "L1": "general_supply",
-                    "L2": "any_dragon"
+                    "L2": "any"
                 }
             }
         }
@@ -41,7 +41,7 @@
                 "cache_from": {
                     "type": "any",
                     "L1": "general_supply",
-                    "L2": "any_dragon"
+                    "L2": "any"
                 }
             }
         }

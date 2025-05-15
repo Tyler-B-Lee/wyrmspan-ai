@@ -3,10 +3,15 @@ import copy
 import json
 import random
 import typing
+import logging
 
+# Configure logging
+# logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 # Constants for the game
 PHASE_SETUP = "setup"
+PHASE_ROUND_START = "round_start"
 PHASE_BEFORE_ACTION = "before_pass"
 PHASE_END_ROUND = "end_round"
 PHASE_MAIN_ACTION = "main_action"
@@ -15,6 +20,8 @@ PHASE_END_GAME = "end_game"
 
 RESOURCES = ["meat", "gold", "crystal", "milk"]
 CAVE_NAMES = ["crimson_cavern", "golden_grotto", "amethyst_abyss"]
+DRAGON_SIZES = ["Hatchling", "Small", "Medium", "Large"]
+DRAGON_PERSONALITIES = ["Helpful", "Shy", "Playful", "Aggressive"]
 
 GUILD_SPACE_EFFECTS = [
     {"brown_space": -1}, # space 0
@@ -133,6 +140,11 @@ class PlayerState:
             "golden_grotto": [None, None, None, None],
             "amethyst_abyss": [None, None, None, None],
         }
+        self.hatchling_grown = { # hatchlings grown in each cave
+            "crimson_cavern": [None, None, None, None],
+            "golden_grotto": [None, None, None, None],
+            "amethyst_abyss": [None, None, None, None],
+        }
         self.cached_resources = { # cached resources for the player
             "crimson_cavern": [collections.defaultdict(int) for _ in range(4)],
             "golden_grotto": [collections.defaultdict(int) for _ in range(4)],
@@ -157,11 +169,13 @@ class PlayerState:
         self.passed_this_round = False
     
     def __str__(self):
-        "Returns a string representation of the player state, with newlines and tabs for formatting."
+        """Returns a string representation of the player state, with newlines and tabs for formatting."""
+        dragon_names = [(dragon_id, DRAGON_CARDS[dragon_id]["name"]) for dragon_id in self.dragon_hand]
+        cave_info = [(cave_id, CAVE_CARDS[cave_id]["text"]) for cave_id in self.cave_hand]
         return (
             f"Player State:\n"
-            f"\tDragon Hand: {self.dragon_hand}\n"
-            f"\tCave Hand: {self.cave_hand}\n"
+            f"\tDragon Hand: {dragon_names}\n"
+            f"\tCave Hand: {cave_info}\n"
             f"\tResources: {self.resources}\n"
             f"\tEgg Totals: {self.egg_totals}\n"
             f"\tDragons Played: {self.num_dragons_played}\n"
@@ -170,6 +184,10 @@ class PlayerState:
             f"\tCoins: {self.coins}\n"
             f"\tCaves Played: {self.caves_played}\n"
             f"\tDragons Played: {self.dragons_played}\n"
+            f"\tCached Resources: {self.cached_resources}\n"
+            f"\tTucked Dragons: {self.tucked_dragons}\n"
+            f"\tNested Eggs: {self.nested_eggs}\n"
+            f"\tTimes Explored: {self.times_explored}\n"
         )
 
 class AutomaState:
@@ -205,10 +223,11 @@ class AutomaState:
         self.passed_this_round = False
 
     def __str__(self):
-        "Returns a string representation of the automa state, with newlines and tabs for formatting."
+        """Returns a string representation of the automa state, with newlines and tabs for formatting."""
+        dragon_names = [(dragon_id, DRAGON_CARDS[dragon_id]["name"]) for dragon_id in self.dragons]
         return (
             f"Automa State:\n"
-            f"\tDragons: {self.dragons}\n"
+            f"\tDragons: {dragon_names}\n"
             f"\tCaves: {self.caves}\n"
             f"\tScore: {self.score}\n"
             f"\tDifficulty: {AutomaState.difficulty_names[self.difficulty]}\n"
@@ -227,7 +246,7 @@ class GameState:
     This includes the current turn, phase, players, board state,
     deck, discard pile, and an event queue for handling game events.
     """
-    def __init__(self):
+    def __init__(self, allowed_guilds=(0,1,3), ending_round=4):
         self.turn = 0
         self.phase = PHASE_SETUP
         self.board = {}
@@ -235,9 +254,11 @@ class GameState:
         self.cave_deck = list(range(1, 76)) # Cave cards IDs
         self.dragon_discard = []  # Discard pile for dragon cards
         self.cave_discard = []  # Discard pile for cave cards
-        self.event_queue = collections.deque()  # Use deque for the event queue
+        self.event_queue = []  # Use list for the event queue
         self.current_choice = None  # Current choice for the player
         self.current_random_event = None  # Current random event for the game
+        self.allowed_guilds = allowed_guilds
+        self.ending_round = ending_round
     
     def make_copy(self) -> 'GameState':
         """
@@ -295,6 +316,28 @@ class GameState:
         """
         return all(player.passed_this_round for player in self.players)
 
+    def log_card_display(self):
+        """
+        Logs the current state of the card display.
+        This includes the dragon and cave cards on display.
+        """
+        logger.info("--- Card Display ---")
+        display_list = []
+        for card in self.board['card_display']['dragon_cards']:
+            if card is not None:
+                display_list.append((card, DRAGON_CARDS[card]['name']))
+            else:
+                display_list.append((card, "---"))
+        logger.info(f"- Dragon Cards: {display_list}")
+        display_list = []
+        for card in self.board['card_display']['cave_cards']:
+            if card is not None:
+                display_list.append((card, CAVE_CARDS[card]['text']))
+            else:
+                display_list.append((card, "---"))
+        logger.info(f"- Cave Cards: {display_list}")
+        logger.info("---------------------")
+
     def create_game(self, num_players=2):
         "Initializes a new game state. Includes random generation of objectives."
         self.players = [PlayerState() for _ in range(num_players)]
@@ -339,8 +382,8 @@ class SoloGameState(GameState):
     """
     ignore_cards = [47,103,114,168,170]
 
-    def __init__(self, automa_difficulty=0):
-        super().__init__()
+    def __init__(self, automa_difficulty=0, allowed_guilds=(0,1,3), ending_round=4):
+        super().__init__(allowed_guilds, ending_round)
         self.automa_difficulty = automa_difficulty
         self.automa = AutomaState(self.automa_difficulty)
 
@@ -365,13 +408,15 @@ class SoloGameState(GameState):
     
     def create_game(self, num_players=2):
         "Initializes a new automa game state. Includes random generation of objectives."
+        logger.warning("Creating a new SoloGameState with 2 players.")
         self.player = PlayerState()
         self.round_start_player = 0
         self.current_player = 0
         
         # initialize board parts
         # Guild Board
-        chosen_guild = random.randint(0,3)
+        chosen_guild = random.choice(self.allowed_guilds)
+        logger.info(f"Chosen guild: {chosen_guild} ({GUILD_TILES[chosen_guild]['name']})")
         self.board["guild"] = {
             "guild_index": chosen_guild,
             "ability_uses": {i: [] for i in range(1, 6)},
@@ -389,21 +434,29 @@ class SoloGameState(GameState):
             "dragon_cards": board_d_cards,
             "cave_cards": board_c_cards,
         }
+        self.log_card_display()
         # Round Tracker Board
+        logger.info("Drawing objectives:")
+        objectives = draw_random_objectives(is_solo=True)
+        for (idx, side) in objectives:
+            logger.info(f"Objective Tile {idx} Side {side}:\n\t{OBJECTIVE_TILES[idx][side]['text']}")
         self.board["round_tracker"] = {
             "round": 0,
-            "objectives": draw_random_objectives(is_solo=True),
+            "objectives": objectives,
             # objectives are a list of tuples (tile_index, side)
             "scoring": [{"1st": [], "2nd": [], "Other": []} for _ in range(4)],
             "automa_bonus": [0, 0, 0, 0],
             "finished_opr": False,
             "opr_remaining": None,
+            "egg_given": False,
         }
         
         self.player.coins = 6
         self.player.egg_totals["mat_slots"] = 1
+        self.player.score = 1
         self.player.dragon_hand = self.draw_random_dragon_cards(3)
         self.player.cave_hand = self.draw_random_cave_cards(3)
+        logger.info(self.player)
     
 
 if __name__ == "__main__":

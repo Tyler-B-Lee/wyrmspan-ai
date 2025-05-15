@@ -3315,7 +3315,7 @@
         "milk_cost": 0,
         "once_per_round": {
             "any_resource_decision": {
-                "amount": "agg_this_cave",
+                "remaining_resources": "agg_this_cave",
                 "limits": {
                     "cache_here": 2,
                     "keep": 4
@@ -3423,7 +3423,7 @@
         "milk_cost": 0,
         "when_played": {
             "any_resource_decision": {
-                "amount": 2,
+                "remaining_resources": 2,
                 "limits": {
                     "keep": 1,
                     "cache_any": 1
