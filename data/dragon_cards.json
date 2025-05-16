@@ -4963,8 +4963,8 @@
         "when_played": {
             "adv_effects": {
                 "choice": [
-                    {"other_ability_on_mat": "if_activated"},
-                    {"other_ability_on_mat": "once_per_round"}
+                    {"other_ability_on_mat": {"type": "if_activated"}},
+                    {"other_ability_on_mat": {"type": "once_per_round"}}
                 ]
             }
         }

@@ -16,6 +16,7 @@ PHASE_BEFORE_ACTION = "before_pass"
 PHASE_END_ROUND = "end_round"
 PHASE_MAIN_ACTION = "main_action"
 PHASE_END_TURN = "end_turn"
+PHASE_FINAL_SCORING = "final_scoring"
 PHASE_END_GAME = "end_game"
 
 RESOURCES = ["meat", "gold", "crystal", "milk"]
@@ -167,6 +168,7 @@ class PlayerState:
         }
         self.adventurer_position = None
         self.passed_this_round = False
+        self.const_end_game_abilities = []
     
     def __str__(self):
         """Returns a string representation of the player state, with newlines and tabs for formatting."""
@@ -221,6 +223,7 @@ class AutomaState:
         self.difficulty = difficulty
         self.reset_decision_deck()
         self.passed_this_round = False
+        self.const_end_game_abilities = []
 
     def __str__(self):
         """Returns a string representation of the automa state, with newlines and tabs for formatting."""
@@ -259,6 +262,7 @@ class GameState:
         self.current_random_event = None  # Current random event for the game
         self.allowed_guilds = allowed_guilds
         self.ending_round = ending_round
+        self.finished_end_game_abilities = False
     
     def make_copy(self) -> 'GameState':
         """
@@ -321,22 +325,30 @@ class GameState:
         Logs the current state of the card display.
         This includes the dragon and cave cards on display.
         """
-        logger.info("--- Card Display ---")
+        logger.info(self.get_card_display_string())
+
+    def get_card_display_string(self) -> str:
+        """
+        Returns a string representation of the card display.
+        This includes the dragon and cave cards on display.
+        """
+        out = "--- Card Display ---\n"
         display_list = []
         for card in self.board['card_display']['dragon_cards']:
             if card is not None:
                 display_list.append((card, DRAGON_CARDS[card]['name']))
             else:
                 display_list.append((card, "---"))
-        logger.info(f"- Dragon Cards: {display_list}")
+        out += f"- Dragon Cards: {display_list}\n"
         display_list = []
         for card in self.board['card_display']['cave_cards']:
             if card is not None:
                 display_list.append((card, CAVE_CARDS[card]['text']))
             else:
                 display_list.append((card, "---"))
-        logger.info(f"- Cave Cards: {display_list}")
-        logger.info("---------------------")
+        out += f"- Cave Cards: {display_list}\n"
+        out += "---------------------"
+        return out
 
     def create_game(self, num_players=2):
         "Initializes a new game state. Includes random generation of objectives."
@@ -389,17 +401,15 @@ class SoloGameState(GameState):
 
     def __str__(self):
         "Returns a string representation of the game state, with newlines and tabs for formatting."
+        chosen_guild = self.board["guild"]["guild_index"]
         return (
             f"Game State:\n"
             f"\tTurn: {self.turn}\n"
             f"\tPhase: {self.phase}\n"
-            f"\tDragon Deck: {self.dragon_deck}\n"
-            f"\tCave Deck: {self.cave_deck}\n"
             f"\tDragon Discard: {self.dragon_discard}\n"
             f"\tCave Discard: {self.cave_discard}\n"
             f"\tEvent Queue: {self.event_queue}\n"
-            f"\tCurrent Choice: {self.current_choice}\n"
-            f"\tCurrent Random Event: {self.current_random_event}\n"
+            f"\tGuild Board: {self.board['guild']} ({GUILD_TILES[chosen_guild]['name']})\n"
             f"{self.player}\n{self.automa}"
         )
 
@@ -453,7 +463,6 @@ class SoloGameState(GameState):
         
         self.player.coins = 6
         self.player.egg_totals["mat_slots"] = 1
-        self.player.score = 1
         self.player.dragon_hand = self.draw_random_dragon_cards(3)
         self.player.cave_hand = self.draw_random_cave_cards(3)
         logger.info(self.player)

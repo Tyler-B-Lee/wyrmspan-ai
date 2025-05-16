@@ -1,13 +1,7 @@
-import logging
-logging.basicConfig(
-    filename='file.log',
-    level=logging.DEBUG,
-    format='%(asctime)s:%(levelname)s:%(message)s',
-    filemode='w'
-)
+from game_states import *
+
 logger = logging.getLogger(__name__)
 
-from game_states import *
 import itertools
 from typing import Union
 import math
@@ -254,6 +248,8 @@ def get_dragon_enticement_options(player_state: PlayerState, dragon_info: dict, 
         for resource in resource_cost_dict:
             new_cost = resource_cost_dict.copy()
             new_cost[resource] -= 1
+            if new_cost[resource] <= 0:
+                del new_cost[resource]
             # check if the player has enough resources for the cost
             if can_pay_resources(player_state, new_cost):
                 costs.append(new_cost)
@@ -270,6 +266,22 @@ def get_dragon_enticement_options(player_state: PlayerState, dragon_info: dict, 
     
     # now we check other possible costs and ajust the current costs
     if discount != "free":
+        # check egg cost
+        if dragon_info["egg_cost"] > 0:
+            if dragon_info["egg_cost"] > get_total_eggs(player_state):
+                # we cannot pay any previous costs
+                logger.debug("\t\tPlayer cannot afford the egg cost")
+                costs = []
+            for cost in costs:
+                # add an egg to each remaining cost
+                cost["egg"] = {
+                    "amount": dragon_info["egg_cost"],
+                    "location": "any"
+                }
+            if discount == "1off" and can_pay_resources(player_state, resource_cost_dict):
+                # player can pay 1 less egg cost (which we assume is 1 at most)
+                logger.debug("\t\tPlayer can pay 1 less egg cost")
+                costs.append(resource_cost_dict)
         # check coin cost
         effective_coin_cost = dragon_info["coin_cost"]
         if discount == "none":
@@ -281,16 +293,7 @@ def get_dragon_enticement_options(player_state: PlayerState, dragon_info: dict, 
             logger.debug("\t- Coin cost: %s", effective_coin_cost)
             for cost in costs:
                 cost["coin"] = effective_coin_cost
-        # check egg cost
-        if dragon_info["egg_cost"] > 0:
-            if dragon_info["egg_cost"] > get_total_eggs(player_state):
-                logger.debug("\t\tPlayer cannot afford the egg cost")
-                return []
-            for cost in costs:
-                cost["egg"] = {
-                    "amount": dragon_info["egg_cost"],
-                    "location": "any"
-                }
+                
     logger.debug("\t- Final costs: %s", costs)
     return costs
 
@@ -369,7 +372,6 @@ def lay_egg(player_state: PlayerState, coords:tuple) -> None:
     if cave_name != "mat_slots":
         player_state.nested_eggs[cave_name][col][0] += 1 # increment the number of eggs laid
     player_state.egg_totals[cave_name] += 1 # increment the total number of eggs laid
-    player_state.score += 1 # increment the score for the player
     logger.info("> Player laid an egg at %s", coords)
 
 def pay_egg(player_state: PlayerState, coords:tuple) -> None:
@@ -382,7 +384,6 @@ def pay_egg(player_state: PlayerState, coords:tuple) -> None:
     if cave_name != "mat_slots":
         player_state.nested_eggs[cave_name][col][0] -= 1 # decrement the number of eggs laid
     player_state.egg_totals[cave_name] -= 1 # decrement the total number of eggs laid
-    player_state.score -= 1 # decrement the score for the player
     logger.info("> Player paid an egg from %s", coords)
 
 def discard_dragon(player_state: PlayerState, game_state: GameState, dragon: DragonNumber) -> None:
@@ -427,6 +428,7 @@ def cache_resource(player_state: PlayerState, game_state:GameState, resource:str
     player_state.cached_resources[cave_name][col][resource] += 1 # increment the cached resource
     player_state.score += 1 # increment the score for the player
     logger.info(f"> Cached {resource} at {coords}")
+    logger.info(f"\tPlayer gains 1 VP for caching {resource}")
     # check for hatchling
     dragon_info = DRAGON_CARDS[player_state.dragons_played[cave_name][col]]
     if "on_feed" in dragon_info:
@@ -465,6 +467,7 @@ def tuck_dragon(player_state: PlayerState, game_state:GameState, dragon: DragonN
     player_state.tucked_dragons[cave_name][col].append(dragon) # add the dragon to the tucked dragons
     player_state.score += 1 # increment the score for the player
     logger.info(f"> Tucked dragon {dragon} at {coords}")
+    logger.info(f"\tPlayer gains 1 VP for tucking a dragon")
     # check for hatchling
     dragon_info = DRAGON_CARDS[player_state.dragons_played[cave_name][col]]
     if "on_feed" in dragon_info:
@@ -504,7 +507,7 @@ def excavate_cave(player_state: PlayerState, game_state:GameState, event:dict, c
     cave_effect = CAVE_CARDS[cave_id]["when_played"]
     if index_to_excavate == 3:
         # we must check if the player can do the 4th space exchange
-        if len(player.dragon_hand) + len(player.cave_hand) + sum(player.resources.values()) >= 3:
+        if len(player_state.dragon_hand) + len(player_state.cave_hand) + sum(player_state.resources.values()) >= 3:
             # add the cave effect to the event queue
             logger.info("\tPlayer can perform the 4th space exchange")
             new_event = {
@@ -535,6 +538,7 @@ def place_dragon(player_state: PlayerState, game_state:GameState, coords:tuple, 
     if dragon_info["size"] == "Hatchling":
         player_state.hatchling_grown[cave_loc_name][index_to_place] = False
     logger.info(f"> Placed dragon {dragon_id} ({dragon_info['name']}) at {coords}")
+    logger.info(f"\t> Player gains {dragon_info['VP']} VP")
 
     # add effects from dragon to the event queue
     dragon_effect = dragon_info.get("when_played", None)
@@ -759,7 +763,7 @@ def progress_game(game_state:GameState) -> GameState:
             # now we try moving to the next round
             if (curr_round + 1) == game_state.ending_round:
                 # we are done with the game
-                game_state.phase = PHASE_END_GAME
+                game_state.phase = PHASE_FINAL_SCORING
             else:
                 # move to the next round
                 game_state.phase = PHASE_ROUND_START
@@ -867,13 +871,63 @@ def progress_game(game_state:GameState) -> GameState:
                         game_state.current_player = game_state.round_start_player
                         game_state.phase = PHASE_BEFORE_ACTION
         
+        elif current_phase == PHASE_FINAL_SCORING:
+            # The final round is over and we are scoring the game
+            # NOTE - assume we have a SoloGameState for now
+            logger.info("Phase: PHASE_SCORING")
+            # check for 
+            if len(current_player_obj.const_end_game_abilities) > 0:
+                # add the event to the event queue
+                logger.info(">> Adding end game abilities to event queue")
+                for ability in current_player_obj.const_end_game_abilities:
+                    game_state.event_queue.append(ability)
+                current_player_obj.const_end_game_abilities = []
+                break
+            # end game abilities on dragons
+            if not game_state.finished_end_game_abilities:
+                # check if we need to find once per round abilities
+                logger.info("* We are not finished handling end game abilities")
+                logger.info("\t* Finding end game abilities...")
+                player_dragons = get_dragon_list(current_player_obj, "any")
+                end_game_list = []
+                for dragon_id,coords in player_dragons:
+                    if "end_game" in DRAGON_CARDS[dragon_id]:
+                        # add the dragon to the list of once per round abilities
+                        end_game_list.append((dragon_id, coords))                
+                # check if we have any end game abilities to trigger
+                game_state.finished_end_game_abilities = True
+                if len(end_game_list) > 0:
+                    # add the event to the event queue
+                    logger.info("* Adding end game abilities to event queue")
+                    new_event = {"choice": [{"skip": True}]}
+                    for dragon_id, coords in end_game_list:
+                        new_event["choice"].append(
+                            {
+                                "end_game": DRAGON_CARDS[dragon_id]["end_game"],
+                                "coords": coords,
+                            }
+                        )
+                    game_state.event_queue.append({"adv_effects": new_event})
+                    break
+                else:
+                    # we are done with the end game abilities
+                    logger.info("* No end game abilities")
+            # other scoring
+            # one point per egg
+            current_player_obj.score += sum(current_player_obj.egg_totals.values())
+            logger.info(f"\t> Player gains {sum(current_player_obj.egg_totals.values())} VP from eggs")
+            # one point per coin
+            current_player_obj.score += current_player_obj.coins
+            logger.info(f"\t> Player gains {current_player_obj.coins} VP from coins")
+            # one point for every 4 other items
+            num_other_items = sum(current_player_obj.resources.values()) + len(current_player_obj.dragon_hand) + len(current_player_obj.cave_hand)
+            current_player_obj.score += num_other_items // 4
+            logger.info(f"\t> Player gains {num_other_items // 4} VP from other items")
+            game_state.phase = PHASE_END_GAME
+
         elif current_phase == PHASE_END_GAME:
             logger.info("Phase: PHASE_END_GAME")
-            # we are done with the game, so we need to score the game
-            # and return the final game state
-            # NOTE - assume we have a SoloGameState for now
-            # score the game for the player and automa
-            score_game(game_state)
+            logger.info(f">>>> Player final score: {current_player_obj.score} <<<<")
             break # we are done with the game
     
     logger.debug("Game progression complete. Returning game state.")
@@ -948,7 +1002,7 @@ def score_objective(game_state:GameState, round_number:int) -> None:
                     dragon_id = player.dragons_played[cave_name][col]
                     if (dragon_id is not None):
                         dragon_info = DRAGON_CARDS[dragon_id]
-                        item_cost = sum(val for key, val in dragon_info if ("cost" in key))
+                        item_cost = sum(val for key, val in dragon_info.items() if ("cost" in key))
                         if item_cost >= obj_item["min_cost"] and item_cost <= obj_item["max_cost"]:
                             player_count += 1
                 elif obj_item["type"] == "cave_cards_played":
@@ -979,14 +1033,11 @@ def score_objective(game_state:GameState, round_number:int) -> None:
     game_state.board["round_tracker"]["scoring"][round_number][player_pos].append(("Player", player_count))
     game_state.board["round_tracker"]["scoring"][round_number][automa_pos].append(("Automa", automa_count))
     player.score += OBJECTIVE_POSITION_SCORES[round_number][player_pos]
+    logger.info(f"\t>> Player gains {OBJECTIVE_POSITION_SCORES[round_number][player_pos]} VP for being {player_pos}")
+    logger.info(f"\t\tPlayer score: {player.score}")
     game_state.automa.score += OBJECTIVE_POSITION_SCORES[round_number][automa_pos]
-
-def score_game(game_state:GameState) -> GameState:
-    """
-    Score the game for the player and automa.
-    """
-    # TODO - implement scoring for the game
-    pass
+    logger.info(f"\t>> Automa gains {OBJECTIVE_POSITION_SCORES[round_number][automa_pos]} VP for being {automa_pos}")
+    logger.info(f"\t\tAutoma score: {game_state.automa.score}")
 
 def get_random_outcome(game_state:GameState, event:dict, player:PlayerState) -> Union[int, list[int]]:
     """
@@ -1010,7 +1061,7 @@ def get_random_outcome(game_state:GameState, event:dict, player:PlayerState) -> 
         num_cards = event["draw_decision"]["amount"]
         if num_cards == "shy_this_cave":
             # we find the amount to draw
-            cave_name, col = event["draw_decision"]["coords"]
+            cave_name, col = event["coords"]
             num_cards = 0
             for col in range(4):
                 dragon_id = player.dragons_played[cave_name][col]
@@ -1059,6 +1110,8 @@ def apply_action(game_state:GameState, action:dict) -> GameState:
         if "max_uses" in action:
             adjusted_action = copy.deepcopy(action)
             max_uses = adjusted_action.pop("max_uses")
+            if "coords" not in adjusted_action:
+                adjusted_action["coords"] = action.get("coords", None)
             cloned_single_action = copy.deepcopy(adjusted_action)
             if max_uses == "guild_markers":
                 # special case where the amount is equal to
@@ -1083,6 +1136,8 @@ def apply_action(game_state:GameState, action:dict) -> GameState:
                 # the condition is met, so we can apply the action
                 adjusted_action = copy.deepcopy(action)
                 adjusted_action.pop("condition")
+                if "coords" not in adjusted_action:
+                    adjusted_action["coords"] = action.get("coords", None)
                 game_state.event_queue.append(adjusted_action)
             return game_state
         elif "cost" in action:
@@ -1091,6 +1146,8 @@ def apply_action(game_state:GameState, action:dict) -> GameState:
                 # no cost, so we can apply the action directly
                 logger.debug("\t** No cost left for action, applying directly.")
                 action_effect = action["adv_effects"]
+                if "coords" not in action_effect:
+                    action_effect["coords"] = action.get("coords", None)
             else:
                 # check if the player can pay the cost
                 logger.debug("\t** Checking if player can pay cost: %s", action["cost"])
@@ -1130,6 +1187,8 @@ def apply_action(game_state:GameState, action:dict) -> GameState:
         else:
             # no other effects, so extract and add the action
             action_effect = action["adv_effects"]
+            if "coords" not in action_effect:
+                action_effect["coords"] = action.get("coords", None)
     else:
         action_effect = action
 
@@ -1153,14 +1212,22 @@ def apply_action(game_state:GameState, action:dict) -> GameState:
             # add the sequence of actions to the event queue
             # in reverse order since it is like a stack
             for seq_action in reversed(action_effect["sequence"]):
-                game_state.event_queue.append(seq_action)
+                new_seq_action = copy.deepcopy(seq_action)
+                if "coords" not in new_seq_action:
+                    new_seq_action["coords"] = action.get("coords", None)
+                game_state.event_queue.append(new_seq_action)
     elif "choice" in action_effect:
         # extract the choice from the action
         choice = action_effect["choice"]
+        for effect in choice:
+            if "coords" not in effect:
+                effect["coords"] = action.get("coords", None)
         game_state.current_choice = choice
     elif "random" in action_effect:
         # extract the random event from the action
         random_event = action_effect["random"]
+        if "coords" not in random_event:
+            random_event["coords"] = action.get("coords", None)
         game_state.current_random_event = random_event
     else:
         # no other effects, so we can handle the action directly
@@ -1666,7 +1733,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
     elif "make_payment" in event:
         # we make the payment for the one cost given
         cost = event["make_payment"]["cost"]
-        new_action = event["make_payment"]["action"].copy()
+        new_action = copy.deepcopy(event["make_payment"]["action"])
         if any((k in RESOURCES) for k in cost):
             # pay any resource costs in the dictionary
             deduct_resources(player, cost)
@@ -1692,7 +1759,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             logger.info(f"> Player pays {cost['coin']} coin(s)")
             cost_name = "coin"
         # remove the cost from the action
-        if cost_name in cost:
+        if cost_name in new_action["cost"]:
             new_action["cost"].pop(cost_name)
         elif cost_name == "any_resource":
             # remove any resource costs from the action
@@ -1705,6 +1772,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             new_action["cost"].pop("choice")
         # add the action to the event queue
         game_state.event_queue.append(new_action)
+
     elif "lay_egg" in event:
         # lay an egg
         handle_egg_laying(game_state, event, player)
@@ -1936,16 +2004,20 @@ def handle_brown_space(game_state:GameState, full_event:dict, player:PlayerState
         logger.info(f">> Player chooses guild bonus {event_num}")
         logger.info(f"- Current guild info: {game_state.board['guild']}")
         # add the event to the event queue
-        if event_num != 5:
+        if event_num < 4:
             guild_ability = GUILD_TILES[game_state.board["guild"]["guild_index"]]["abilities"][event_num-1]
             # add the event to the event queue
             game_state.event_queue.append(guild_ability["effect"])
-        else:
+        elif event_num == 4:
+            # the player gains a dynamic end_game bonus
+            guild_ability = GUILD_TILES[game_state.board["guild"]["guild_index"]]["abilities"][event_num-1]
+            # add to end game bonus list
+            player.const_end_game_abilities.append(guild_ability["effect"])
+        elif event_num == 5:
             # the player immediately gains points
             num_uses = len(game_state.board["guild"]["ability_uses"][event_num])
             num_pts = 6 if (num_uses == 1) else (3 if (num_uses == 2) else 1)
-            logger.info(f">> Player gains {num_pts} points")
-            player.points += num_pts
+            player.const_end_game_abilities.append({"end_game": {"amount": num_pts}})
         return
     # guild bonus not chosen yet
     logger.info(f"- Current guild info: {game_state.board['guild']}")
@@ -2131,6 +2203,11 @@ def handle_draw_decision(game_state:GameState, full_event:dict, player:PlayerSta
     # NOTE - we assume the dragons have already been removed from the deck
     # for safety involving the dragon deck running out
     logger.info(">> Handling draw decision event...")
+    # check if we have any more dragons to choose from
+    if len(event["remaining_dragons"]) == 0:
+        # we are done with the event, so we can remove it from the queue
+        logger.info(">> No more dragons to choose from, so we are done with the event.")
+        return
     if "chosen_id" in event:
         dragon_id = event["chosen_id"]
         new_limits = event["limits"].copy()
@@ -2176,10 +2253,9 @@ def handle_draw_decision(game_state:GameState, full_event:dict, player:PlayerSta
                 new_limits.pop(choice)
                 logger.info(f">> Player skips the choice: {choice}")
                 break
-    # check if we have any more dragons to choose from
-    if len(event["remaining_dragons"]) == 0:
-        # we are done with the event, so we can remove it from the queue
-        return
+    else:
+        # we have not chosen anything yet, so we need to create the event
+        new_limits = event["limits"]
     # we have more dragons to choose from, so we need to create the next event
     new_event = {"choice": []}
     for i,choice in enumerate(ordered_choices):
@@ -2191,10 +2267,11 @@ def handle_draw_decision(game_state:GameState, full_event:dict, player:PlayerSta
                     all_dragons = get_dragon_list(player, "any")
                     for dragon, coords in all_dragons:
                         new_event["choice"].append(
-                            {"draw_decision": {
-                                "chosen_id": dragon_id,
-                                "limits": new_limits,
-                                "remaining_dragons": event["remaining_dragons"],
+                            {
+                                "draw_decision": {
+                                    "chosen_id": dragon_id,
+                                    "limits": new_limits,
+                                    "remaining_dragons": event["remaining_dragons"],
                                 },
                                 "coords": coords
                             }
@@ -2202,10 +2279,11 @@ def handle_draw_decision(game_state:GameState, full_event:dict, player:PlayerSta
                 else:
                     # we have a specific location to tuck the dragon
                     new_event["choice"].append(
-                        {"draw_decision": {
-                            "chosen_id": dragon_id,
-                            "limits": new_limits,
-                            "remaining_dragons": event["remaining_dragons"],
+                        {
+                            "draw_decision": {
+                                "chosen_id": dragon_id,
+                                "limits": new_limits,
+                                "remaining_dragons": event["remaining_dragons"],
                             },
                             "coords": full_event["coords"]
                         }
@@ -2218,10 +2296,11 @@ def handle_draw_decision(game_state:GameState, full_event:dict, player:PlayerSta
             if future_choice_amounts >= len(event["remaining_dragons"]):
                 # add the option to skip the current choice
                 new_event["choice"].append(
-                    {"draw_decision": {
-                        "skip_choice": True,
-                        "limits": new_limits,
-                        "remaining_dragons": event["remaining_dragons"],
+                    {
+                        "draw_decision": {
+                            "skip_choice": True,
+                            "limits": new_limits,
+                            "remaining_dragons": event["remaining_dragons"],
                         },
                         "coords": full_event["coords"]
                     }
@@ -2299,6 +2378,9 @@ def handle_any_resource_decision(game_state:GameState, full_event:dict, player:P
                 new_limits.pop(choice)
                 logger.info(f">> Player skips the choice: {choice}")
                 break
+    else:
+        # we have no chosen action, so we need to create a new event
+        new_limits = event["limits"]
     # check if we have any more resources to choose from
     if event["remaining_resources"] == 0:
         # we are done with the event, so we can remove it from the queue
@@ -2330,7 +2412,7 @@ def handle_any_resource_decision(game_state:GameState, full_event:dict, player:P
                             "limits": new_limits,
                             "remaining_resources": event["remaining_resources"],
                             },
-                            "coords": event["coords"]
+                            "coords": full_event["coords"]
                         }
                     )
             # check if we can skip the current choice
@@ -2346,7 +2428,7 @@ def handle_any_resource_decision(game_state:GameState, full_event:dict, player:P
                         "limits": new_limits,
                         "remaining_resources": event["remaining_resources"],
                         },
-                        "coords": event["coords"]
+                        "coords": full_event["coords"]
                     }
                 )
 
@@ -2708,7 +2790,6 @@ def handle_resource_caching(game_state:GameState, full_event:dict, player:Player
         # assume coords have been added to the event
         valid_locations.append(full_event["coords"])
     else:
-        # assume extra info is given in loc_info
         if event["L2"] == "this_column":
             event["loc_info"] = f"col{full_event['coords'][1]}"
         elif event["L2"] == "any":
@@ -2800,6 +2881,7 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
     elif event.get("include", None) is not None:
         # there is one case where we tuck from the deck under all playful in the given cave
         logger.info(">> Player tucks from the deck under all playful in the given cave")
+        event["loc_info"] = full_event["coords"][0]
         cave_dragons = get_dragon_list(player, event["loc_info"])
         new_event = {
             "choice": [
@@ -3024,11 +3106,18 @@ def get_next_state(game_state:GameState, chosen_input:Union[int,list]=None) -> G
         # apply the random event
         new_state = copy.deepcopy(game_state)
         new_state.current_random_event = None
-        rand_event = game_state.current_random_event.copy()
+        rand_event = copy.deepcopy(game_state.current_random_event)
         # add outcome to the event
         for key in rand_event.keys():
             if "draw_decision" in rand_event:
                 rand_event[key]["remaining_dragons"] = chosen_input
+                for dragon_id in chosen_input:
+                    # remove the dragon from the deck
+                    new_state.dragon_deck.remove(dragon_id)
+                    logger.info(f">> Player draws dragon {dragon_id} from the deck")
+                if len(new_state.dragon_deck) == 0:
+                    # refresh the dragon deck
+                    refresh_dragon_deck(new_state)
             else:
                 rand_event[key]["rand_outcome"] = chosen_input
             break
@@ -3069,7 +3158,7 @@ def manually_progress_game():
             print("Current random event:", game.current_random_event)
             print("Sample outcomes:")
             for i in range(5):
-                print(get_random_outcome(game, game.current_random_event, game.current_player))
+                print(get_random_outcome(game, game.current_random_event, game.player))
             # get the input from the user
             # it could be a list or integer
             chosen_input = input("Enter an outcome: ")
@@ -3098,7 +3187,7 @@ def randomly_progress_game():
             game = get_next_state(game, chosen_input)
         elif game.current_random_event is not None:
             # we have a random event to resolve
-            chosen_input = get_random_outcome(game, game.current_random_event, game.current_player)
+            chosen_input = get_random_outcome(game, game.current_random_event, game.player)
             game = get_next_state(game, chosen_input)
         else:
             # progress the game
@@ -3106,4 +3195,14 @@ def randomly_progress_game():
 
 if __name__ == "__main__":
     # Testing the functions
+    import logging
+    logging.basicConfig(
+        filename='file.log',
+        level=logging.DEBUG,
+        # level=logging.INFO,
+        # level=logging.WARNING,
+        format='%(asctime)s:%(levelname)s:%(message)s',
+        filemode='w'
+    )
+    logger = logging.getLogger(__name__)
     randomly_progress_game()
