@@ -17,12 +17,13 @@ PHASE_END_ROUND = "end_round"
 PHASE_MAIN_ACTION = "main_action"
 PHASE_END_TURN = "end_turn"
 PHASE_FINAL_SCORING = "final_scoring"
-PHASE_END_GAME = "end_game"
+PHASE_END_GAME = "end_of_game"
 
 RESOURCES = ["meat", "gold", "crystal", "milk"]
 CAVE_NAMES = ["crimson_cavern", "golden_grotto", "amethyst_abyss"]
 DRAGON_SIZES = ["Hatchling", "Small", "Medium", "Large"]
 DRAGON_PERSONALITIES = ["Helpful", "Shy", "Playful", "Aggressive"]
+ABILITY_TYPES = ["once_per_round", "if_activated", "end_game", "when_played"]
 
 GUILD_SPACE_EFFECTS = [
     {"brown_space": -1}, # space 0
