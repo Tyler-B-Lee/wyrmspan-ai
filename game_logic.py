@@ -141,6 +141,9 @@ def can_lay_egg_at(player_state: PlayerState, coords:tuple) -> bool:
     """
     cave_name, col = coords
     # check the nested_eggs of the player
+    if cave_name == "mat_slots":
+        # check the mat slots
+        return player_state.egg_totals["mat_slots"] < 2
     ne = player_state.nested_eggs[cave_name][col]
     return ne[0] < ne[1]
 
@@ -656,8 +659,21 @@ def progress_game(game_state:GameState) -> GameState:
                 logger.info("Player %s has not passed.", game_state.current_player)
                 if isinstance(current_player_obj, AutomaState):
                     logger.info("\tResolving automa action.")
-                    # TODO - implement automa action resolution
-                    current_player_obj.passed_this_round = True
+                    # current_player_obj = game_state.automa
+                    num_decisions = current_player_obj.num_decisions_left()
+                    if num_decisions > 0:
+                        logger.info("\tAutoma has %s decisions left.", num_decisions)
+                        # get the next decision
+                        new_event = {"random": {"automa_action": {"rand_outcome": -1}}}
+                        game_state.event_queue.append(new_event)
+                        game_state.phase = PHASE_MAIN_ACTION
+                        break
+                    else:
+                        # automa has no decisions left, so we pass
+                        logger.info("\tAutoma has no decisions left. Forcing pass.")
+                        current_player_obj.passed_this_round = True
+                        # no upkeep needed, start the next player's turn
+                        game_state.current_player = 1 - game_state.current_player
                 else:
                     new_event = get_main_action_choice(current_player_obj)
                     if len(new_event["choice"]) > 0:
@@ -682,60 +698,64 @@ def progress_game(game_state:GameState) -> GameState:
 
         elif current_phase == PHASE_END_TURN:
             logger.info("Phase: PHASE_END_TURN")
-            if current_player_obj.coins > 9:
-                logger.info(">> Player has more than 9 coins, so they must discard down to 9.")
-            current_player_obj.coins = min(current_player_obj.coins, 9)
-            if len(current_player_obj.dragon_hand) + len(current_player_obj.cave_hand) > 9:
-                logger.info(">> Player has more than 9 cards. Adding discard event.")
-                new_event = {"choice": []}
-                for dragon in current_player_obj.dragon_hand:
-                    new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
-                for cave in current_player_obj.cave_hand:
-                    new_event["choice"].append({"discard_cave": {"cave": cave}})
-                game_state.event_queue.append({"adv_effects": new_event})
-                break
-            if sum(current_player_obj.resources.values()) > 9:
-                logger.info(">> Player has more than 9 resources. Adding resource discard event.")
-                new_event = {"choice": []}
-                for resource in current_player_obj.resources.keys():
-                    if current_player_obj.resources[resource] > 0:
-                        new_event["choice"].append({"deduct_resources": {"cost": {resource: 1}}})
-                game_state.event_queue.append({"adv_effects": new_event})
-                break
-            logger.info("> Player has at most 9 of all resources.")
-            # refill card display from decks
-            # this would create a random event
-            full_display = True
-            for i in range(3):
-                if game_state.board["card_display"]["dragon_cards"][i] is None:
-                    # random event to draw dragon for this slot
-                    logger.info(">> Refilling dragon display slot %s", i)
-                    new_event = {
-                        "random": {
-                            "refill_dragon_display": {
-                            "slot": i,
-                            "possible_outcomes": "dragon_deck",
-                        }}
-                    }
-                    game_state.event_queue.append(new_event)
-                    full_display = False
-                if game_state.board["card_display"]["cave_cards"][i] is None:
-                    # random event to draw cave for this slot
-                    logger.info(">> Refilling cave display slot %s", i)
-                    new_event = {
-                        "random": {
-                            "refill_cave_display": {
-                            "slot": i,
-                            "possible_outcomes": "cave_deck",
-                        }}
-                    }
-                    game_state.event_queue.append(new_event)
-                    full_display = False
-            if not full_display:
-                # we are not done with the refill, so we break
-                break
-            # display is full, move to the next player
-            logger.info("> Display is full. Moving to the next player.")
+            if not isinstance(current_player_obj, AutomaState):
+                if current_player_obj.coins > 9:
+                    logger.info(">> Player has more than 9 coins, so they must discard down to 9.")
+                current_player_obj.coins = min(current_player_obj.coins, 9)
+                if len(current_player_obj.dragon_hand) + len(current_player_obj.cave_hand) > 9:
+                    logger.info(">> Player has more than 9 cards. Adding discard event.")
+                    new_event = {"choice": []}
+                    for dragon in current_player_obj.dragon_hand:
+                        new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
+                    for cave in current_player_obj.cave_hand:
+                        new_event["choice"].append({"discard_cave": {"cave": cave}})
+                    game_state.event_queue.append({"adv_effects": new_event})
+                    break
+                if sum(current_player_obj.resources.values()) > 9:
+                    logger.info(">> Player has more than 9 resources. Adding resource discard event.")
+                    new_event = {"choice": []}
+                    for resource in current_player_obj.resources.keys():
+                        if current_player_obj.resources[resource] > 0:
+                            new_event["choice"].append({"deduct_resources": {"cost": {resource: 1}}})
+                    game_state.event_queue.append({"adv_effects": new_event})
+                    break
+                logger.info("> Player has at most 9 of all resources.")
+                # refill card display from decks
+                # this would create a random event
+                full_display = True
+                for i in range(3):
+                    if game_state.board["card_display"]["dragon_cards"][i] is None:
+                        # random event to draw dragon for this slot
+                        logger.info(">> Refilling dragon display slot %s", i)
+                        new_event = {
+                            "random": {
+                                "refill_dragon_display": {
+                                    "slot": i,
+                                    "possible_outcomes": "dragon_deck",
+                                }
+                            }
+                        }
+                        game_state.event_queue.append(new_event)
+                        full_display = False
+                    if game_state.board["card_display"]["cave_cards"][i] is None:
+                        # random event to draw cave for this slot
+                        logger.info(">> Refilling cave display slot %s", i)
+                        new_event = {
+                            "random": {
+                                "refill_cave_display": {
+                                    "slot": i,
+                                    "possible_outcomes": "cave_deck",
+                                }
+                            }
+                        }
+                        game_state.event_queue.append(new_event)
+                        full_display = False
+                if not full_display:
+                    # we are not done with the refill, so we break
+                    break
+                # display is full, move to the next player
+                logger.info("> Display is full.")
+            logger.info(">> Moving to the next player.")
             if isinstance(game_state, SoloGameState):
                 game_state.current_player = 1 - game_state.current_player
             else:
@@ -858,6 +878,9 @@ def progress_game(game_state:GameState) -> GameState:
             game_state.current_player = game_state.round_start_player
             game_state.phase = PHASE_BEFORE_ACTION
             # reset player states
+            game_state.board["guild"]["automa_markers_ready"] += 1
+            logger.info("> Automa markers ready: %s", game_state.board["guild"]["automa_markers_ready"])
+            game_state.automa.reset_decision_deck()
             game_state.player.passed_this_round = False
             game_state.automa.passed_this_round = False
             for cave_name in CAVE_NAMES:
@@ -951,11 +974,16 @@ def progress_game(game_state:GameState) -> GameState:
             num_other_items = sum(current_player_obj.resources.values()) + len(current_player_obj.dragon_hand) + len(current_player_obj.cave_hand)
             current_player_obj.score += num_other_items // 4
             logger.info(f"\t> Player gains {num_other_items // 4} VP from other items")
+            # automa gains 1 point for each step away from the last brown space
+            automa_pos = game_state.board["guild"]["automa_position"]
+            game_state.automa.score += (automa_pos % 6)
+            logger.info(f"\t> Automa gains {automa_pos % 6} VP from distance to last brown space")
             game_state.phase = PHASE_END_GAME
 
         elif current_phase == PHASE_END_GAME:
             logger.info("Phase: PHASE_END_GAME")
             logger.info(f">>>> Player final score: {current_player_obj.score} <<<<")
+            logger.info(f">>>> Automa final score: {game_state.automa.score} <<<<")
             break # we are done with the game
     
     logger.debug("Game progression complete. Returning game state.")
@@ -988,15 +1016,17 @@ def score_objective(game_state:GameState, round_number:int) -> None:
     obj_index, side = game_state.board["round_tracker"]["objectives"][round_number]
     objective_info = OBJECTIVE_TILES[obj_index][side]
     logger.info("\tObjective: %s", objective_info['text'])
-    automa_count = objective_info['automa_values'][round_number] # TODO - implement automa scoring
-    obj_item = objective_info["for_each"]
+    automa_count = objective_info['automa_values'][round_number]
+    automa_count += game_state.board["round_tracker"]["automa_bonus"][round_number]
 
+    obj_item = objective_info["for_each"]
     # finding the player's count for the objective
     player_count = 0
     if obj_item["type"] == "eggs":
         player_count = sum(player.egg_totals.values())
     elif obj_item["type"] == "total_cards_in_cave":
         # we are looking for the total number of cards in one cave
+        automa_count = min(automa_count, 7)
         cave_name = obj_item["location"]
         for col in range(4):
             if player.dragons_played[cave_name][col] is not None:
@@ -1008,18 +1038,21 @@ def score_objective(game_state:GameState, round_number:int) -> None:
         for cave_name in CAVE_NAMES:
             for col in range(4):
                 if obj_item["type"] in DRAGON_PERSONALITIES:
+                    automa_count = min(automa_count, 12)
                     dragon_id = player.dragons_played[cave_name][col]
                     if (dragon_id is not None):
                         dragon_info = DRAGON_CARDS[dragon_id]
                         if dragon_info["personality"] == obj_item["type"]:
                             player_count += 1
                 elif obj_item["type"] in DRAGON_SIZES:
+                    automa_count = min(automa_count, 12)
                     dragon_id = player.dragons_played[cave_name][col]
                     if (dragon_id is not None):
                         dragon_info = DRAGON_CARDS[dragon_id]
                         if dragon_info["size"] == obj_item["type"]:
                             player_count += 1
                 elif obj_item["type"] == "dragon_abilities":
+                    automa_count = min(automa_count, 12)
                     dragon_id = player.dragons_played[cave_name][col]
                     if (dragon_id is not None):
                         dragon_info = DRAGON_CARDS[dragon_id]
@@ -1027,6 +1060,7 @@ def score_objective(game_state:GameState, round_number:int) -> None:
                             player_count += 1
                 elif obj_item["type"] == "dragon_cost":
                     # we are looking for the number of dragons with a cost
+                    automa_count = min(automa_count, 12)
                     dragon_id = player.dragons_played[cave_name][col]
                     if (dragon_id is not None):
                         dragon_info = DRAGON_CARDS[dragon_id]
@@ -1035,6 +1069,7 @@ def score_objective(game_state:GameState, round_number:int) -> None:
                             player_count += 1
                 elif obj_item["type"] == "cave_cards_played":
                     # we are looking for the number of cave cards played
+                    automa_count = min(automa_count, 9)
                     if (player.caves_played[cave_name][col] is not None) and (player.caves_played[cave_name][col] != -1):
                         player_count += 1
                 elif obj_item["type"] == "egg_capacity":
@@ -1078,7 +1113,10 @@ def get_random_outcome(game_state:GameState, event:dict, player:PlayerState) -> 
     single integer or a list of integers.
     """
     # check the event type
-    if ("top_deck_reveal" in event) or ("refill_dragon_display" in event) or ("gain_dragon" in event) or ("tuck_from" in event):
+    if "automa_action" in event:
+        # we return one card sampled from the automa's decision deck
+        return random.choice(game_state.automa.decision_deck)
+    elif ("top_deck_reveal" in event) or ("refill_dragon_display" in event) or ("gain_dragon" in event) or ("tuck_from" in event):
         # we return one card sampled from the dragon deck
         return random.choice(game_state.dragon_deck)
     elif ("refill_cave_display" in event) or ("play_cave" in event) or ("gain_cave" in event):
@@ -1103,7 +1141,10 @@ def get_num_random_outcomes(game_state:GameState, event:dict, player:PlayerState
     Get the number of random outcomes for the given event.
     """
     # check the event type
-    if ("top_deck_reveal" in event) or ("refill_dragon_display" in event) or ("gain_dragon" in event) or ("tuck_from" in event):
+    if "automa_action" in event:
+        # we return one card sampled from the automa's decision deck
+        return len(game_state.automa.decision_deck)
+    elif ("top_deck_reveal" in event) or ("refill_dragon_display" in event) or ("gain_dragon" in event) or ("tuck_from" in event):
         # we return one card sampled from the dragon deck
         return len(game_state.dragon_deck)
     elif ("refill_cave_display" in event) or ("play_cave" in event) or ("gain_cave" in event):
@@ -1114,7 +1155,7 @@ def get_num_random_outcomes(game_state:GameState, event:dict, player:PlayerState
         num_cards = event["draw_decision"]["amount"]
         if num_cards == "shy_this_cave":
             # we find the amount to draw
-            cave_name, col = event["draw_decision"]["coords"]
+            cave_name, col = event["coords"]
             num_cards = 0
             for col in range(4):
                 dragon_id = player.dragons_played[cave_name][col]
@@ -1800,7 +1841,18 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             new_action["cost"].pop("choice")
         # add the action to the event queue
         game_state.event_queue.append(new_action)
-
+    elif "automa_guild_move" in event:
+        # the automa has moved their guild marker 1 space
+        pos = game_state.board["guild"]["automa_position"]
+        new_pos = (pos + 1) % 12
+        game_state.board["guild"]["automa_position"] = new_pos
+        logger.info(f">> Automa moves their guild marker from position {pos} to {new_pos}")
+        if new_pos == 0 or new_pos == 6:
+            # the automa has moved to a brown space, trigger the card's effects
+            handle_automa_brown_space(game_state, event, player)
+    elif "automa_action" in event:
+        # we handle the automa action
+        handle_automa_action(game_state, event, player)
     elif "lay_egg" in event:
         # lay an egg
         handle_egg_laying(game_state, event, player)
@@ -1919,6 +1971,135 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
     else:
         raise ValueError(f"Unknown event: {event}")
 
+def handle_automa_brown_space(game_state:GameState, event:dict, automa:AutomaState) -> None:
+    """
+    Handle the automa brown space event in the game state with the target automa player.
+    The event is a dictionary with the event name and the parameters.
+    The automa is the automa player who triggered the event.
+    """
+    # get the ability info and location if present
+    brown_space_event = event["automa_guild_move"]["brown_space_effect"]
+    if "dragon_card" in brown_space_event:
+        # the automa takes a dragon card from the display
+        display_slot = brown_space_event["dragon_card"] - 1
+        dragon_id = game_state.board["card_display"]["dragon_cards"][display_slot]
+        game_state.board["card_display"]["dragon_cards"][display_slot] = None
+        automa.dragons.append(dragon_id)
+        vp_gained = 8 if (automa.difficulty == 2) else 7
+        automa.score += vp_gained
+        logger.info(f">> Automa takes dragon card {dragon_id} ({DRAGON_CARDS[dragon_id]['name']}) from display slot {display_slot}")
+        logger.info(f">> Automa gains {vp_gained} VP for taking a dragon card")
+        # refill the dragon display
+        game_state.event_queue.append(
+            {"random":
+                {"refill_dragon_display": {"slot": display_slot, "possible_outcomes": "dragon_deck"}}
+            }
+        )
+    if "cave_card" in brown_space_event:
+        # the automa takes a cave card from the display
+        display_slot = brown_space_event["cave_card"] - 1
+        cave_id = game_state.board["card_display"]["cave_cards"][display_slot]
+        game_state.board["card_display"]["cave_cards"][display_slot] = None
+        automa.caves.append(cave_id)
+        vp_gained = 2
+        automa.score += vp_gained
+        logger.info(f">> Automa takes cave card {cave_id} ({CAVE_CARDS[cave_id]['text']}) from display slot {display_slot}")
+        logger.info(f">> Automa gains {vp_gained} VP for taking a cave card")
+        # refill the cave display
+        game_state.event_queue.append(
+            {"random":
+                {"refill_cave_display": {"slot": display_slot, "possible_outcomes": "cave_deck"}}
+            }
+        )
+    if ("guild_ability" in brown_space_event):
+        if (game_state.board["guild"]["automa_markers_ready"] == 0):
+            # the automa has no markers to place, so we skip this ability
+            logger.info(f">> Automa has no guild markers to place")
+            return
+        # the automa places a player marker on the guild board
+        guild_info = GUILD_TILES[game_state.board["guild"]["guild_index"]]
+        guild_ability_uses = game_state.board["guild"]["ability_uses"]
+        game_state.board["guild"]["automa_markers_ready"] -= 1
+        guild_ability_number = 5
+        count = 0
+        while count < brown_space_event["guild_ability"]:
+            guild_ability_number = 1 if (guild_ability_number == 5) else guild_ability_number + 1
+            if guild_ability_number == 5:
+                ability_max_uses = 100
+            else:
+                ability_max_uses = guild_info["abilities"][guild_ability_number-1]["uses"]
+            logger.debug(f"{count=} {guild_ability_number=} {guild_ability_uses=} {ability_max_uses=}")
+            if len(guild_ability_uses[guild_ability_number]) < ability_max_uses:
+                # this ability is not full
+                count += 1
+        # place the automa marker on the guild board
+        guild_ability_uses[guild_ability_number].append(game_state.current_player)
+        logger.info(f">> Automa places a guild marker on ability {guild_ability_number}")
+        logger.info(f"- Current guild info: {game_state.board['guild']}")
+        # check if the automa can use this ability
+        if automa.difficulty >= 3 and guild_ability_number == 5:
+            # the ravel automa gains the fixed points gained here
+            num_uses = len(guild_ability_uses[guild_ability_number])
+            num_points = 6 if (num_uses == 1) else (3 if (num_uses == 2) else 1)
+            automa.score += num_points
+            logger.info(f">> Ravel Automa gains {num_points} VP for using the guild ability")
+
+def handle_automa_action(game_state:GameState, event:dict, automa:AutomaState) -> None:
+    """
+    Handle the automa action in the game state with the target automa player.
+    We assume that the player object is the automa player.
+    The event is a dictionary with the event name and what card the automa drew.
+    """
+    card_idx = event["automa_action"]["rand_outcome"]
+    card_info = AUTOMA_CARDS[card_idx]
+    logger.info(f">> Automa action drawn: {card_info['corner_id']}")
+    automa.decision_deck.remove(card_idx)
+    # check if the automa can play this card
+    if (automa.num_decisions_left() == 0) and card_info["pass"]:
+        # the automa does not play this card
+        logger.info(f">> Automa chooses to pass")
+        automa.passed_this_round = True
+        game_state.phase = PHASE_END_TURN
+        return
+    # we fully activate this card
+    new_event = {"adv_effects": {"sequence": []}}
+    if card_info["refresh"]:
+        # we refresh the dragon card display
+        logger.info(f">> Automa refreshes the dragon card display")
+        for i in range(3):
+            # discard the dragon card in this slot
+            dragon_id = game_state.board["card_display"]["dragon_cards"][i]
+            assert dragon_id is not None
+            game_state.board["card_display"]["dragon_cards"][i] = None
+            game_state.dragon_discard.append(dragon_id)
+            logger.info(f"\t- Automa discards dragon card {dragon_id} ({DRAGON_CARDS[dragon_id]['name']})")
+            new_event["adv_effects"]["sequence"].append(
+                {"random":
+                    {
+                        "refill_dragon_display": 
+                            {"slot": i, "possible_outcomes": "dragon_deck"}
+                    }
+                }
+            )
+    current_round = game_state.board["round_tracker"]["round"]
+    if card_info["adjust_objective"] != 0:
+        # the automa's objective count is adjusted
+        adjustment = card_info["adjust_objective"]
+        new_value = game_state.board["round_tracker"]["automa_bonus"][current_round] + adjustment
+        new_value = max(0, new_value)
+        game_state.board["round_tracker"]["automa_bonus"][current_round] = new_value
+        logger.info(f">> Automa's objective count is adjusted by {adjustment} to {new_value}")
+    # advance on guild track
+    for step in range(card_info["guild_advancement"][current_round]):
+        # the automa advances on the guild track
+        guild_move_event = {
+            "automa_guild_move": {
+                "brown_space_effect": card_info["brown_space"]
+            }
+        }
+        new_event["adv_effects"]["sequence"].append(guild_move_event)
+    game_state.event_queue.append(new_event)
+
 def handle_end_game_ability(game_state:GameState, full_event:dict, player:PlayerState) -> None:
     """
     Handle the given end-game ability event in the game state with the target player.
@@ -1943,14 +2124,16 @@ def handle_end_game_ability(game_state:GameState, full_event:dict, player:Player
             cost_names = ["meat_cost", "gold_cost", "crystal_cost", "milk_cost"]
             amount = 0
             for cave_name in CAVE_NAMES:
+                this_cave_total = 0
                 # check the dragons in this cave
                 for col in range(4):
                     dragon_id = player.dragons_played[cave_name][col]
                     if dragon_id is not None:
                         # check the cost of this dragon
-                        dragon_cost = sum(DRAGON_CARDS[dragon_id][cost] for cost in cost_names)
-                        if dragon_cost > amount:
-                            amount = dragon_cost
+                        this_cave_total += sum(DRAGON_CARDS[dragon_id][cost] for cost in cost_names)
+                if this_cave_total > amount:
+                    # this is the highest amount so far
+                    amount = this_cave_total
             player.score += amount
             logger.info(f">> Player gains {amount} VP for the highest resource cost in one cave")
         else:
@@ -2067,9 +2250,9 @@ def handle_for_each(game_state:GameState, full_event:dict, player:PlayerState) -
                     if name == "Player":
                         count += 1
                         inc = True
-            if not inc:
-                if len(scoring_dict["1st"]) == 2:
-                    count += 1
+                if not inc:
+                    if len(scoring_dict["1st"]) == 2:
+                        count += 1
     elif item_type == "guild_markers":
         # player gains vp for each guild marker they have used on the guild board
         # the player starts with 4 markers
@@ -2274,8 +2457,10 @@ def handle_brown_space(game_state:GameState, full_event:dict, player:PlayerState
             # the player immediately gains points
             num_uses = len(game_state.board["guild"]["ability_uses"][event_num])
             num_pts = 6 if (num_uses == 1) else (3 if (num_uses == 2) else 1)
-            player.const_end_game_abilities.append({"end_game": {"amount": num_pts}})
-            logger.info(f"\t>> Player will gain {num_pts} VP at the end of the game")
+            player.score += num_pts
+            logger.info(f">> Player gains {num_pts} VP for using the guild ability")
+            # player.const_end_game_abilities.append({"end_game": {"amount": num_pts}})
+            # logger.info(f"\t>> Player will gain {num_pts} VP at the end of the game")
         return
     # guild bonus not chosen yet
     logger.info(f"- Current guild info: {game_state.board['guild']}")
@@ -2564,6 +2749,7 @@ def handle_draw_decision(game_state:GameState, full_event:dict, player:PlayerSta
                         "coords": full_event["coords"]
                     }
                 )
+            break
 
     # add the new event to the event queue
     if len(new_event["choice"]) > 1:
@@ -2692,6 +2878,7 @@ def handle_any_resource_decision(game_state:GameState, full_event:dict, player:P
                         "coords": full_event["coords"]
                     }
                 )
+            break
 
     # add the new event to the event queue
     if len(new_event["choice"]) > 1:
@@ -3316,7 +3503,8 @@ def handle_egg_laying(game_state:GameState, full_event:dict, player:PlayerState)
     if len(valid_locations) == 1:
         # we can lay the egg automatically
         coords = valid_locations[0]
-        lay_egg(player, coords)
+        if can_lay_egg_at(player, coords):
+            lay_egg(player, coords)
     elif len(valid_locations) > 0:
         # we need to add a choice to the event queue
         new_event = {

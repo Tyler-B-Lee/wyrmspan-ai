@@ -2825,12 +2825,9 @@
         "milk_cost": 0,
         "if_activated": {
             "adv_effects": {
-                "gain_guild": {"source": "any"}
-            },
-            "cost": {
                 "choice": [
-                    {"dragon_card": 1},
-                    {"cave_card": 1}
+                    {"adv_effects": {"gain_guild": {"source": "any"}}, "cost": {"dragon_card": 1}},
+                    {"adv_effects": {"gain_guild": {"source": "any"}}, "cost": {"cave_card": 1}}
                 ]
             }
         }

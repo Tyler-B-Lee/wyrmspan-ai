@@ -100,6 +100,8 @@ with open('data/guild_tiles.json', 'r') as f:
     GUILD_TILES:list[dict] = json.load(f)
 with open('data/objective_tiles.json', 'r') as f:
     OBJECTIVE_TILES:list[dict] = json.load(f)
+with open('data/automa_cards.json', 'r') as f:
+    AUTOMA_CARDS:list[dict] = json.load(f)
 
 
 def draw_random_objectives(is_solo:bool) -> typing.List[typing.Tuple[int, str]]:
@@ -218,6 +220,7 @@ class AutomaState:
     }
 
     def __init__(self, difficulty:int=0):
+        self.decision_deck = []
         self.dragons = []
         self.caves = []
         self.score = 0
@@ -235,7 +238,17 @@ class AutomaState:
             f"\tCaves: {self.caves}\n"
             f"\tScore: {self.score}\n"
             f"\tDifficulty: {AutomaState.difficulty_names[self.difficulty]}\n"
+            f"\tPassed this round: {self.passed_this_round}\n"
+            f"\tDecision Deck: {self.decision_deck}\n"
         )
+
+    def num_decisions_left(self) -> int:
+        """
+        Returns the number of decisions left in the automa's decision deck,
+        accounting for the fact that the automa will not use the last card in the deck.
+        """
+        # the automa will not use the last card in the deck
+        return len(self.decision_deck) - 1
 
     def reset_decision_deck(self):
         """

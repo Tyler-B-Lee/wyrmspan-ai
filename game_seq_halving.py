@@ -3,11 +3,17 @@ from game_states import GameState, SoloGameState, OBJECTIVE_TILES
 import random
 import math
 
-MAX_SCORE = 100
+MAX_SCORE = 80
 MAX_DEPTH = 35
-SIMS_PER_MOVE = 750
 DISCOUNT_FACTOR = 1
 ENDING_ROUND = 4
+
+def get_total_sim_budget(num_arms: int) -> int:
+    """
+    Get the total simulation budget based on the number of arms.
+    This function will return the total number of simulations to run.
+    """
+    return min(250 * num_arms, 15000)
 
 class Node:
     """
@@ -72,6 +78,21 @@ class Node:
             child = self.children[action]
             child.parent = None
             del self.children[action]
+    
+    def load_all_children(self):
+        """
+        Load all children of this node.
+        This function will create a child node for each action.
+        """
+        assert not self.is_terminal, "Cannot load children of a terminal node"
+        assert not self.is_random, "Cannot load children of a random node"
+        # we need to create a child node for each action
+        for action in self.unchosen_actions:
+            new_game_state = logic.get_next_state(self.game_state, action)
+            child_node = Node(game_state=new_game_state, parent=self, action=action)
+            self.children[action] = child_node
+        # we remove the unchosen actions
+        self.unchosen_actions = []
     
     def select_child(self) -> 'Node':
         """
@@ -146,8 +167,11 @@ def simulate_game(game_state: GameState) -> int:
             # progress the game
             game_state = logic.get_next_state(game_state, chosen_input=None)
     # return game_state.player.score / MAX_SCORE
-    return (game_state.player.score - game_state.automa.score + 30) / 100  # Normalize the score to be between 0 and 1
-    # return 1 if game_state.player.score > 30 else 0
+    # return (game_state.player.score - game_state.automa.score + 70) / 140  # Normalize the score to be between 0 and 1
+    if game_state.player.score >= game_state.automa.score:
+        return (5000 + (game_state.player.score - game_state.automa.score) ** 2) / 10000
+    else:
+        return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000
 
 def backpropagate(node: Node, result: int) -> None:
     """
@@ -179,27 +203,80 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int) -> int:
     """
     for sim in range(num_simulations):
         p = (sim % 500 == 0)
-        if p:
-            current_scores = [(action, child.score / child.visits) for action, child in root_node.children.items()]
-            current_scores.sort(key=lambda x: x[1], reverse=True)
-            print(f"\nSimulation {sim + 1}/{num_simulations}")
-            print(f"\tTop 3 actions: {current_scores[:3]}")
+        if p: print(f"\nSimulation {sim + 1}/{num_simulations}")
         # Selection
         node = traverse(root_node, max_depth, depth=0)
-        # if p: print(f"Selected node: {node}")
+        if p: print(f"Selected node: {node}")
 
         # Expansion
         if not node.is_terminal:
             node = node.select_child()
-            # if p: print(f"Expanded node: {node}")
+            if p: print(f"Expanded node: {node}")
 
         # Simulation
         result = simulate_game(node.game_state)
-        # if p: print(f"Simulation result: {result}")
+        if p: print(f"Simulation result: {result}")
 
         # Backpropagation
         backpropagate(node, result)
     return best_action(root_node)
+
+def seq_halving(root_node: Node) -> int:
+    """
+    Perform the 'Sequential Halving' algorithm on the game tree, from
+    chapter 33.4 in 'Bandit Algorithms' by Lattimore and Szepesvari.
+
+    This function will run a number of simulations and return the
+    best action based on the results.
+
+    Returns the best action to take from the root node.
+    """
+    root_node.load_all_children()
+    k = root_node.num_children
+    remaining_candidates = [i for i in range(k)]
+    L = math.ceil(math.log2(k)) # number of rounds
+    n = get_total_sim_budget(k) # total simulation budget
+    for rnd in range(L):
+        # reset the scores and visits
+        # for child_node in root_node.children.values():
+        #     child_node.score = 0
+        #     child_node.visits = 1
+        print(f"\n>>> Round {rnd + 1}/{L} <<<")
+        runs_per_action = math.floor(n / (L * len(remaining_candidates)))
+        print(f"\t- Runs per action: {runs_per_action}")
+        print(f"\t- Actions left this round: {remaining_candidates}")
+        # run each arm until it has been chosen enough times
+        print("\n>> Running simulations...")
+        for action in remaining_candidates:
+            child_node = root_node.children[action]
+            for i in range(runs_per_action):
+                # run a simulation specifically for this child node
+                node = traverse(child_node, max_depth=MAX_DEPTH, depth=0)
+                # expansion
+                if not node.is_terminal:
+                    node = node.select_child()
+                # simulation
+                result = simulate_game(node.game_state)
+                # backprop
+                backpropagate(node, result)
+            print(f"\t- Action {action}: {child_node.score / child_node.visits}")
+        # arm elimination
+        print("\n>> Running arm elimination...")
+        # get average score of each action
+        candidate_scores = []
+        for action in remaining_candidates:
+            child_node = root_node.children[action]
+            score = (child_node.score / child_node.visits)
+            candidate_scores.append((action, score))
+        # sort the scores
+        candidate_scores.sort(key=lambda x: x[1], reverse=True)
+        print(f">> Candidate scores: {candidate_scores}")
+        # keep the top half of the candidates rounded up
+        keep_amount = math.ceil(len(remaining_candidates) / 2)
+        remaining_candidates = [action for action, score in candidate_scores[:keep_amount]]
+    # we have run all rounds, we need to select the best action
+    print(f"Finished all rounds.")
+    return remaining_candidates[0]
 
 def run_mcts(root_node:Node, num_simulations: int) -> int:
     """
@@ -237,6 +314,7 @@ def log_game_state(game_state: GameState):
     logger = logging.getLogger(__name__)
     logger.warning(f"\n{game_state}")
     logger.warning(f"\n{game_state.get_card_display_string()}")
+    logger.warning(f"\n{game_state.board['round_tracker']}")
     logger.warning(f"> Phase: {game_state.phase}")
     logger.warning(f">>> Score: {game_state.player.score}")
 
@@ -270,7 +348,7 @@ if __name__ == "__main__":
             # we have a choice to make
             print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins}")
             print(f"Current choice: {gs.current_choice}")
-            best_move = run_mcts(current_node, SIMS_PER_MOVE * len(gs.current_choice))
+            best_move = seq_halving(current_node)
             print("-" * 20)
             print(f"Best move: {gs.current_choice[best_move]}")
             print("-" * 20)
@@ -281,10 +359,12 @@ if __name__ == "__main__":
             # input("Press Enter to continue...")
         elif gs.current_random_event is not None:
             # we have a random event to resolve
-            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins}")
+            print(f"Round {gs.board['round_tracker']['round'] + 1}")
             print(f"Current random event: {gs.current_random_event}")
             chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
+            print("#" * 20)
             print(f"Chosen random outcome: {chosen_input}")
+            print("#" * 20)
             current_node.prune_other_branches(chosen_input)
             current_node = get_next_node(current_node, chosen_input)
             gs = current_node.game_state

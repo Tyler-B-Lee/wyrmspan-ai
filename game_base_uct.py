@@ -1,15 +1,22 @@
 import game_logic as logic
-from game_states import GameState, SoloGameState, OBJECTIVE_TILES
+from game_states import GameState, SoloGameState, OBJECTIVE_TILES, AUTOMA_CARDS
 import random
 import math
 
-MAX_SCORE = 80
+MAX_SCORE = 100
 MAX_DEPTH = 35
-# MCTS_SIMS_PER_MOVE = 250
-UCB_SIMS_PER_MOVE = 1000
-DELTA_0 = 1.0
+MIN_BUDGET = 1000
+MAX_BUDGET = 15000
+SIMS_PER_MOVE = 300
 DISCOUNT_FACTOR = 1
 ENDING_ROUND = 4
+
+def get_num_simulations(game_state: GameState) -> int:
+    """
+    Get the number of simulations to run based on the game state.
+    This function will return a number between MIN_BUDGET and MAX_BUDGET.
+    """
+    return max(min(len(game_state.current_choice) * SIMS_PER_MOVE, MAX_BUDGET), MIN_BUDGET)
 
 class Node:
     """
@@ -75,21 +82,6 @@ class Node:
             child.parent = None
             del self.children[action]
     
-    def load_all_children(self):
-        """
-        Load all children of this node.
-        This function will create a child node for each action.
-        """
-        assert not self.is_terminal, "Cannot load children of a terminal node"
-        assert not self.is_random, "Cannot load children of a random node"
-        # we need to create a child node for each action
-        for action in self.unchosen_actions:
-            new_game_state = logic.get_next_state(self.game_state, action)
-            child_node = Node(game_state=new_game_state, parent=self, action=action)
-            self.children[action] = child_node
-        # we remove the unchosen actions
-        self.unchosen_actions = []
-    
     def select_child(self) -> 'Node':
         """
         Select a child node based on the UCT (Upper Confidence Bound for Trees) algorithm.
@@ -144,6 +136,45 @@ def traverse(node: Node, max_depth: int, depth: int) -> Node:
     
     return node
 
+def choose_simulation_action(game_state: GameState) -> int:
+    """
+    Choose an action to play during the simulation, assuming the game state
+    has a choice (game_state.current_choice is a list of actions/events).
+    By default, you can choose a random action, but this is not optimal for Wyrmspan.
+
+    Returns the index of the action to take from the current choice list.
+    """
+    current_choice = game_state.current_choice
+    if len(current_choice) == 1:
+        # we only have one action to choose from
+        return 0
+    # assume we have more than 1 action now
+    pass_index = None
+    skip_index = None
+    # reversed because pass is often at the end of the list
+    for i, action in enumerate(reversed(current_choice)):
+        if "pass" in action:
+            pass_index = i
+            break
+        elif "skip" in action or "skip_opr" in action:
+            skip_index = i
+            break
+    if pass_index is not None:
+        # we have a pass action
+        if game_state.player.coins <= 4 and random.random() < (1 / (game_state.player.coins * 100)):
+            # we can very rarely pass if we have fewer coins
+            return pass_index
+        # otherwise choose a non-pass action
+        return random.choice([i for i in range(len(current_choice)) if i != pass_index])
+    elif skip_index is not None:
+        # we have a skip action
+        # skip less often than uniform random
+        if random.random() < (1 / (len(current_choice) * 2)):
+            return skip_index
+        return random.choice([i for i in range(len(current_choice)) if i != skip_index])
+    else:
+        return random.randint(0, len(current_choice) - 1)
+
 def simulate_game(game_state: GameState) -> int:
     """
     Simulate a random game from the given game state until a terminal state is reached.
@@ -153,7 +184,7 @@ def simulate_game(game_state: GameState) -> int:
         # check if we have a choice or random event
         if game_state.current_choice is not None:
             # we have a choice to make
-            chosen_input = random.randint(0, len(game_state.current_choice) - 1)
+            chosen_input = choose_simulation_action(game_state)
             game_state = logic.get_next_state(game_state, chosen_input)
         elif game_state.current_random_event is not None:
             # we have a random event to resolve
@@ -162,9 +193,13 @@ def simulate_game(game_state: GameState) -> int:
         else:
             # progress the game
             game_state = logic.get_next_state(game_state, chosen_input=None)
+    # return 1 if game_state.player.score > 30 else 0
     # return game_state.player.score / MAX_SCORE
-    # return (game_state.player.score - game_state.automa.score + 50) / 100  # Normalize the score to be between 0 and 1
-    return 1 if game_state.player.score > 30 else 0
+    # return (game_state.player.score - game_state.automa.score + 70) / 140  # Normalize the score to be between 0 and 1
+    if game_state.player.score >= game_state.automa.score:
+        return (5000 + (game_state.player.score - game_state.automa.score) ** 2) / 10000
+    else:
+        return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000
 
 def backpropagate(node: Node, result: int) -> None:
     """
@@ -196,103 +231,26 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int) -> int:
     """
     for sim in range(num_simulations):
         p = (sim % 500 == 0)
-        if p: print(f"\nSimulation {sim + 1}/{num_simulations}")
+        if p:
+            current_scores = [(action, child.score / child.visits) for action, child in root_node.children.items()]
+            current_scores.sort(key=lambda x: x[1], reverse=True)
+            print(f"\nSimulation {sim + 1}/{num_simulations}")
+            print(f"\tTop 3 actions: {current_scores[:3]}")
         # Selection
         node = traverse(root_node, max_depth, depth=0)
-        if p: print(f"Selected node: {node}")
+        # if p: print(f"Selected node: {node}")
 
         # Expansion
         if not node.is_terminal:
             node = node.select_child()
-            if p: print(f"Expanded node: {node}")
+            # if p: print(f"Expanded node: {node}")
 
         # Simulation
         result = simulate_game(node.game_state)
-        if p: print(f"Simulation result: {result}")
+        # if p: print(f"Simulation result: {result}")
 
         # Backpropagation
         backpropagate(node, result)
-    return best_action(root_node)
-
-def ucb_elim(root_node: Node, num_simulations: int) -> int:
-    """
-    Perform the 'Improved UCB' or 'Elimination UCB' algorithm as
-    described in 'UCB Revisited: Improved Regret Bounds for the
-    Stochastic Multi-Armed Bandit Problem' by Auer and Ortner (2011).
-
-    This function will run a number of simulations and return the
-    best action based on the results.
-
-    Returns the best action to take from the root node.
-    """
-    root_node.load_all_children()
-    delta = DELTA_0
-    remaining_candidates = [i for i in range(root_node.num_children)]
-    num_rounds = math.floor(0.5 * math.log2(num_simulations / math.e))
-    total_sims_run = 0
-    get_action_visits = lambda action: root_node.children[action].visits
-    for rnd in range(num_rounds + 1):
-        print(f"\n>>> Round {rnd + 1}/{num_rounds + 1}")
-        d2 = delta ** 2
-        runs_per_action = math.ceil((2*math.log(num_simulations*d2)) / d2)
-        print(f"\t- Runs per action: {runs_per_action}")
-        actions_left_this_round = [a for a in remaining_candidates if get_action_visits(a) < runs_per_action]
-        print(f"\t- Actions left this round: {actions_left_this_round}")
-        # run each arm until it has been chosen enough times
-        print("\n>> Running simulations...")
-        while len(actions_left_this_round) > 0:
-            for action in actions_left_this_round:
-                child_node = root_node.children[action]
-                # run a simulation specifically for this child node
-                node = traverse(child_node, max_depth=MAX_DEPTH, depth=0)
-                # expansion
-                if not node.is_terminal:
-                    node = node.select_child()
-                # simulation
-                result = simulate_game(node.game_state)
-                # backprop
-                backpropagate(node, result)
-                total_sims_run += 1
-                if total_sims_run >= num_simulations:
-                    # we have hit the simulation limit
-                    print(f"\n\t> Hit simulation limit: {num_simulations} <")
-                    return best_action(root_node)
-                if total_sims_run % 500 == 0:
-                    current_scores = [(child_node.action, (child_node.score / child_node.visits)) for child_node in root_node.children.values()]
-                    best_info = max(current_scores, key=lambda x: x[1])
-                    print(f"\t- Total simulations run: {total_sims_run} --- Current Best: {best_info}")
-                if child_node.visits >= runs_per_action:
-                    # this action has been run enough times this round
-                    actions_left_this_round.remove(action)
-                    print(f"Action {action} finished |", end="")
-        # arm elimination
-        print("\n>> Running arm elimination...")
-        adjustment = math.sqrt(math.log(num_simulations * d2) / (2 * runs_per_action))
-        print(f"\t- Adjustment: {adjustment}")
-        # get average score of each action
-        candidate_scores = []
-        for action in remaining_candidates:
-            child_node = root_node.children[action]
-            score = (child_node.score / child_node.visits)
-            candidate_scores.append((action, score))
-        # remove actions that are below the cutoff score
-        cutoff_score = max([s[1] for s in candidate_scores]) - adjustment
-        print(f"\t- Cutoff score: {cutoff_score}")
-        removal_list = [s[0] for s in candidate_scores if ((s[1] + adjustment) < cutoff_score)]
-        print(f"\n> Actions to remove: {removal_list}")
-        for action in removal_list:
-            print(f"-{action}: {root_node.game_state.current_choice[action]}")
-            print(f"\t-> Value: {root_node.children[action].score / root_node.children[action].visits}")
-        remaining_candidates = [a for a in remaining_candidates if a not in removal_list]
-        print(f">> Remaining candidates: {remaining_candidates}")
-        # if we have only one candidate left, we can stop
-        if len(remaining_candidates) == 1:
-            print(f"Only one candidate left: {remaining_candidates[0]}")
-            return best_action(root_node)
-        # otherwise, we need to continue
-        delta *= 0.5
-    # we have run all rounds, we need to select the best action
-    print(f"Finished all rounds. Remaining candidates: {remaining_candidates}")
     return best_action(root_node)
 
 def run_mcts(root_node:Node, num_simulations: int) -> int:
@@ -363,10 +321,9 @@ if __name__ == "__main__":
         # Simulate a game until the end
         if gs.current_choice is not None:
             # we have a choice to make
-            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins}")
+            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
             print(f"Current choice: {gs.current_choice}")
-            # best_move = run_mcts(current_node, MCTS_SIMS_PER_MOVE * len(gs.current_choice))
-            best_move = ucb_elim(current_node, UCB_SIMS_PER_MOVE * len(gs.current_choice))
+            best_move = run_mcts(current_node, get_num_simulations(gs))
             print("-" * 20)
             print(f"Best move: {gs.current_choice[best_move]}")
             print("-" * 20)
@@ -377,11 +334,16 @@ if __name__ == "__main__":
             # input("Press Enter to continue...")
         elif gs.current_random_event is not None:
             # we have a random event to resolve
-            print(f"Round {gs.board['round_tracker']['round'] + 1}")
+            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
             print(f"Current random event: {gs.current_random_event}")
             chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
             print("#" * 20)
-            print(f"Chosen random outcome: {chosen_input}")
+            if "automa_action" in gs.current_random_event:
+                # get the number on the card drawn
+                automa_string = AUTOMA_CARDS[chosen_input]["corner_id"]
+                print(f"Chosen automa card number: {automa_string}")
+            else:
+                print(f"Chosen random outcome: {chosen_input}")
             print("#" * 20)
             current_node.prune_other_branches(chosen_input)
             current_node = get_next_node(current_node, chosen_input)
