@@ -357,10 +357,10 @@ def can_pay_cost(player_state: PlayerState, cost_dict:dict) -> bool:
             # check if the player has enough coins for the cost
             if player_state.coins < value:
                 return False
-        elif name == "choice":
-            # check possible costs to pay
-            # value is a list of cost dictionaries
-            return any(can_pay_cost(player_state, cost) for cost in value)
+        # elif name == "choice":
+        #     # check possible costs to pay
+        #     # value is a list of cost dictionaries
+        #     return any(can_pay_cost(player_state, cost) for cost in value)
     
     return True
 
@@ -537,23 +537,43 @@ def excavate_cave(player_state: PlayerState, game_state:GameState, event:dict, c
     # add the cave effect to the event queue
     game_state.event_queue.append(new_event)
 
-def place_dragon(player_state: PlayerState, game_state:GameState, coords:tuple, dragon_id:int) -> None:
+def place_dragon(player_state: PlayerState, game_state:GameState, full_event: dict) -> None:
     """
     Place a dragon for the player specified by the event.
     """
-    cave_loc_name, index_to_place = coords
-    # place the dragon
-    # TODO - Guild of Highlands effect: play dragon on top of another dragon
-    # update player state
+    cave_loc_name, index_to_place = full_event["coords"]
+    dragon_id = full_event["play_dragon"]["chosen_id"]
+    # place the dragon and update player state
     dragon_info = DRAGON_CARDS[dragon_id]
+    previous_dragon_id = player_state.dragons_played[cave_loc_name][index_to_place]
     player_state.dragons_played[cave_loc_name][index_to_place] = dragon_id
     player_state.num_dragons_played[cave_loc_name] += 1
     player_state.score += dragon_info["VP"] # increment the score for the player
     player_state.nested_eggs[cave_loc_name][index_to_place][1] = dragon_info["capacity"]
     if dragon_info["size"] == "Hatchling":
         player_state.hatchling_grown[cave_loc_name][index_to_place] = False
-    logger.info(f"> Placed dragon {dragon_id} ({dragon_info['name']}) at {coords}")
+    else:
+        player_state.hatchling_grown[cave_loc_name][index_to_place] = None
+    logger.info(f"> Placed dragon {dragon_id} ({dragon_info['name']}) at {full_event['coords']}")
     logger.info(f"\t> Player gains {dragon_info['VP']} VP")
+
+    # guild of highlands effect - place dragon on top of another dragon
+    if previous_dragon_id is not None:
+        assert full_event["play_dragon"]["L2"] == "dragon_on_mat"
+        previous_info = DRAGON_CARDS[previous_dragon_id]
+        # update player state
+        player_state.num_dragons_played[cave_loc_name] -= 1
+        player_state.score -= previous_info["VP"]
+        logger.info(f"\t> Player loses {previous_info['VP']} VP for replacing the previous dragon")
+        previous_eggs = player_state.nested_eggs[cave_loc_name][index_to_place][0]
+        new_eggs = min(previous_eggs, dragon_info["capacity"])
+        player_state.nested_eggs[cave_loc_name][index_to_place][0] = new_eggs # keep the eggs from the previous dragon
+        logger.info(f"\t> Player keeps {new_eggs} eggs from the previous dragon ({previous_eggs - new_eggs} were lost)")
+        player_state.egg_totals[cave_loc_name] -= (previous_eggs - new_eggs) # update the total eggs laid in the cave
+        
+        # tuck the previous dragon
+        logger.info(f">> Player tucks dragon {previous_dragon_id} ({previous_info['name']}) under the new dragon")
+        tuck_dragon(player_state, game_state, previous_dragon_id, (cave_loc_name, index_to_place))
 
     # add effects from dragon to the event queue
     dragon_effect = dragon_info.get("when_played", None)
@@ -1333,6 +1353,7 @@ def get_main_action_choice(player:PlayerState) -> dict:
                 break
     # check if the player can entice any one dragon
     if len(player.dragon_hand) > 0:
+        known_costs = {}
         # check caves for enticing dragons
         break_out = False
         for cave_name in CAVE_NAMES:
@@ -1348,10 +1369,18 @@ def get_main_action_choice(player:PlayerState) -> dict:
                                 # this dragon cannot be enticed here
                                 continue
                             # check the cost
-                            costs = get_dragon_enticement_options(player, dragon_info)
+                            if dragon in known_costs:
+                                # we already know the payments for this dragon
+                                costs = known_costs[dragon]
+                            else:
+                                costs = get_dragon_enticement_options(player, dragon_info)
+                                known_costs[dragon] = costs
+                            # if there is a possible cost, we can entice a dragon
                             if len(costs) > 0:
                                 # the player can entice this dragon
                                 possible_actions["choice"].append({"play_dragon": {"L1": "hand", "L2": "any"}})
+                                # we break out of the loop because all possible costs will
+                                # be found later, possibly saving time here
                                 break_out = True
                                 break
                         if break_out:
@@ -1402,13 +1431,13 @@ def get_all_payments(player:PlayerState, cost_dict:dict) -> list[dict]:
     # check each cost in the cost dictionary
     payments = []
     for name, value in cost_dict.items():
-        if name == "choice":
-            # check possible costs to pay
-            # value is a list of cost dictionaries
-            # assume this is the first item in cost_dict
-            for payment in value:
-                payments.extend(get_all_payments(player, payment))
-        elif name == "coin":
+        # if name == "choice":
+        #     # check possible costs to pay
+        #     # value is a list of cost dictionaries
+        #     # assume this is the first item in cost_dict
+        #     for payment in value:
+        #         payments.extend(get_all_payments(player, payment))
+        if name == "coin":
             # add the one coin payment
             payments.append({ "coin": value })
         elif name == "dragon_card":
@@ -1623,8 +1652,8 @@ def get_resource_combinations_helper(
         master_list:list[tuple]
         ) -> None:
     """
-    When a player pays a cost with resources, they can pay 2 of any resource
-    for 1 of any resource. This function finds all possible exchanges a player
+    When a player pays a cost with resources, they can exchange 2 of any resource(s)
+    for 1 of any other resource. This function finds all possible exchanges a player
     can perform and adds them to the master list.
     We assume that the player has already paid any resources that they
     can afford exactly, so we only need to check for exchanges (twice the remaining cost).
@@ -1835,10 +1864,10 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             for res in RESOURCES:
                 if res in new_action["cost"]:
                     new_action["cost"].pop(res)
-        elif "choice" in cost:
-            # remove the choice from the action
-            # NOTE - we assume that we are paying for an item in the choice
-            new_action["cost"].pop("choice")
+        # elif "choice" in cost:
+        #     # remove the choice from the action
+        #     # NOTE - we assume that we are paying for an item in the choice
+        #     new_action["cost"].pop("choice")
         # add the action to the event queue
         game_state.event_queue.append(new_action)
     elif "automa_guild_move" in event:
@@ -2334,13 +2363,14 @@ def handle_4th_space(game_state:GameState, player:PlayerState) -> None:
         return
     payment_amounts = [(3,0,0),(0,3,0),(0,0,3),(2,1,0),(2,0,1),(1,2,0),(1,0,2),(0,2,1),(0,1,2),(1,1,1)]
     new_event = {"choice": [{"skip": True}]}
-    gain_event = {"adv_effects": {"gain_coin": {"amount": 1}}, "cost": {"choice": []}}
     for n_resources, n_dragons, n_caves in payment_amounts:
         # check if the player can pay this cost
         if (n_resources <= sum(player.resources.values()) and
             n_dragons <= len(player.dragon_hand) and
-            n_caves <= len(player.cave_hand)):
-            # add the payment to the list of choices
+            n_caves <= len(player.cave_hand)
+        ):
+            # add this as a possible exchange for a coin
+            gain_event = {"adv_effects": {"gain_coin": {"amount": 1}}}
             cost = {}
             if n_resources > 0:
                 cost["any_resource"] = n_resources
@@ -2348,10 +2378,11 @@ def handle_4th_space(game_state:GameState, player:PlayerState) -> None:
                 cost["dragon_card"] = n_dragons
             if n_caves > 0:
                 cost["cave_card"] = n_caves
-            gain_event["cost"]["choice"].append(cost)
-    assert len(gain_event["cost"]["choice"]) > 0
+            gain_event["cost"] = cost
+            # add the gain event to the choice
+            new_event["choice"].append(gain_event)
+    assert len(new_event["choice"]) > 1, "Player should have at least one choice to exchange resources for a coin"
     # combine the events
-    new_event["choice"].append(gain_event)
     game_state.event_queue.append({"adv_effects": new_event})
 
 def handle_opr_option(game_state:GameState, event:dict, player:PlayerState) -> None:
@@ -2591,7 +2622,7 @@ def handle_top_deck_reveal(game_state:GameState, full_event:dict, player:PlayerS
     dragon_card = DRAGON_CARDS[dragon_id]
     game_state.dragon_deck.remove(dragon_id) # remove the dragon from the deck
     logger.info(f">> Player reveals dragon {dragon_id} ({dragon_card['name']}) from the top of the deck")
-    if dragon_card["personality"] in event["tuck_targets"]:
+    if dragon_card["size"] in event["tuck_targets"]:
         # we tuck the card at the specified location
         if len(game_state.dragon_deck) == 0:
             # refresh the dragon deck
@@ -3061,8 +3092,9 @@ def handle_play_dragon(game_state:GameState, full_event:dict, player:PlayerState
         dragon_index = event["chosen_index"]
         dragon_id = game_state.board["card_display"]["dragon_cards"][dragon_index]
         game_state.board["card_display"]["dragon_cards"][dragon_index] = None # remove the dragon from the display
+        full_event["play_dragon"]["chosen_id"] = dragon_id # set the chosen id
         # play the dragon card
-        place_dragon(player, game_state, full_event["coords"], dragon_id)
+        place_dragon(player, game_state, full_event)
         return
     elif event.get("chosen_id", None) is not None:
         # we have a specific dragon to use from the hand
@@ -3070,24 +3102,33 @@ def handle_play_dragon(game_state:GameState, full_event:dict, player:PlayerState
         # remove the dragon from the hand
         player.dragon_hand.remove(dragon_id)
         # play the dragon card
-        place_dragon(player, game_state, full_event["coords"], dragon_id)
+        place_dragon(player, game_state, full_event)
         return
     
     valid_locations = []
-    for cave_name in CAVE_NAMES:
-        # check if the player can entice any dragon in the cave
-        # This is when the next slot is excavated and no dragon is there
-        for col in range(4):
-            if player.caves_played[cave_name][col] is not None:
-                # this cave is excavated
-                # check if there is a dragon in the cave
-                if player.dragons_played[cave_name][col] is None:
-                    # there is no dragon in the cave, so we can entice a dragon
+    if event["L2"] == "dragon_on_mat":
+        # the player plays a dragon on top of one already on the mat
+        for cave_name in CAVE_NAMES:
+            # check if the player can play a dragon on top of an existing one
+            for col in range(4):
+                if player.dragons_played[cave_name][col] is not None:
+                    # this spot has a dragon, so we can play on top of it
                     valid_locations.append((cave_name, col))
+    else:
+        for cave_name in CAVE_NAMES:
+            # check if the player can entice any dragon in the cave
+            # This is when the next slot is excavated and no dragon is there
+            for col in range(4):
+                if player.caves_played[cave_name][col] is not None:
+                    # this cave is excavated
+                    # check if there is a dragon in the cave
+                    if player.dragons_played[cave_name][col] is None:
+                        # there is no dragon in the cave, so we can entice a dragon
+                        valid_locations.append((cave_name, col))
+                        break
+                else:
+                    # cave is not excavated
                     break
-            else:
-                # cave is not excavated
-                break
     new_event = {"choice": []}
     # go through each possibility
     if event["L1"] == "display":
@@ -3105,7 +3146,7 @@ def handle_play_dragon(game_state:GameState, full_event:dict, player:PlayerState
                         play_event["adv_effects"] = {
                             "play_dragon": {
                                 "L1": "display",
-                                "L2": "any",
+                                "L2": event["L2"],
                                 "discount": event.get("discount", "none"),
                                 "chosen_index": dragon_index,
                             },
@@ -3125,7 +3166,7 @@ def handle_play_dragon(game_state:GameState, full_event:dict, player:PlayerState
                     pd_event = {
                         "play_dragon": {
                             "L1": "hand",
-                            "L2": "any",
+                            "L2": event["L2"],
                             "discount": event.get("discount", "none"),
                             "chosen_id": dragon_id,
                         },
@@ -3645,6 +3686,7 @@ def randomly_progress_game():
 if __name__ == "__main__":
     # Testing the functions
     import logging
+    import random
     logging.basicConfig(
         filename='file.log',
         level=logging.DEBUG,
@@ -3654,4 +3696,6 @@ if __name__ == "__main__":
         filemode='w'
     )
     logger = logging.getLogger(__name__)
+
+    # random.seed(7)
     randomly_progress_game()

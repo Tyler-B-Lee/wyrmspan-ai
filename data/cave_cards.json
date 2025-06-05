@@ -128,7 +128,7 @@
     },
     {
         "number": 9,
-        "text": "Gain [CaveCard][AnyResource].",
+        "text": "Gain [CaveCard][DragonGuild].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -138,8 +138,8 @@
                         }
                     },
                     {
-                        "gain_resource": {
-                            "type": "any"
+                        "gain_guild": {
+                            "source": "any"
                         }
                     }
                 ]

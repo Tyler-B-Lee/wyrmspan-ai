@@ -3,12 +3,13 @@ from game_states import GameState, SoloGameState, OBJECTIVE_TILES, AUTOMA_CARDS
 from playout_compare import simulate_game
 import random
 import math
+import logging
 
 MAX_SCORE = 100
 MAX_DEPTH = 35
-MIN_BUDGET = 500
+MIN_BUDGET = 600
 MAX_BUDGET = 5000
-SIMS_PER_MOVE = 150
+SIMS_PER_MOVE = 200
 DISCOUNT_FACTOR = 1
 ENDING_ROUND = 4
 UCT_CONSTANT = 1
@@ -26,9 +27,10 @@ class Node:
     Each node represents a game state and a score.
     This connects to possible moves and their outcomes.
     """
-    def __init__(self, game_state: GameState, parent=None, action=None):
+    def __init__(self, game_state: GameState, parent=None, action=None, uct_constant=UCT_CONSTANT):
         self.game_state = game_state
         self.is_terminal = (game_state.phase == logic.PHASE_END_GAME)
+        self.uct_constant = uct_constant
         if game_state.current_choice is not None:
             self.is_random = False
             self.num_children = len(self.game_state.current_choice)
@@ -100,7 +102,7 @@ class Node:
             else:
                 # If the random outcome is not in the children, we need to create it
                 new_game_state = logic.get_next_state(self.game_state, rand_outcome)
-                child_node = Node(game_state=new_game_state, parent=self, action=rand_outcome)
+                child_node = Node(game_state=new_game_state, parent=self, action=rand_outcome, uct_constant=self.uct_constant)
                 self.children[rand_outcome] = child_node
                 return child_node
         # Not random
@@ -110,14 +112,14 @@ class Node:
             self.unchosen_actions.remove(action)
             # we create a new child node
             new_game_state = logic.get_next_state(self.game_state, action)
-            child_node = Node(game_state=new_game_state, parent=self, action=action)
+            child_node = Node(game_state=new_game_state, parent=self, action=action, uct_constant=self.uct_constant)
             self.children[action] = child_node
             return child_node
         # If all children are present, we use UCT to select the best one
         best_child = None
         best_value = float('-inf')
         for action, child in self.children.items():
-            uct_value = child.score / (child.visits) + UCT_CONSTANT * math.sqrt(math.log(self.visits) / child.visits)
+            uct_value = child.score / (child.visits) + self.uct_constant * math.sqrt(math.log(self.visits) / child.visits)
             if uct_value > best_value:
                 best_value = uct_value
                 best_child = child
@@ -138,7 +140,6 @@ def traverse(node: Node, max_depth: int, depth: int) -> Node:
     
     return node
 
-
 def backpropagate(node: Node, result: int) -> None:
     """
     Backpropagate the result of a simulation up the tree.
@@ -152,12 +153,12 @@ def best_action(node: Node) -> int:
     """
     Select the best action from the root node based on the scores of the children.
     """
-    print("\nSelecting best action from given node:")
+    print(f"\nUCT = {node.uct_constant} | Selecting best action from given node:")
     action_values = [(action, child.score / child.visits) for action, child in node.children.items()]
     action_values.sort(key=lambda x: x[1], reverse=True)
     for action, value in action_values:
-        print(f"* action: {node.game_state.current_choice[action]}")
-        print(f"\t-> value: {value}")
+        print(f"UCT = {node.uct_constant} | * action: {node.game_state.current_choice[action]}")
+        print(f"\t{node.uct_constant} | -> value: {value}")
     return action_values[0][0] if action_values else None
 
 # Update the MCTS function to use the helper methods
@@ -172,8 +173,8 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int) -> int:
         if p:
             current_scores = [(action, child.score / child.visits) for action, child in root_node.children.items()]
             current_scores.sort(key=lambda x: x[1], reverse=True)
-            print(f"\nSimulation {sim + 1}/{num_simulations}")
-            print(f"\tTop 3 actions: {current_scores[:3]}")
+            print(f"\nUCT = {root_node.uct_constant} | Simulation {sim + 1}/{num_simulations}")
+            print(f"\t{root_node.uct_constant} | Top 3 actions: {current_scores[:3]}")
         # Selection
         node = traverse(root_node, max_depth, depth=0)
         # if p: print(f"Selected node: {node}")
@@ -223,29 +224,27 @@ def get_next_node(node: Node, action: int) -> Node:
         # we need to create a new child node
         print(f"> Creating new child node for outcome {action}")
         new_game_state = logic.get_next_state(node.game_state, action)
-        child_node = Node(game_state=new_game_state, parent=None, action=action)
+        child_node = Node(game_state=new_game_state, parent=None, action=action, uct_constant=node.uct_constant)
         # node.children[action] = child_node
         return child_node
 
-def log_game_state(game_state: GameState):
+def log_game_state(game_state: GameState, logger: logging.Logger):
     """
     Log the given game state object using the logger
     and the level 'warning'.
     """
-    logger = logging.getLogger(__name__)
     logger.warning(f"\n{game_state}")
     logger.warning(f"\n{game_state.get_card_display_string()}")
     logger.warning(f"\n{game_state.board['round_tracker']}")
     logger.warning(f"> Phase: {game_state.phase}")
-    logger.warning(f">>> Score: {game_state.player.score}")
+    logger.warning(f">>> Player Score: {game_state.player.score} | Automa Score: {game_state.automa.score}")
 
-if __name__ == "__main__":
+def run_game(seed=None, uct_constant=UCT_CONSTANT, log_filename='game_uct_compare.log'):
     # set seed for reproducibility
-    # random.seed(42)
+    random.seed(seed)
 
-    import logging
     logging.basicConfig(
-        filename='game_base_uct.log',
+        filename=("logs/" + log_filename),
         # level=logging.DEBUG,
         # level=logging.INFO,
         level=logging.WARNING,
@@ -257,52 +256,116 @@ if __name__ == "__main__":
 
     gs = SoloGameState(ending_round=ENDING_ROUND)  # Initialize the game state
     gs.create_game()
+    print(f"Running game with seed {seed} and UCT constant {uct_constant}")
     # Log the initial game state
     objectives = gs.board["round_tracker"]["objectives"]
     logger.warning("> Objectives Drawn:")
     for i, (idx,side) in enumerate(objectives):
         logger.warning(f"Round {i + 1}: {OBJECTIVE_TILES[idx][side]['text']}\n")
     logger.warning("\n> Initial Game State:")
-    log_game_state(gs)
-    current_node = Node(game_state=gs)  # Create the root node
+    log_game_state(gs, logger)
+    current_node = Node(game_state=gs, uct_constant=uct_constant)  # Create the root node
     # Simulate a game until the end
     while gs.phase != logic.PHASE_END_GAME:
         # Simulate a game until the end
         if gs.current_choice is not None:
             # we have a choice to make
-            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
-            print(f"Current choice: {gs.current_choice}")
+            print(f"UCT = {uct_constant} | Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
+            # print(f"Current choice: {gs.current_choice}")
             best_move = run_mcts(current_node, get_num_simulations(gs))
-            print("-" * 20)
-            print(f"Best move: {gs.current_choice[best_move]}")
-            print("-" * 20)
+            # print("-" * 20)
+            print(f"UCT = {uct_constant} | Best move: {gs.current_choice[best_move]}")
+            # print("-" * 20)
             current_node.prune_other_branches(best_move)
             current_node = get_next_node(current_node, best_move)
             gs = current_node.game_state
-            log_game_state(gs)
+            log_game_state(gs, logger)
             # input("Press Enter to continue...")
         elif gs.current_random_event is not None:
             # we have a random event to resolve
-            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
-            print(f"Current random event: {gs.current_random_event}")
+            # print(f"UCT = {uct_constant} | Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
+            # print(f"Current random event: {gs.current_random_event}")
             chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
-            print("#" * 20)
-            if "automa_action" in gs.current_random_event:
-                # get the number on the card drawn
-                automa_string = AUTOMA_CARDS[chosen_input]["corner_id"]
-                print(f"Chosen automa card number: {automa_string}")
-            else:
-                print(f"Chosen random outcome: {chosen_input}")
-            print("#" * 20)
+            # print("#" * 20)
+            # if "automa_action" in gs.current_random_event:
+            #     # get the number on the card drawn
+            #     automa_string = AUTOMA_CARDS[chosen_input]["corner_id"]
+            #     print(f"Chosen automa card number: {automa_string}")
+            # else:
+            #     print(f"Chosen random outcome: {chosen_input}")
+            # print("#" * 20)
             current_node.prune_other_branches(chosen_input)
             current_node = get_next_node(current_node, chosen_input)
             gs = current_node.game_state
-            log_game_state(gs)
+            log_game_state(gs, logger)
             # input("Press Enter to continue...")
         else:
             gs = logic.get_next_state(gs, None)  # Get the next halted state
-            new_node = Node(game_state=gs)
+            new_node = Node(game_state=gs, uct_constant=uct_constant)
             new_node.action = current_node.action
             current_node = new_node
-    log_game_state(gs)  # Log the final game state
-    print(f"Game ended. Final score: Player = {gs.player.score} | Automa = {gs.automa.score}")
+    log_game_state(gs, logger)  # Log the final game state
+    print(f"UCT = {uct_constant} >> Game ended. Final score: Player = {gs.player.score} | Automa = {gs.automa.score}")
+    return gs.player.score, gs.automa.score
+
+def _run_game_worker(args):
+    """Helper for parallel execution."""
+    seed, uct_constant, log_filename = args
+    try:
+        player_score, automa_score = run_game(seed=seed, uct_constant=uct_constant, log_filename=log_filename)
+        return {
+            "uct_constant": uct_constant,
+            "seed": seed,
+            "player_score": player_score,
+            "automa_score": automa_score,
+            "log_filename": log_filename
+        }
+    except Exception as e:
+        return {
+            "uct_constant": uct_constant,
+            "seed": seed,
+            "error": str(e),
+            "log_filename": log_filename
+        }
+
+def run_multiple_games_parallel(uct_constants, num_runs=1, base_seed=None):
+    """
+    Run multiple games in parallel, one for each uct_constant (optionally multiple runs per constant).
+    Each run will have its own log file.
+    """
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+    import time
+
+    tasks = []
+    for uct in uct_constants:
+        for run_idx in range(num_runs):
+            # seed = (base_seed if base_seed is not None else random.randint(0, 1_000_000)) + run_idx
+            seed = base_seed
+            date = time.strftime("%Y%m%d-%H%M%S")
+            log_filename = f"compare_uct_c-{uct}_run-{run_idx}_seed-{seed}_{date}.log"
+            tasks.append((seed, uct, log_filename))
+
+    results = []
+    with ProcessPoolExecutor() as executor:
+        futures = [executor.submit(_run_game_worker, t) for t in tasks]
+        for future in as_completed(futures):
+            result = future.result()
+            print(f"Completed: {result}")
+            results.append(result)
+    return results
+
+# python game_uct_compare.py --seed 1 --uct_constants 0.5 1 1.414213562 2
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Run a game of Wyrmspan with MCTS.")
+    parser.add_argument("--seed", type=int, default=None, help="Random seed for reproducibility")
+    parser.add_argument("--uct_constants", type=float, nargs='*', default=None, help="List of UCT constants to try in parallel")
+    parser.add_argument("--num_runs", type=int, default=1, help="Number of runs per UCT constant")
+    args = parser.parse_args()
+    
+    if args.uct_constants:
+        # Run in parallel for each UCT constant
+        run_multiple_games_parallel(args.uct_constants, num_runs=args.num_runs, base_seed=args.seed)
+    else:
+        run_game(seed=args.seed)

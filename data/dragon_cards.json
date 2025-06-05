@@ -2457,7 +2457,21 @@
             "if_true": {
                 "amount": 3,
                 "condition": {
-                    "this_position": 3
+                    "or": [
+                        {"and": [
+                            {"this_position": 1},
+                            {"max_dragons_in_cave": {"amount": 2, "cave": "this_cave"}}
+                        ]},
+                        {"and": [
+                            {"this_position": 2},
+                            {"max_dragons_in_cave": {"amount": 3, "cave": "this_cave"}}
+                        ]},
+                        {"this_position": 3},
+                        {"and": [
+                            {"this_position": 0},
+                            {"max_dragons_in_cave": {"amount": 1, "cave": "this_cave"}}
+                        ]}
+                    ]
                 }
             }
         }

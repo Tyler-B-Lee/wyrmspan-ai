@@ -1,0 +1,53 @@
+2025-05-29 13:10:02,639:WARNING:Creating a new SoloGameState with 2 players.
+2025-05-29 13:10:02,640:WARNING:> Objectives Drawn:
+2025-05-29 13:10:02,640:WARNING:Round 1: Total Egg Capacity on your dragons (not eggs themselves).
+
+2025-05-29 13:10:02,640:WARNING:Round 2: Aggressive Dragons on your player mat.
+
+2025-05-29 13:10:02,640:WARNING:Round 3: Hatchlings on your player mat.
+
+2025-05-29 13:10:02,640:WARNING:Round 4: Cave Cards on your player mat, including those covered by a dragon.
+
+2025-05-29 13:10:02,640:WARNING:
+> Initial Game State:
+2025-05-29 13:10:02,640:WARNING:
+Game State:
+	Turn: 0
+	Phase: setup
+	Dragon Discard: []
+	Cave Discard: []
+	Event Queue: []
+	Guild Board: {'guild_index': 0, 'ability_uses': {1: [], 2: [], 3: [], 4: [], 5: []}, 'player_position': 0, 'automa_position': 0, 'automa_markers_ready': 1} (Plains Guild)
+Player State:
+	Dragon Hand: [(140, 'Rocky Rockbreaker'), (27, 'Frilled Cobrette'), (93, 'Miniature Crested Coatl')]
+	Cave Hand: [(72, 'Up to 3x, pay [DragonCard] to gain [DragonGuild]. Each opponent may do this 1x.'), (33, 'Gain [Gold][Crystal].'), (5, 'Gain [AnyResource]. Lay [Egg].')]
+	Resources: {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}
+	Egg Totals: {'mat_slots': 1, 'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Dragons Played: {'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Score: 0
+	Guild Markers: 4
+	Coins: 6
+	Caves Played: {'crimson_cavern': [-1, None, None, None], 'golden_grotto': [-1, None, None, None], 'amethyst_abyss': [-1, None, None, None]}
+	Dragons Played: {'crimson_cavern': [None, None, None, None], 'golden_grotto': [None, None, None, None], 'amethyst_abyss': [None, None, None, None]}
+	Cached Resources: {'crimson_cavern': [defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {})], 'golden_grotto': [defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {})], 'amethyst_abyss': [defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {})]}
+	Tucked Dragons: {'crimson_cavern': [[], [], [], []], 'golden_grotto': [[], [], [], []], 'amethyst_abyss': [[], [], [], []]}
+	Nested Eggs: {'crimson_cavern': [[0, 0], [0, 0], [0, 0], [0, 0]], 'golden_grotto': [[0, 0], [0, 0], [0, 0], [0, 0]], 'amethyst_abyss': [[0, 0], [0, 0], [0, 0], [0, 0]]}
+	Times Explored: {'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+
+Automa State:
+	Dragons: []
+	Caves: []
+	Score: 0
+	Difficulty: Automa Level 1 (Easy)
+	Passed this round: False
+	Decision Deck: [0, 1, 2, 3, 4, 5, 6, 7]
+
+2025-05-29 13:10:02,640:WARNING:
+--- Card Display ---
+- Dragon Cards: [(1, 'White-Bellied Grazer'), (98, 'Little Amphiptere'), (120, 'Knowing Guardian')]
+- Cave Cards: [(46, 'Gain [Meat][Milk].'), (75, 'Up to 3x, pay [Egg] to gain [DragonGuild]. Each opponent may do this 1x.'), (12, 'Gain [Coin].')]
+---------------------
+2025-05-29 13:10:02,640:WARNING:
+{'round': 0, 'objectives': [(2, 'side_a'), (8, 'side_a'), (6, 'side_a'), (0, 'side_a')], 'scoring': [{'1st': [], '2nd': [], 'Other': []}, {'1st': [], '2nd': [], 'Other': []}, {'1st': [], '2nd': [], 'Other': []}, {'1st': [], '2nd': [], 'Other': []}], 'automa_bonus': [0, 0, 0, 0], 'finished_opr': False, 'opr_remaining': None, 'egg_given': False}
+2025-05-29 13:10:02,641:WARNING:> Phase: setup
+2025-05-29 13:10:02,641:WARNING:>>> Score: 0

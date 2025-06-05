@@ -408,7 +408,7 @@ class SoloGameState(GameState):
     """
     ignore_cards = [47,103,114,168,170]
 
-    def __init__(self, automa_difficulty=0, allowed_guilds=(0,1,3), ending_round=4):
+    def __init__(self, automa_difficulty=0, allowed_guilds=(0,1,2,3), ending_round=4):
         super().__init__(allowed_guilds, ending_round)
         self.automa_difficulty = automa_difficulty
         self.automa = AutomaState(self.automa_difficulty)
@@ -432,7 +432,7 @@ class SoloGameState(GameState):
     
     def create_game(self, num_players=2):
         "Initializes a new automa game state. Includes random generation of objectives."
-        logger.warning("Creating a new SoloGameState with 2 players.")
+        # logger.warning("Creating a new SoloGameState with 2 players.")
         self.player = PlayerState()
         self.round_start_player = 0
         self.current_player = 0
