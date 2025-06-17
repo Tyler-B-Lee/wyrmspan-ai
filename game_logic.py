@@ -784,6 +784,10 @@ def progress_game(game_state:GameState) -> GameState:
 
         elif current_phase == PHASE_END_ROUND:
             logger.info("Phase: PHASE_END_ROUND")
+            # Ravel mode - Must discard down to 2 coins after passing
+            if game_state.automa.difficulty >= 3 and game_state.player.coins > 2:
+                logger.info(">> Automa is in Ravel mode. The player must discard down to 2 coins.")
+                game_state.player.coins = min(game_state.player.coins, 2)
             # first trigger once per round abilities
             # in order starting from the round start player
             # NOTE - Assume solo game for now
@@ -846,7 +850,6 @@ def progress_game(game_state:GameState) -> GameState:
                     if cave_id is not None:
                         game_state.board["card_display"]["cave_cards"][i] = None
                         game_state.cave_discard.append(cave_id)
-                # TODO other resetting effects / Automa effects
 
         elif current_phase == PHASE_ROUND_START:
             logger.info("Phase: PHASE_ROUND_START")
@@ -2119,7 +2122,35 @@ def handle_automa_action(game_state:GameState, event:dict, automa:AutomaState) -
         game_state.board["round_tracker"]["automa_bonus"][current_round] = new_value
         logger.info(f">> Automa's objective count is adjusted by {adjustment} to {new_value}")
     # advance on guild track
-    for step in range(card_info["guild_advancement"][current_round]):
+    if type(card_info["guild_advancement"]) is list:
+        # the automa advances based on the current round
+        num_steps = card_info["guild_advancement"][current_round]
+        logger.info(f">> Based on the current round, automa advances {num_steps} spaces on the guild track")
+    elif "deepest_cave" in card_info["guild_advancement"]:
+        # the automa advancement is based on the player's most excavated cave
+        num_steps = 4
+        for col in (3, 2, 1, 0):
+            # check the caves in order of excavation
+            if any(game_state.player.caves_played[cave_name][col] is not None for cave_name in CAVE_NAMES):
+                # we have found the most excavated cave
+                break
+            num_steps -= 1
+        if "plus_1" in card_info["guild_advancement"]:
+            # the automa advances one extra space
+            num_steps += 1
+        logger.info(f">> Automa advances {num_steps} spaces on the guild track based on the player's most excavated cave")
+    elif "shallowest_cave" in card_info["guild_advancement"]:
+        # the automa advancement is based on the player's least excavated cave
+        num_steps = 1 # first column is always excavated
+        for col in (1, 2, 3):
+            # check the caves in order of excavation
+            if any(game_state.player.caves_played[cave_name][col] is None for cave_name in CAVE_NAMES):
+                # we have found the least excavated cave
+                break
+            num_steps += 1
+        logger.info(f">> Automa advances {num_steps} spaces on the guild track based on the player's least excavated cave")
+
+    for _ in range(num_steps):
         # the automa advances on the guild track
         guild_move_event = {
             "automa_guild_move": {
@@ -3667,7 +3698,7 @@ def randomly_progress_game():
     Randomly progress the game state, using random inputs.
     This is useful for testing purposes.
     """
-    game = SoloGameState()
+    game = SoloGameState(automa_difficulty=3)
     game.create_game()
     while game.phase != PHASE_END_GAME:
         # check if we have a choice or random event

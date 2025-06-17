@@ -1,24 +1,26 @@
 import game_logic as logic
 from game_states import GameState, SoloGameState, OBJECTIVE_TILES, AUTOMA_CARDS
-from playout_compare import simulate_game
+from playout_compare import simulate_game, simulate_multiple_games, RNGOrder
 import random
 import math
 
-MAX_SCORE = 100
 MAX_DEPTH = 35
-MIN_BUDGET = 500
-MAX_BUDGET = 5000
-SIMS_PER_MOVE = 150
-DISCOUNT_FACTOR = 1
+NUM_SIMULATIONS_PER_CHOICE = 350
+MIN_BUDGET = 2 * NUM_SIMULATIONS_PER_CHOICE
+MAX_BUDGET = 20 * NUM_SIMULATIONS_PER_CHOICE
 ENDING_ROUND = 4
-UCT_CONSTANT = 1
+UCT_CONSTANT = 0.75
+
+SEED = 5202016
+AUTOMA_DIFFICULTY = 3
+PLAYOUTS_PER_LEAF_VISIT = 5
 
 def get_num_simulations(game_state: GameState) -> int:
     """
     Get the number of simulations to run based on the game state.
     This function will return a number between MIN_BUDGET and MAX_BUDGET.
     """
-    return max(min(len(game_state.current_choice) * SIMS_PER_MOVE, MAX_BUDGET), MIN_BUDGET)
+    return max(min(len(game_state.current_choice) * NUM_SIMULATIONS_PER_CHOICE, MAX_BUDGET), MIN_BUDGET)
 
 class Node:
     """
@@ -55,13 +57,13 @@ class Node:
             f"\tIs random: {self.is_random}"
         )
     
-    def update_score(self, score: int):
+    def update_score(self, score: int, num_runs: int = 1):
         """
         Update the score of this node.
         This function will also increment the visit count.
         """
         self.score += score
-        self.visits += 1
+        self.visits += num_runs
     
     def is_fully_expanded(self):
         """
@@ -139,14 +141,14 @@ def traverse(node: Node, max_depth: int, depth: int) -> Node:
     return node
 
 
-def backpropagate(node: Node, result: int) -> None:
+def backpropagate(node: Node, result: int, num_runs: int) -> None:
     """
     Backpropagate the result of a simulation up the tree.
     """
-    node.update_score(result)
+    node.update_score(result, num_runs)
     if node.parent is not None:
         # backpropagate(node.parent, result * DISCOUNT_FACTOR)  # Discount the score for the parent node
-        backpropagate(node.parent, result)  # Discount the score for the parent node
+        backpropagate(node.parent, result, num_runs)
 
 def best_action(node: Node) -> int:
     """
@@ -193,10 +195,21 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int) -> int:
             },
             display_name="pdc"
         )
+        # result, _, _ = simulate_multiple_games(
+        #     game_state=node.game_state,
+        #     algo_name="play_dragon_cave",
+        #     algo_kwargs={
+        #         "entice_prob": 0.97,
+        #         "excavate_prob": 0.75
+        #     },
+        #     display_name="pdc",
+        #     num_simulations=PLAYOUTS_PER_LEAF_VISIT
+        # )
         # if p: print(f"Simulation result: {result}")
 
         # Backpropagation
-        backpropagate(node, result)
+        backpropagate(node, result, num_runs=1)
+        # backpropagate(node, result, num_runs=PLAYOUTS_PER_LEAF_VISIT)
     return best_action(root_node)
 
 def run_mcts(root_node:Node, num_simulations: int) -> int:
@@ -237,12 +250,9 @@ def log_game_state(game_state: GameState):
     logger.warning(f"\n{game_state.get_card_display_string()}")
     logger.warning(f"\n{game_state.board['round_tracker']}")
     logger.warning(f"> Phase: {game_state.phase}")
-    logger.warning(f">>> Score: {game_state.player.score}")
+    logger.warning(f">>> Score: Player = {game_state.player.score} | Automa = {game_state.automa.score}")
 
 if __name__ == "__main__":
-    # set seed for reproducibility
-    # random.seed(42)
-
     import logging
     logging.basicConfig(
         filename='game_base_uct.log',
@@ -255,8 +265,10 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     # Example usage
 
-    gs = SoloGameState(ending_round=ENDING_ROUND)  # Initialize the game state
+    random.seed(SEED)
+    gs = SoloGameState(automa_difficulty=AUTOMA_DIFFICULTY, ending_round=ENDING_ROUND)
     gs.create_game()
+    rng = RNGOrder(game_state=gs)
     # Log the initial game state
     objectives = gs.board["round_tracker"]["objectives"]
     logger.warning("> Objectives Drawn:")
@@ -271,11 +283,15 @@ if __name__ == "__main__":
         if gs.current_choice is not None:
             # we have a choice to make
             print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
+            print(f"> Points: Player = {gs.player.score} | Automa = {gs.automa.score}")
             print(f"Current choice: {gs.current_choice}")
             best_move = run_mcts(current_node, get_num_simulations(gs))
             print("-" * 20)
             print(f"Best move: {gs.current_choice[best_move]}")
             print("-" * 20)
+            best_move_score = current_node.children[best_move].score / current_node.children[best_move].visits if current_node.children[best_move].visits > 0 else 0
+            sbr = (gs.player.score ** 2) / 40000
+            print(f"Approx. Win Probability: {(best_move_score - sbr) / 0.75:.2%}")
             current_node.prune_other_branches(best_move)
             current_node = get_next_node(current_node, best_move)
             gs = current_node.game_state
@@ -285,7 +301,8 @@ if __name__ == "__main__":
             # we have a random event to resolve
             print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
             print(f"Current random event: {gs.current_random_event}")
-            chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
+            # chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
+            chosen_input = rng.get_random_outcome(gs, gs.current_random_event, gs.player)
             print("#" * 20)
             if "automa_action" in gs.current_random_event:
                 # get the number on the card drawn

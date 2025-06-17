@@ -81,12 +81,18 @@ EXPLORE_CAVE_EFFECTS = {
         2: {"gain_cave": {"source": "any"}},
         3: {"lay_egg": {"location": "any"}},
         4: {"adv_effects": {
-            "sequence": [
-                {"lay_egg": {"location": "any"}},
-                {"lay_egg": {"location": "any"}}
-            ]},
-            "max_uses": 2,
-            "cost": {"cave_card": 1}
+                "choice": [
+                    {"adv_effects": {
+                        "sequence": [
+                            {"lay_egg": {"location": "any"}},
+                            {"lay_egg": {"location": "any"}}
+                        ]},
+                        "max_uses": 2,
+                        "cost": {"cave_card": 1}
+                    },
+                    {"skip": True}
+                ]
+            }
         }
     }
 }
@@ -214,9 +220,9 @@ class AutomaState:
         0: [0,1,2,3,4,5,6,7],
         1: [8,9,10,3,4,5,6,7],
         2: [0,1,2,8,9,10,6,7],
-        3: [12,13,14,3,4,5,6,15],
-        4: [0,1,2,12,13,14,6,15],
-        5: [12,13,14,9,10,11,6,15],
+        3: [11,12,13,3,4,5,6,14],
+        4: [0,1,2,11,15,13,6,14],
+        5: [11,15,13,8,9,10,6,14],
     }
 
     def __init__(self, difficulty:int=0):

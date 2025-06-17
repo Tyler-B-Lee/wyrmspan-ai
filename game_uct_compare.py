@@ -1,18 +1,18 @@
 import game_logic as logic
 from game_states import GameState, SoloGameState, OBJECTIVE_TILES, AUTOMA_CARDS
-from playout_compare import simulate_game
+from playout_compare import simulate_game, RNGOrder
 import random
 import math
 import logging
 
-MAX_SCORE = 100
 MAX_DEPTH = 35
-MIN_BUDGET = 600
-MAX_BUDGET = 5000
 SIMS_PER_MOVE = 200
+MIN_BUDGET = SIMS_PER_MOVE * 12 // 5
+MAX_BUDGET = 20 * SIMS_PER_MOVE
 DISCOUNT_FACTOR = 1
 ENDING_ROUND = 4
 UCT_CONSTANT = 1
+AUTOMA_DIFFICULTY = 1
 
 def get_num_simulations(game_state: GameState) -> int:
     """
@@ -228,6 +228,14 @@ def get_next_node(node: Node, action: int) -> Node:
         # node.children[action] = child_node
         return child_node
 
+def full_log(message: str, logger: logging.Logger):
+    """
+    Log a message using the logger at level 'warning' and
+    print it to the console for visibility.
+    """
+    logger.warning(message)
+    print(message)  # Also print to console for visibility
+
 def log_game_state(game_state: GameState, logger: logging.Logger):
     """
     Log the given game state object using the logger
@@ -238,6 +246,7 @@ def log_game_state(game_state: GameState, logger: logging.Logger):
     logger.warning(f"\n{game_state.board['round_tracker']}")
     logger.warning(f"> Phase: {game_state.phase}")
     logger.warning(f">>> Player Score: {game_state.player.score} | Automa Score: {game_state.automa.score}")
+
 
 def run_game(seed=None, uct_constant=UCT_CONSTANT, log_filename='game_uct_compare.log'):
     # set seed for reproducibility
@@ -252,11 +261,11 @@ def run_game(seed=None, uct_constant=UCT_CONSTANT, log_filename='game_uct_compar
         filemode='w'
     )
     logger = logging.getLogger(__name__)
-    # Example usage
 
-    gs = SoloGameState(ending_round=ENDING_ROUND)  # Initialize the game state
+    gs = SoloGameState(automa_difficulty=AUTOMA_DIFFICULTY, ending_round=ENDING_ROUND)
     gs.create_game()
-    print(f"Running game with seed {seed} and UCT constant {uct_constant}")
+    rng = RNGOrder(game_state=gs)
+    full_log(f"Running game with seed {seed} and UCT constant {uct_constant}", logger)
     # Log the initial game state
     objectives = gs.board["round_tracker"]["objectives"]
     logger.warning("> Objectives Drawn:")
@@ -265,17 +274,18 @@ def run_game(seed=None, uct_constant=UCT_CONSTANT, log_filename='game_uct_compar
     logger.warning("\n> Initial Game State:")
     log_game_state(gs, logger)
     current_node = Node(game_state=gs, uct_constant=uct_constant)  # Create the root node
+
     # Simulate a game until the end
     while gs.phase != logic.PHASE_END_GAME:
         # Simulate a game until the end
         if gs.current_choice is not None:
             # we have a choice to make
-            print(f"UCT = {uct_constant} | Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
+            full_log(f"UCT = {uct_constant} | Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}", logger)
             # print(f"Current choice: {gs.current_choice}")
             best_move = run_mcts(current_node, get_num_simulations(gs))
-            # print("-" * 20)
-            print(f"UCT = {uct_constant} | Best move: {gs.current_choice[best_move]}")
-            # print("-" * 20)
+            full_log("-" * 20, logger)
+            full_log(f"UCT = {uct_constant} | Best move: {gs.current_choice[best_move]}", logger)
+            full_log("-" * 20, logger)
             current_node.prune_other_branches(best_move)
             current_node = get_next_node(current_node, best_move)
             gs = current_node.game_state
@@ -284,16 +294,17 @@ def run_game(seed=None, uct_constant=UCT_CONSTANT, log_filename='game_uct_compar
         elif gs.current_random_event is not None:
             # we have a random event to resolve
             # print(f"UCT = {uct_constant} | Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
-            # print(f"Current random event: {gs.current_random_event}")
-            chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
-            # print("#" * 20)
-            # if "automa_action" in gs.current_random_event:
-            #     # get the number on the card drawn
-            #     automa_string = AUTOMA_CARDS[chosen_input]["corner_id"]
-            #     print(f"Chosen automa card number: {automa_string}")
-            # else:
-            #     print(f"Chosen random outcome: {chosen_input}")
-            # print("#" * 20)
+            full_log(f"Current random event: {gs.current_random_event}", logger)
+            # get a random outcome from the predetermined RNGOrder
+            chosen_input = rng.get_random_outcome(gs, gs.current_random_event, gs.player)
+            full_log("#" * 20, logger)
+            if "automa_action" in gs.current_random_event:
+                # get the number on the card drawn
+                automa_string = AUTOMA_CARDS[chosen_input]["corner_id"]
+                full_log(f"Chosen automa card number: {automa_string}", logger)
+            else:
+                full_log(f"Chosen random outcome: {chosen_input}", logger)
+            full_log("#" * 20, logger)
             current_node.prune_other_branches(chosen_input)
             current_node = get_next_node(current_node, chosen_input)
             gs = current_node.game_state
@@ -305,7 +316,7 @@ def run_game(seed=None, uct_constant=UCT_CONSTANT, log_filename='game_uct_compar
             new_node.action = current_node.action
             current_node = new_node
     log_game_state(gs, logger)  # Log the final game state
-    print(f"UCT = {uct_constant} >> Game ended. Final score: Player = {gs.player.score} | Automa = {gs.automa.score}")
+    full_log(f"UCT = {uct_constant} >> Game ended. Final score: Player = {gs.player.score} | Automa = {gs.automa.score}", logger)
     return gs.player.score, gs.automa.score
 
 def _run_game_worker(args):
@@ -328,7 +339,7 @@ def _run_game_worker(args):
             "log_filename": log_filename
         }
 
-def run_multiple_games_parallel(uct_constants, num_runs=1, base_seed=None):
+def run_multiple_games_parallel(uct_constants, base_seeds=None):
     """
     Run multiple games in parallel, one for each uct_constant (optionally multiple runs per constant).
     Each run will have its own log file.
@@ -337,12 +348,10 @@ def run_multiple_games_parallel(uct_constants, num_runs=1, base_seed=None):
     import time
 
     tasks = []
-    for uct in uct_constants:
-        for run_idx in range(num_runs):
-            # seed = (base_seed if base_seed is not None else random.randint(0, 1_000_000)) + run_idx
-            seed = base_seed
+    for seed in base_seeds:
+        for uct in uct_constants:
             date = time.strftime("%Y%m%d-%H%M%S")
-            log_filename = f"compare_uct_c-{uct}_run-{run_idx}_seed-{seed}_{date}.log"
+            log_filename = f"compare_uct_c-{uct}_seed-{seed}_{date}.log"
             tasks.append((seed, uct, log_filename))
 
     results = []
@@ -359,13 +368,16 @@ def run_multiple_games_parallel(uct_constants, num_runs=1, base_seed=None):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Run a game of Wyrmspan with MCTS.")
-    parser.add_argument("--seed", type=int, default=None, help="Random seed for reproducibility")
+    parser.add_argument("--seeds", type=int, nargs='*', default=None, help="List of seeds to run per UCT constant")
     parser.add_argument("--uct_constants", type=float, nargs='*', default=None, help="List of UCT constants to try in parallel")
-    parser.add_argument("--num_runs", type=int, default=1, help="Number of runs per UCT constant")
     args = parser.parse_args()
     
-    if args.uct_constants:
-        # Run in parallel for each UCT constant
-        run_multiple_games_parallel(args.uct_constants, num_runs=args.num_runs, base_seed=args.seed)
-    else:
-        run_game(seed=args.seed)
+    if args.uct_constants is None:
+        args.uct_constants = [0.5, 1]
+    if args.seeds is None:
+        args.seeds = [None]  # Default seeds if none provided
+    
+    run_multiple_games_parallel(
+        uct_constants=args.uct_constants,
+        base_seeds=args.seeds
+    )
