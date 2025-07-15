@@ -3720,7 +3720,7 @@ if __name__ == "__main__":
     import random
     logging.basicConfig(
         filename='file.log',
-        level=logging.DEBUG,
+        level=logging.WARNING,
         # level=logging.INFO,
         # level=logging.WARNING,
         format='%(asctime)s:%(levelname)s:%(message)s',
@@ -3729,4 +3729,25 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     # random.seed(7)
-    randomly_progress_game()
+    unique_moves_seen = set()
+    for _ in range(100):
+        game = SoloGameState(automa_difficulty=3)
+        game.create_game()
+        while game.phase != PHASE_END_GAME:
+            # check if we have a choice or random event
+            if game.current_choice is not None:
+                # we have a choice to make
+                chosen_input = random.randint(0, len(game.current_choice) - 1)
+                move_name = str(game.current_choice[chosen_input])
+                if move_name not in unique_moves_seen:
+                    unique_moves_seen.add(move_name)
+                    logger.warning(f"New move: {move_name}")
+                game = get_next_state(game, chosen_input)
+            elif game.current_random_event is not None:
+                # we have a random event to resolve
+                chosen_input = get_random_outcome(game, game.current_random_event, game.player)
+                game = get_next_state(game, chosen_input)
+            else:
+                # progress the game
+                game = get_next_state(game, chosen_input=None)
+    logger.warning(f"Unique moves seen: {len(unique_moves_seen)}")

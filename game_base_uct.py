@@ -3,16 +3,17 @@ from game_states import GameState, SoloGameState, OBJECTIVE_TILES, AUTOMA_CARDS
 from playout_compare import simulate_game, simulate_multiple_games, RNGOrder
 import random
 import math
+import logging
 
 MAX_DEPTH = 35
-NUM_SIMULATIONS_PER_CHOICE = 350
-MIN_BUDGET = 2 * NUM_SIMULATIONS_PER_CHOICE
+NUM_SIMULATIONS_PER_CHOICE = 300
+MIN_BUDGET = 10 * NUM_SIMULATIONS_PER_CHOICE
 MAX_BUDGET = 20 * NUM_SIMULATIONS_PER_CHOICE
 ENDING_ROUND = 4
-UCT_CONSTANT = 0.75
+UCT_CONSTANT = 0.4
 
-SEED = 5202016
-AUTOMA_DIFFICULTY = 3
+SEED = 722025
+AUTOMA_DIFFICULTY = 1
 PLAYOUTS_PER_LEAF_VISIT = 5
 
 def get_num_simulations(game_state: GameState) -> int:
@@ -240,6 +241,14 @@ def get_next_node(node: Node, action: int) -> Node:
         # node.children[action] = child_node
         return child_node
 
+def full_log(message: str, logger: logging.Logger = None):
+    """
+    Log a message using the logger at level 'warning' and
+    print it to the console for visibility.
+    """
+    logger.warning(message)
+    print(message)  # Also print to console for visibility
+
 def log_game_state(game_state: GameState):
     """
     Log the given game state object using the logger
@@ -253,9 +262,8 @@ def log_game_state(game_state: GameState):
     logger.warning(f">>> Score: Player = {game_state.player.score} | Automa = {game_state.automa.score}")
 
 if __name__ == "__main__":
-    import logging
     logging.basicConfig(
-        filename='game_base_uct.log',
+        filename=f'uct-{UCT_CONSTANT}-{MIN_BUDGET}_seed-{SEED}.log',
         # level=logging.DEBUG,
         # level=logging.INFO,
         level=logging.WARNING,
@@ -269,6 +277,7 @@ if __name__ == "__main__":
     gs = SoloGameState(automa_difficulty=AUTOMA_DIFFICULTY, ending_round=ENDING_ROUND)
     gs.create_game()
     rng = RNGOrder(game_state=gs)
+    full_log(f"Running game with seed {SEED} and UCT constant {UCT_CONSTANT}", logger)
     # Log the initial game state
     objectives = gs.board["round_tracker"]["objectives"]
     logger.warning("> Objectives Drawn:")
@@ -282,13 +291,13 @@ if __name__ == "__main__":
         # Simulate a game until the end
         if gs.current_choice is not None:
             # we have a choice to make
-            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
-            print(f"> Points: Player = {gs.player.score} | Automa = {gs.automa.score}")
-            print(f"Current choice: {gs.current_choice}")
+            full_log(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}", logger)
+            full_log(f"> Points: Player = {gs.player.score} | Automa = {gs.automa.score}", logger)
+            full_log(f"Current choice: {gs.current_choice}", logger)
             best_move = run_mcts(current_node, get_num_simulations(gs))
-            print("-" * 20)
-            print(f"Best move: {gs.current_choice[best_move]}")
-            print("-" * 20)
+            full_log("-" * 20, logger)
+            full_log(f"Best move: {gs.current_choice[best_move]}", logger)
+            full_log("-" * 20, logger)
             best_move_score = current_node.children[best_move].score / current_node.children[best_move].visits if current_node.children[best_move].visits > 0 else 0
             sbr = (gs.player.score ** 2) / 40000
             print(f"Approx. Win Probability: {(best_move_score - sbr) / 0.75:.2%}")
@@ -299,18 +308,18 @@ if __name__ == "__main__":
             # input("Press Enter to continue...")
         elif gs.current_random_event is not None:
             # we have a random event to resolve
-            print(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}")
-            print(f"Current random event: {gs.current_random_event}")
+            full_log(f"Round {gs.board['round_tracker']['round'] + 1} | Player Coins: {gs.player.coins} | Automa Decisions: {gs.automa.num_decisions_left()}", logger)
+            full_log(f"Current random event: {gs.current_random_event}", logger)
             # chosen_input = logic.get_random_outcome(gs, gs.current_random_event, gs.player)
             chosen_input = rng.get_random_outcome(gs, gs.current_random_event, gs.player)
-            print("#" * 20)
+            full_log("#" * 20, logger)
             if "automa_action" in gs.current_random_event:
                 # get the number on the card drawn
                 automa_string = AUTOMA_CARDS[chosen_input]["corner_id"]
-                print(f"Chosen automa card number: {automa_string}")
+                full_log(f"Chosen automa card number: {automa_string}", logger)
             else:
-                print(f"Chosen random outcome: {chosen_input}")
-            print("#" * 20)
+                full_log(f"Chosen random outcome: {chosen_input}", logger)
+            full_log("#" * 20, logger)
             current_node.prune_other_branches(chosen_input)
             current_node = get_next_node(current_node, chosen_input)
             gs = current_node.game_state
@@ -322,4 +331,4 @@ if __name__ == "__main__":
             new_node.action = current_node.action
             current_node = new_node
     log_game_state(gs)  # Log the final game state
-    print(f"Game ended. Final score: Player = {gs.player.score} | Automa = {gs.automa.score}")
+    full_log(f"Game ended. Final score: Player = {gs.player.score} | Automa = {gs.automa.score}", logger)
