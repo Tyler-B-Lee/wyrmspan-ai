@@ -6,13 +6,12 @@ import math
 import logging
 
 MAX_DEPTH = 35
-SIMS_PER_MOVE = 200
-MIN_BUDGET = SIMS_PER_MOVE * 12 // 5
-MAX_BUDGET = 20 * SIMS_PER_MOVE
-DISCOUNT_FACTOR = 1
+SIMS_PER_MOVE = 250
+MIN_BUDGET = SIMS_PER_MOVE * 20
+MAX_BUDGET = 35 * SIMS_PER_MOVE
 ENDING_ROUND = 4
 UCT_CONSTANT = 1
-AUTOMA_DIFFICULTY = 1
+AUTOMA_DIFFICULTY = 2
 
 def get_num_simulations(game_state: GameState) -> int:
     """
@@ -191,6 +190,8 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int) -> int:
             algo_kwargs={
                 "entice_prob": 0.97,
                 "excavate_prob": 0.75
+                # "entice_prob": 0.825,
+                # "excavate_prob": 0.85
             },
             display_name="pdc"
         )

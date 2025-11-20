@@ -1900,6 +1900,13 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
         dragon_id = event["refill_dragon_display"]["rand_outcome"]
         slot = event["refill_dragon_display"]["slot"]
         game_state.board["card_display"]["dragon_cards"][slot] = dragon_id
+        # error check
+        if dragon_id not in game_state.dragon_deck:
+            print(f"Error: Dragon {dragon_id} not in dragon deck!")
+            print(f"Current dragon deck: {game_state.dragon_deck}")
+            print(f"Current game state: {game_state}")
+            print(game_state.get_card_display_string())
+            print(game_state.board['round_tracker'])
         game_state.dragon_deck.remove(dragon_id)
         logger.info(f">> Dragon display slot {slot} filled with dragon {dragon_id} ({DRAGON_CARDS[dragon_id]['name']})")
         if len(game_state.dragon_deck) == 0:
@@ -1910,6 +1917,13 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
         cave_id = event["refill_cave_display"]["rand_outcome"]
         slot = event["refill_cave_display"]["slot"]
         game_state.board["card_display"]["cave_cards"][slot] = cave_id
+        # error check
+        if cave_id not in game_state.cave_deck:
+            print(f"Error: Cave {cave_id} not in cave deck!")
+            print(f"Current cave deck: {game_state.cave_deck}")
+            print(f"Current game state: {game_state}")
+            print(game_state.get_card_display_string())
+            print(game_state.board['round_tracker'])
         game_state.cave_deck.remove(cave_id)
         logger.info(f">> Cave display slot {slot} filled with cave {cave_id} ({CAVE_CARDS[cave_id]['text']})")
         if len(game_state.cave_deck) == 0:

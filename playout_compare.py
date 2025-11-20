@@ -35,6 +35,13 @@ class RNGOrder:
             rnd_automa_deck.pop()  # remove the last card, as only 7 are used in each round
             self.automa_decks.extend(rnd_automa_deck)
 
+    def get_copy(self):
+        """
+        Get a copy of the RNGOrder object.
+        This is useful for simulating multiple games from the same initial state.
+        """
+        return copy.deepcopy(self)
+
     def get_random_outcome(self, game_state: GameState, event:dict, player:PlayerState):
         """
         Get the next random outcome for a given event.
@@ -195,11 +202,20 @@ def simulate_game(game_state: GameState, algo_name, algo_kwargs, display_name, s
     #     return (5000 + (game_state.player.score - game_state.automa.score) ** 2) / 10000, display_name, end_time - start_time
     # else:
     #     return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000, display_name, end_time - start_time
+    
     score_based_reward = (game_state.player.score ** 2) / 40000
     if game_state.player.score >= game_state.automa.score:
         return score_based_reward + 0.75, display_name, end_time - start_time
     else:
         return score_based_reward, display_name, end_time - start_time
+
+    # Other Objectives to Maximize
+    #get as many cached resources as possible
+    # score = 0
+    # for cache_list in game_state.player.cached_resources.values():
+    #     score += sum(num_caches for cache_dict in cache_list for num_caches in cache_dict.values())
+    # return score / 50, display_name, end_time - start_time
+
 
 def simulate_multiple_games(game_state: GameState, algo_name, algo_kwargs, display_name, num_simulations) -> tuple:
     """
@@ -222,6 +238,42 @@ def simulate_multiple_games(game_state: GameState, algo_name, algo_kwargs, displ
             total_score += score
     end_time = time.time()
     return total_score, display_name, end_time - start_time
+
+def simulate_game_given_rng(game_state: GameState, algo_name, algo_kwargs, display_name, rng: RNGOrder=None) -> tuple:
+    """
+    Simulate a game following the given RNG order.
+    Returns a score for the simulation, the name of the algorithm used, and the time taken to simulate.
+    """
+    sim_algo = get_sim_algo(algo_name, algo_kwargs)
+    start_time = time.time()
+    this_rng = rng.get_copy()
+    while game_state.phase != logic.PHASE_END_GAME:
+        # check if we have a choice or random event
+        if game_state.current_choice is not None:
+            # we have a choice to make
+            chosen_input = sim_algo(game_state)
+            game_state = logic.get_next_state(game_state, chosen_input)
+        elif game_state.current_random_event is not None:
+            # we have a random event to resolve
+            print(this_rng.cave_deck)
+            chosen_input = this_rng.get_random_outcome(game_state, game_state.current_random_event, game_state.player)
+            game_state = logic.get_next_state(game_state, chosen_input)
+        else:
+            # progress the game
+            game_state = logic.get_next_state(game_state, chosen_input=None)
+    end_time = time.time()
+    # return 1 if game_state.player.score > 30 else 0
+    # return game_state.player.score / MAX_SCORE
+    # return (game_state.player.score - game_state.automa.score + 70) / 140  # Normalize the score to be between 0 and 1
+    # if game_state.player.score >= game_state.automa.score:
+    #     return (5000 + (game_state.player.score - game_state.automa.score) ** 2) / 10000, display_name, end_time - start_time
+    # else:
+    #     return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000, display_name, end_time - start_time
+    score_based_reward = (game_state.player.score ** 2) / 40000
+    if game_state.player.score >= game_state.automa.score:
+        return score_based_reward + 0.75, display_name, end_time - start_time
+    else:
+        return score_based_reward, display_name, end_time - start_time
 
 def compare_algorithms(game_state: GameState = None, num_simulations: int = 500, algos=None):
     """

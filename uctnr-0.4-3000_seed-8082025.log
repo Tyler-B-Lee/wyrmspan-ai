@@ -1,0 +1,56 @@
+2025-08-08 13:30:16,866:WARNING:Running game with seed 8082025 and UCT constant 0.4
+2025-08-08 13:30:16,866:WARNING:> Objectives Drawn:
+2025-08-08 13:30:16,867:WARNING:Round 1: Eggs on your player mat.
+
+2025-08-08 13:30:16,867:WARNING:Round 2: Shy Dragons on your player mat.
+
+2025-08-08 13:30:16,867:WARNING:Round 3: Medium Dragons on your player mat.
+
+2025-08-08 13:30:16,867:WARNING:Round 4: Dragons with If Activated ability on your player mat.
+
+2025-08-08 13:30:16,867:WARNING:
+> Initial Game State:
+2025-08-08 13:30:16,867:WARNING:
+Game State:
+	Turn: 0
+	Phase: setup
+	Dragon Discard: []
+	Cave Discard: []
+	Event Queue: []
+	Guild Board: {'guild_index': 0, 'ability_uses': {1: [], 2: [], 3: [], 4: [], 5: []}, 'player_position': 0, 'automa_position': 0, 'automa_markers_ready': 1} (Plains Guild)
+Player State:
+	Dragon Hand: [(98, 'Little Amphiptere'), (57, 'Eternal Feydragon'), (155, 'Mercenary Wyvern')]
+	Cave Hand: [(69, 'Up to 3x, pay [AnyResource] to gain [DragonGuild]. Each opponent may do this 1x.'), (74, 'Up to 3x, pay [Egg] to gain [AnyResource][AnyResource]. Each opponent may do this 1x.'), (23, 'Gain [DragonCard][DragonGuild].')]
+	Resources: {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}
+	Egg Totals: {'mat_slots': 1, 'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Dragons Played: {'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Score: 0
+	Guild Markers: 4
+	Coins: 6
+	Caves Played: {'crimson_cavern': [-1, None, None, None], 'golden_grotto': [-1, None, None, None], 'amethyst_abyss': [-1, None, None, None]}
+	Dragons Played: {'crimson_cavern': [None, None, None, None], 'golden_grotto': [None, None, None, None], 'amethyst_abyss': [None, None, None, None]}
+	Cached Resources: {'crimson_cavern': [defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {})], 'golden_grotto': [defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {})], 'amethyst_abyss': [defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {}), defaultdict(<class 'int'>, {})]}
+	Tucked Dragons: {'crimson_cavern': [[], [], [], []], 'golden_grotto': [[], [], [], []], 'amethyst_abyss': [[], [], [], []]}
+	Nested Eggs: {'crimson_cavern': [[0, 0], [0, 0], [0, 0], [0, 0]], 'golden_grotto': [[0, 0], [0, 0], [0, 0], [0, 0]], 'amethyst_abyss': [[0, 0], [0, 0], [0, 0], [0, 0]]}
+	Times Explored: {'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+
+Automa State:
+	Dragons: []
+	Caves: []
+	Score: 0
+	Difficulty: Automa Level 2 (Medium)
+	Passed this round: False
+	Decision Deck: [8, 9, 10, 3, 4, 5, 6, 7]
+
+2025-08-08 13:30:16,867:WARNING:
+--- Card Display ---
+- Dragon Cards: [(25, 'Spotted Licheneater'), (161, 'Greater Scorpio'), (126, 'Quartzy Rockbreaker')]
+- Cave Cards: [(65, 'Pay [Egg][Egg], then gain [CaveCard] from the display and immediately play it for free.'), (37, 'Gain [Gold]. Lay [Egg].'), (61, 'Pay [CaveCard][CaveCard], then gain [CaveCard] from the display and immediately play it for free.')]
+---------------------
+2025-08-08 13:30:16,867:WARNING:
+{'round': 0, 'objectives': [(2, 'side_b'), (9, 'side_a'), (7, 'side_a'), (5, 'side_b')], 'scoring': [{'1st': [], '2nd': [], 'Other': []}, {'1st': [], '2nd': [], 'Other': []}, {'1st': [], '2nd': [], 'Other': []}, {'1st': [], '2nd': [], 'Other': []}], 'automa_bonus': [0, 0, 0, 0], 'finished_opr': False, 'opr_remaining': None, 'egg_given': False}
+2025-08-08 13:30:16,867:WARNING:> Phase: setup
+2025-08-08 13:30:16,867:WARNING:>>> Score: Player = 0 | Automa = 0
+2025-08-08 13:30:16,867:WARNING:Round 1 | Player Coins: 6 | Automa Decisions: 7
+2025-08-08 13:30:16,867:WARNING:> Points: Player = 0 | Automa = 0
+2025-08-08 13:30:16,868:WARNING:Current choice: [{'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 98}}, {'discard_dragon': {'dragon': 57}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 98}}, {'discard_dragon': {'dragon': 155}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 98}}, {'discard_cave': {'cave': 69}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 98}}, {'discard_cave': {'cave': 74}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 98}}, {'discard_cave': {'cave': 23}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 57}}, {'discard_dragon': {'dragon': 155}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 57}}, {'discard_cave': {'cave': 69}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 57}}, {'discard_cave': {'cave': 74}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 57}}, {'discard_cave': {'cave': 23}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 155}}, {'discard_cave': {'cave': 69}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 155}}, {'discard_cave': {'cave': 74}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_dragon': {'dragon': 155}}, {'discard_cave': {'cave': 23}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_cave': {'cave': 69}}, {'discard_cave': {'cave': 74}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_cave': {'cave': 69}}, {'discard_cave': {'cave': 23}}]}, 'coords': None}, {'adv_effects': {'sequence': [{'discard_cave': {'cave': 74}}, {'discard_cave': {'cave': 23}}]}, 'coords': None}]
