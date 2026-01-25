@@ -1565,7 +1565,7 @@
     {
         "number": 49,
         "name": "Standard Horned Lung Dragon",
-        "ability_text": "Gain [VP-4] for each *set* of dragon traits on your player mat (1 *set* = 1 of each: AGGRESSIVE, PLAYFUL , HELPFUL, SHY ).",
+        "ability_text": "Gain [VP-4] for each set of dragon traits on your player mat (1 set = 1 of each: Aggressive, Playful, Helpful, Shy).",
         "VP": 6,
         "size": "Medium",
         "capacity": 3,
@@ -1612,7 +1612,7 @@
     {
         "number": 51,
         "name": "Aloof Gryphdragon",
-        "ability_text": "Gain [VP-1] for each SHY dragon in an orthogonally adjacent space.",
+        "ability_text": "Gain [VP-1] for each Shy dragon in an orthogonally adjacent space.",
         "VP": 5,
         "size": "Small",
         "capacity": 3,
@@ -1687,7 +1687,7 @@
     {
         "number": 54,
         "name": "Colorful Gryphdragon",
-        "ability_text": "Gain [VP-4] if there are no AGGRESSIVE dragons in this cave.",
+        "ability_text": "Gain [VP-4] if there are no Aggressive dragons in this cave.",
         "VP": 3,
         "size": "Small",
         "capacity": 4,
@@ -1792,7 +1792,7 @@
     {
         "number": 58,
         "name": "Caustic Wyrm",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is a *hatchling*, tuck it here. Otherwise, add it to your hand.",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is a Hatchling, tuck it here. Otherwise, add it to your hand.",
         "VP": 5,
         "size": "Medium",
         "capacity": 2,
@@ -1818,7 +1818,7 @@
     {
         "number": 59,
         "name": "Haughty Wyvern",
-        "ability_text": "Gain [VP-2] for each other SHY dragon in this cave.",
+        "ability_text": "Gain [VP-2] for each other Shy dragon in this cave.",
         "VP": 5,
         "size": "Small",
         "capacity": 3,
@@ -2037,7 +2037,7 @@
     {
         "number": 67,
         "name": "Ancient One",
-        "ability_text": "Pay [Egg] from anywhere in this cave to gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource].",
+        "ability_text": "Pay [Egg] from anywhere in this cave to gain 2 different benefits: [DragonCard] or [DragonGuild] or [CaveCard] or [AnyResource].",
         "VP": 6,
         "size": "Medium",
         "capacity": 2,
@@ -2073,7 +2073,7 @@
     {
         "number": 68,
         "name": "Hostile Northern Fire Dragon",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is *large*, tuck it here. Otherwise, discard it and gain [Meat].",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is Large, tuck it here. Otherwise, discard it and gain [Meat].",
         "VP": 3,
         "size": "Large",
         "capacity": 1,
@@ -2099,7 +2099,7 @@
     {
         "number": 69,
         "name": "Prescient Gryphdragon",
-        "ability_text": "Draw [DragonCard] from the deck for each SHY dragon in this cave. You may tuck up to 2 of them here.",
+        "ability_text": "Draw [DragonCard] from the deck for each Shy dragon in this cave. You may tuck up to 2 of them here.",
         "VP": 3,
         "size": "Large",
         "capacity": 2,
@@ -2729,7 +2729,7 @@
     {
         "number": 91,
         "name": "Ordinary Resplendent Coatl",
-        "ability_text": "Gain [VP-8] if you have a *hatchling*, a *small* dragon, and a *large* dragon in this cave.",
+        "ability_text": "Gain [VP-8] if you have a Hatchling, a Small dragon, and a Large dragon in this cave.",
         "VP": 3,
         "size": "Medium",
         "capacity": 3,
@@ -2903,7 +2903,7 @@
     {
         "number": 97,
         "name": "Dappled Glade Spirit",
-        "ability_text": "Gain [VP-1] for each [Adventurer] dragon on your player mat (including *hatchlings*).",
+        "ability_text": "Gain [VP-1] for each [Adventurer] dragon on your player mat (including Hatchlings).",
         "VP": 5,
         "size": "Small",
         "capacity": 2,
@@ -2983,7 +2983,7 @@
     {
         "number": 100,
         "name": "Horned Venomous Wyrm",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is *small*, tuck it here. Otherwise discard it and gain [Milk].",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is Small, tuck it here. Otherwise discard it and gain [Milk].",
         "VP": 5,
         "size": "Small",
         "capacity": 2,
@@ -3034,7 +3034,7 @@
     {
         "number": 102,
         "name": "Pocket Amphiptere",
-        "ability_text": "Gain [VP-3] if there is at least 1 other PLAYFUL dragon in this cave.",
+        "ability_text": "Gain [VP-3] if there is at least 1 other Playful dragon in this cave.",
         "VP": 4,
         "size": "Small",
         "capacity": 3,
@@ -3160,7 +3160,7 @@
     {
         "number": 106,
         "name": "Minor Sharpclaw",
-        "ability_text": "Lose [VP-2] for each other AGGRESSIVE dragon in this cave.",
+        "ability_text": "Lose [VP-2] for each other Aggressive dragon in this cave.",
         "VP": 7,
         "size": "Small",
         "capacity": 3,
@@ -3284,7 +3284,7 @@
     {
         "number": 110,
         "name": "Stalking Drake",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is *medium* or *large*, tuck it here. Otherwise, add it to your hand.",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is Medium or Large, tuck it here. Otherwise, add it to your hand.",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -3310,7 +3310,7 @@
     {
         "number": 111,
         "name": "Penurious Red Wyrm",
-        "ability_text": "Gain [AnyResource] for each AGGRESSIVE dragon in this cave. You may cache up to 2 of them here.",
+        "ability_text": "Gain [AnyResource] for each Aggressive dragon in this cave. You may cache up to 2 of them here.",
         "VP": 1,
         "size": "Medium",
         "capacity": 2,
@@ -3524,7 +3524,7 @@
     {
         "number": 119,
         "name": "Chameleon Coatl",
-        "ability_text": "Gain [VP-2] for each *medium* dragon on your player mat (max [VP-8]).",
+        "ability_text": "Gain [VP-2] for each Medium dragon on your player mat (max [VP-8]).",
         "VP": 6,
         "size": "Medium",
         "capacity": 1,
@@ -3611,7 +3611,7 @@
     {
         "number": 122,
         "name": "Yellow-Bellied Lung Dragon",
-        "ability_text": "Lose [VP-1] for each other AGGRESSIVE dragon in this cave.",
+        "ability_text": "Lose [VP-1] for each other Aggressive dragon in this cave.",
         "VP": 3,
         "size": "Medium",
         "capacity": 1,
@@ -3660,7 +3660,7 @@
     {
         "number": 124,
         "name": "Mosaic Guardian",
-        "ability_text": "Gain [VP-2] for each *large* dragon on your player mat (max [VP-8]).",
+        "ability_text": "Gain [VP-2] for each Large dragon on your player mat (max [VP-8]).",
         "VP": 6,
         "size": "Large",
         "capacity": 1,
@@ -3731,7 +3731,7 @@
     {
         "number": 127,
         "name": "Capricious Venomous Wyrm",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is *small* or a *hatchling*, tuck it here. Otherwise, add it to your hand.",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is Small or a Hatchling, tuck it here. Otherwise, add it to your hand.",
         "VP": 5,
         "size": "Large",
         "capacity": 2,
@@ -3780,7 +3780,7 @@
     {
         "number": 129,
         "name": "Red-Crested Gryphdragon",
-        "ability_text": "Gain [VP-3] for each PLAYFUL dragon in an orthogonally adjacent space.",
+        "ability_text": "Gain [VP-3] for each Playful dragon in an orthogonally adjacent space.",
         "VP": 6,
         "size": "Medium",
         "capacity": 2,
@@ -3805,7 +3805,7 @@
     {
         "number": 130,
         "name": "Smirking Ridgeback",
-        "ability_text": "Tuck [DragonCard] from the deck under each PLAYFUL dragon in this cave.",
+        "ability_text": "Tuck [DragonCard] from the deck under each Playful dragon in this cave.",
         "VP": 2,
         "size": "Small",
         "capacity": 1,
@@ -3830,7 +3830,7 @@
     {
         "number": 131,
         "name": "Titanic Coatl",
-        "ability_text": "Gain [VP-4] for each *set* of dragon sizes on your player mat (1 *set*=1 of each: *hatchling*, *small*, *medium*, *large*).",
+        "ability_text": "Gain [VP-4] for each set of dragon sizes on your player mat (1 set = 1 of each: Hatchling, Small, Medium, Large).",
         "VP": 7,
         "size": "Large",
         "capacity": 1,
@@ -3854,7 +3854,7 @@
     {
         "number": 132,
         "name": "Lilliputian Fae",
-        "ability_text": "Gain [VP-2] for each small dragon on your player mat (max [VP-8]).",
+        "ability_text": "Gain [VP-2] for each Small dragon on your player mat (max [VP-8]).",
         "VP": 6,
         "size": "Small",
         "capacity": 1,
@@ -3902,7 +3902,7 @@
     {
         "number": 134,
         "name": "Customary Grazer",
-        "ability_text": "Gain [VP-3] for each *hatchling* on your player mat (max [VP-9]).",
+        "ability_text": "Gain [VP-3] for each Hatchling on your player mat (max [VP-9]).",
         "VP": 6,
         "size": "Large",
         "capacity": 1,
@@ -4020,7 +4020,7 @@
     {
         "number": 138,
         "name": "Kind Mistvern",
-        "ability_text": "Lay [Egg] on each dragon in this cave that is not AGGRESSIVE.",
+        "ability_text": "Lay [Egg] on each dragon in this cave that is not Aggressive.",
         "VP": 1,
         "size": "Large",
         "capacity": 4,
@@ -4341,7 +4341,7 @@
     {
         "number": 150,
         "name": "Aerial Recluse",
-        "ability_text": "Gain [VP-4] if there is another HELPFUL dragon in this column.",
+        "ability_text": "Gain [VP-4] if there is another Helpful dragon in this column.",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -5004,7 +5004,7 @@
     {
         "number": 174,
         "name": "Steadfast Southern Drake",
-        "ability_text": "Pay [Egg] to gain [AnyResource][CaveCard][DragonCard]. Each opponent may pay [Egg] to gain  [AnyResource]/[CaveCard]/[DragonCard].",
+        "ability_text": "Pay [Egg] to gain [AnyResource][CaveCard][DragonCard]. Each opponent may pay [Egg] to gain [AnyResource] or [CaveCard] or [DragonCard].",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -5077,7 +5077,7 @@
     {
         "number": 176,
         "name": "Gnawing Seraph",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is *medium*, tuck it here. Otherwise, discard it and gain [Meat].",
+        "ability_text": "Reveal [DragonCard] from the deck. If it is Medium, tuck it here. Otherwise, discard it and gain [Meat].",
         "VP": 3,
         "size": "Small",
         "capacity": 1,
@@ -5282,7 +5282,7 @@
     {
         "number": 183,
         "name": "Warming Firevern",
-        "ability_text": "Gain [VP-1] for each HELPFUL dragon on your player mat.",
+        "ability_text": "Gain [VP-1] for each Helpful dragon on your player mat.",
         "VP": 5,
         "size": "Large",
         "capacity": 2,

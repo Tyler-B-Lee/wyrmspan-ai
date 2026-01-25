@@ -7,17 +7,21 @@ import logging
 
 MAX_DEPTH = 35
 SIMS_PER_MOVE = 250
-MIN_BUDGET = SIMS_PER_MOVE * 20
-MAX_BUDGET = 35 * SIMS_PER_MOVE
+MIN_BUDGET = SIMS_PER_MOVE * 10
+MAX_BUDGET = 40 * SIMS_PER_MOVE
+AUTOMA_DIFFICULTY = 1
+
 ENDING_ROUND = 4
 UCT_CONSTANT = 1
-AUTOMA_DIFFICULTY = 2
 
 def get_num_simulations(game_state: GameState) -> int:
     """
     Get the number of simulations to run based on the game state.
     This function will return a number between MIN_BUDGET and MAX_BUDGET.
     """
+    # check if we are in setup phase
+    if game_state.phase == logic.PHASE_SETUP:
+        return MAX_BUDGET
     return max(min(len(game_state.current_choice) * SIMS_PER_MOVE, MAX_BUDGET), MIN_BUDGET)
 
 class Node:

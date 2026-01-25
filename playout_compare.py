@@ -203,9 +203,9 @@ def simulate_game(game_state: GameState, algo_name, algo_kwargs, display_name, s
     # else:
     #     return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000, display_name, end_time - start_time
     
-    score_based_reward = (game_state.player.score ** 2) / 40000
+    score_based_reward = (game_state.player.score ** 2) / 160_000
     if game_state.player.score >= game_state.automa.score:
-        return score_based_reward + 0.75, display_name, end_time - start_time
+        return score_based_reward + 0.95, display_name, end_time - start_time
     else:
         return score_based_reward, display_name, end_time - start_time
 

@@ -4,6 +4,7 @@ import json
 import random
 import typing
 import logging
+import torch
 
 # Configure logging
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -18,6 +19,17 @@ PHASE_MAIN_ACTION = "main_action"
 PHASE_END_TURN = "end_turn"
 PHASE_FINAL_SCORING = "final_scoring"
 PHASE_END_GAME = "end_of_game"
+
+PHASE_INDEX = {
+    PHASE_SETUP: 0,
+    PHASE_ROUND_START: 1,
+    PHASE_BEFORE_ACTION: 2,
+    PHASE_MAIN_ACTION: 3,
+    PHASE_END_TURN: 4,
+    PHASE_END_ROUND: 5,
+    PHASE_FINAL_SCORING: 6,
+    PHASE_END_GAME: 7,
+}
 
 RESOURCES = ["meat", "gold", "crystal", "milk"]
 CAVE_NAMES = ["crimson_cavern", "golden_grotto", "amethyst_abyss"]
@@ -274,7 +286,9 @@ class GameState:
         self.phase = PHASE_SETUP
         self.board = {}
         self.dragon_deck = list(range(1, 184))  # Set of dragon cards IDs
+        self.dragon_deck_tensor = torch.ones(183, dtype=torch.float32)  # Tensor representation of dragon deck
         self.cave_deck = list(range(1, 76)) # Cave cards IDs
+        self.cave_deck_tensor = torch.ones(75, dtype=torch.float32)  # Tensor representation of cave deck
         self.dragon_discard = []  # Discard pile for dragon cards
         self.cave_discard = []  # Discard pile for cave cards
         self.event_queue = []  # Use list for the event queue
@@ -312,6 +326,7 @@ class GameState:
         # remove drawn cards from the deck list
         for card in drawn_cards:
             self.dragon_deck.remove(card)
+            self.dragon_deck_tensor[card - 1] = 0.0
         return drawn_cards
     
     def draw_random_cave_cards(self, num:int=1) -> typing.List[int]:
@@ -331,6 +346,7 @@ class GameState:
         # remove drawn cards from the deck list
         for card in drawn_cards:
             self.cave_deck.remove(card)
+            self.cave_deck_tensor[card - 1] = 0.0
         return drawn_cards
     
     def all_players_passed(self) -> bool:
@@ -457,6 +473,7 @@ class SoloGameState(GameState):
         # Remove ignored cards from the deck
         for card in SoloGameState.ignore_cards:
             self.dragon_deck.remove(card)
+            self.dragon_deck_tensor[card - 1] = 0.0
         # Card Display Board
         board_d_cards = self.draw_random_dragon_cards(3)
         board_c_cards = self.draw_random_cave_cards(3)

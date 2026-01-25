@@ -2,7 +2,7 @@
     {},
     {
         "number": 1,
-        "text": "Activate the [OncePerRound-v2] ability on any dragon on your player mat.",
+        "text": "Activate the [OncePerRound] ability on any dragon on your player mat.",
         "when_played": {
             "other_ability_on_mat": {
                 "type": "once_per_round"

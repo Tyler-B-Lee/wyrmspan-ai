@@ -602,6 +602,11 @@ def refresh_cave_deck(game_state: GameState) -> None:
     """
     game_state.cave_deck = game_state.cave_discard.copy()
     game_state.cave_discard.clear() # clear the discard pile
+    # update cave deck tensor of the new deck
+    new_tensor = torch.zeros(75, dtype=torch.float32)
+    for card in game_state.cave_deck:
+        new_tensor[card - 1] = 1.0
+    game_state.cave_deck_tensor = new_tensor
     logger.info("> Refreshed cave deck")
 
 def refresh_dragon_deck(game_state: GameState) -> None:
@@ -611,6 +616,11 @@ def refresh_dragon_deck(game_state: GameState) -> None:
     """
     game_state.dragon_deck = game_state.dragon_discard.copy()
     game_state.dragon_discard.clear() # clear the discard pile
+    # update dragon deck tensor of the new deck
+    new_tensor = torch.zeros(183, dtype=torch.float32)
+    for card in game_state.dragon_deck:
+        new_tensor[card - 1] = 1.0
+    game_state.dragon_deck_tensor = new_tensor
     logger.info("> Refreshed dragon deck")
 
 # main game functions
@@ -1908,6 +1918,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             print(game_state.get_card_display_string())
             print(game_state.board['round_tracker'])
         game_state.dragon_deck.remove(dragon_id)
+        game_state.dragon_deck_tensor[dragon_id - 1] = 0.0
         logger.info(f">> Dragon display slot {slot} filled with dragon {dragon_id} ({DRAGON_CARDS[dragon_id]['name']})")
         if len(game_state.dragon_deck) == 0:
             # we need to refill the dragon deck
@@ -1925,6 +1936,7 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
             print(game_state.get_card_display_string())
             print(game_state.board['round_tracker'])
         game_state.cave_deck.remove(cave_id)
+        game_state.cave_deck_tensor[cave_id - 1] = 0.0
         logger.info(f">> Cave display slot {slot} filled with cave {cave_id} ({CAVE_CARDS[cave_id]['text']})")
         if len(game_state.cave_deck) == 0:
             # we need to refill the cave deck
@@ -2666,6 +2678,7 @@ def handle_top_deck_reveal(game_state:GameState, full_event:dict, player:PlayerS
     dragon_id = event["rand_outcome"]
     dragon_card = DRAGON_CARDS[dragon_id]
     game_state.dragon_deck.remove(dragon_id) # remove the dragon from the deck
+    game_state.dragon_deck_tensor[dragon_id - 1] = 0.0
     logger.info(f">> Player reveals dragon {dragon_id} ({dragon_card['name']}) from the top of the deck")
     if dragon_card["size"] in event["tuck_targets"]:
         # we tuck the card at the specified location
@@ -3250,6 +3263,7 @@ def handle_gain_dragon_card(game_state:GameState, full_event:dict, player:Player
         dragon_id = event["rand_outcome"]
         # remove the dragon from the deck
         game_state.dragon_deck.remove(dragon_id)
+        game_state.dragon_deck_tensor[dragon_id - 1] = 0.0
         if len(game_state.dragon_deck) == 0:
             # refresh the dragon deck
             refresh_dragon_deck(game_state)
@@ -3376,6 +3390,7 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
         dragon_id = event["rand_outcome"]
         # remove the dragon from the deck
         game_state.dragon_deck.remove(dragon_id)
+        game_state.dragon_deck_tensor[dragon_id - 1] = 0.0
         if len(game_state.dragon_deck) == 0:
             # refresh the dragon deck
             refresh_dragon_deck(game_state)
@@ -3649,6 +3664,7 @@ def get_next_state(game_state:GameState, chosen_input:Union[int,list]=None) -> G
                 for dragon_id in chosen_input:
                     # remove the dragon from the deck
                     new_state.dragon_deck.remove(dragon_id)
+                    new_state.dragon_deck_tensor[dragon_id - 1] = 0.0
                     logger.info(f">> Player draws dragon {dragon_id} from the deck")
                 if len(new_state.dragon_deck) == 0:
                     # refresh the dragon deck
