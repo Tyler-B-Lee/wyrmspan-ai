@@ -103,8 +103,9 @@ def alg_non_pass(game_state: GameState) -> int:
     # assume we have more than 1 action now
     pass_index = None
     skip_index = None
-    # reversed because pass is often at the end of the list
-    for i, action in enumerate(reversed(current_choice)):
+    # iterate from the end because pass is often near the end of the list
+    for i in range(len(current_choice) - 1, -1, -1):
+        action = current_choice[i]
         if "pass" in action:
             pass_index = i
             break
@@ -157,6 +158,96 @@ def alg_play_dragon_cave(game_state: GameState, entice_prob=0.7, excavate_prob=0
         return alg_uniform_random(game_state)
         # return alg_non_pass(game_state)
 
+# original weights were 3.2, 2.8, 2.1 with pass_penalty 1.5 and tie_threshold 0.35
+def alg_greedy_action_priority(game_state: GameState,
+                               dragon_weight=2.845,
+                               cave_weight=2.056,
+                               explore_weight=1.431,
+                               pass_penalty=1.5,
+                               tie_threshold=0.35) -> int:
+    """
+    Fast heuristic playout policy.
+
+    It scores each available action with lightweight state features and picks
+    the best option, with top-2 tie randomness for rollout diversity.
+    """
+    current_choice = game_state.current_choice
+    if len(current_choice) == 1:
+        return 0
+
+    player = game_state.player
+    coins = player.coins
+    total_eggs = sum(player.egg_totals.values())
+    resources = player.resources
+    total_resources = sum(resources.values())
+    round_num = game_state.board["round_tracker"]["round"]
+
+    def get_effect(action: dict) -> dict:
+        """Extract the immediate action payload if wrapped in adv_effects."""
+        if "adv_effects" in action and isinstance(action["adv_effects"], dict):
+            return action["adv_effects"]
+        return action
+
+    def get_cost(action: dict) -> dict:
+        if "cost" in action and isinstance(action["cost"], dict):
+            return action["cost"]
+        return {}
+
+    best_idx = 0
+    best_score = float("-inf")
+    second_idx = None
+    second_score = float("-inf")
+
+    for i, action in enumerate(current_choice):
+        effect = get_effect(action)
+        cost = get_cost(action)
+
+        if "play_dragon" in effect:
+            score = dragon_weight + 0.35
+            if len(player.dragon_hand) == 0:
+                score -= 3.0
+            if coins <= 1:
+                score -= 0.2
+            if round_num <= 2:
+                score += 0.25
+        elif "play_cave" in effect:
+            score = cave_weight
+            if len(player.cave_hand) == 0:
+                score -= 3.0
+            cave_payload = effect.get("play_cave", {})
+            if isinstance(cave_payload, dict) and cave_payload.get("free", False):
+                score += 0.45
+            if round_num <= 2:
+                score += 0.2
+        elif "explore" in effect:
+            score = explore_weight
+            if round_num <= 2:
+                score += 0.45
+        elif "gain_resource" in effect:
+            score = 1.7
+        elif "lay_egg" in effect:
+            score = 1.4
+        elif "draw_decision" in effect or "gain_dragon" in effect or "gain_cave" in effect:
+            score = 1.2
+        elif "pass" in effect:
+            score = -pass_penalty
+            if coins > 0:
+                score -= 0.6
+        elif "skip" in effect or "skip_opr" in effect:
+            score = -(pass_penalty * 0.7)
+        else:
+            score = 0.8
+
+        if score > best_score:
+            second_score, second_idx = best_score, best_idx
+            best_score, best_idx = score, i
+        elif score > second_score:
+            second_score, second_idx = score, i
+
+    if second_idx is not None and abs(best_score - second_score) <= tie_threshold:
+        return random.choice([best_idx, second_idx])
+    return best_idx
+
 def get_sim_algo(algo_name, algo_kwargs):
     """
     Dispatcher for simulation algorithms.
@@ -168,6 +259,10 @@ def get_sim_algo(algo_name, algo_kwargs):
     elif algo_name == "play_dragon_cave":
         def algo(gs):
             return alg_play_dragon_cave(gs, **algo_kwargs)
+        return algo
+    elif algo_name == "greedy_action_priority":
+        def algo(gs):
+            return alg_greedy_action_priority(gs, **algo_kwargs)
         return algo
     else:
         raise ValueError(f"Unknown algorithm: {algo_name}")
@@ -304,7 +399,7 @@ def compare_algorithms(game_state: GameState = None, num_simulations: int = 500,
         futures = []
         for _ in range(num_simulations):
             if game_state is None:
-                this_game_state = SoloGameState(automa_difficulty=3)
+                this_game_state = SoloGameState(automa_difficulty=1)
                 this_game_state.create_game()
             else:
                 this_game_state = game_state
@@ -399,7 +494,16 @@ def evolutionary_compare_algorithms(game_state: GameState = None, num_simulation
     print(f"\n\n>> Best hyperparameters: entice_prob={best_entice_prob:.4f}, excavate_prob={best_excavate_prob:.4f}")
 
 if __name__ == "__main__":
-    evolutionary_compare_algorithms(num_simulations=300)
+    algos = [
+        ("uniform_random", {}, "uniform_random"),
+        ("non_pass", {}, "non_pass"),
+        ("play_dragon_cave", {'entice_prob': 0.8718, 'excavate_prob': 0.7396}, "play_dragon_cave_0.8718_0.7396"),
+        ("greedy_action_priority", {'dragon_weight': 3.2, 'cave_weight': 2.8, 'explore_weight': 2.1}, "greedy_action_priority_original"),
+        ("greedy_action_priority", {'dragon_weight': 2.845, 'cave_weight': 2.056, 'explore_weight': 1.431}, "greedy_action_priority_tuned?")
+    ]
+    compare_algorithms(num_simulations=1000, algos=algos)
+    
+    # evolutionary_compare_algorithms(num_simulations=300)
 
     # import logging
     # logging.basicConfig(

@@ -190,16 +190,25 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int) -> int:
         # Simulation
         result, _, _ = simulate_game(
             game_state=node.game_state,
-            algo_name="play_dragon_cave",
+            algo_name="greedy_action_priority",
             algo_kwargs={
-                "entice_prob": 0.97,
-                "excavate_prob": 0.75
-                # "entice_prob": 0.825,
-                # "excavate_prob": 0.85
+                "dragon_weight": 2.845,
+                "cave_weight": 2.056,
+                "explore_weight": 1.431
             },
-            display_name="pdc"
+            display_name="greedy_action_priority_tuned?"
         )
-        # if p: print(f"Simulation result: {result}")
+        # result, _, _ = simulate_game(
+        #     game_state=node.game_state,
+        #     algo_name="play_dragon_cave",
+        #     algo_kwargs={
+        #         "entice_prob": 0.97,
+        #         "excavate_prob": 0.75
+        #         # "entice_prob": 0.825,
+        #         # "excavate_prob": 0.85
+        #     },
+        #     display_name="pdc"
+        # )
 
         # Backpropagation
         backpropagate(node, result)
