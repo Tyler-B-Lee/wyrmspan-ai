@@ -1,10 +1,45 @@
+import copy
+import logging
 import random
 import time
 from game_states import GameState, SoloGameState, PlayerState, DRAGON_CARDS
 import game_logic as logic
-import copy
 
 # File for comparing different algorithms for simulating game playouts in Wyrmspan.
+
+DEFAULT_BATCH_SIZE = 32
+
+
+def _configure_worker_logging(level=logging.WARNING):
+    """Keep worker processes quiet so logging does not dominate simulation time."""
+    logging.getLogger().setLevel(level)
+
+
+def _chunk_count(total_items: int, batch_size: int):
+    batch_size = max(1, batch_size)
+    for start in range(0, total_items, batch_size):
+        yield start, min(start + batch_size, total_items)
+
+
+def _run_seeded_game_batch(game_state: GameState, algo_name, algo_kwargs, display_name, seeds, worker_log_level=logging.WARNING):
+    """Run several simulations from the same starting state inside one worker."""
+    _configure_worker_logging(worker_log_level)
+    total_score = 0
+    total_time = 0.0
+    for seed in seeds:
+        score, _, elapsed = simulate_game(copy.deepcopy(game_state), algo_name, algo_kwargs, display_name, seed)
+        total_score += score
+        total_time += elapsed
+    return total_score, display_name, total_time, len(seeds)
+
+
+def _run_simulation_task_batch(task_batch, worker_log_level=logging.WARNING):
+    """Run a batch of independent simulation tasks inside one worker."""
+    _configure_worker_logging(worker_log_level)
+    results = []
+    for game_state, algo_name, algo_kwargs, display_name, seed in task_batch:
+        results.append(simulate_game(game_state, algo_name, algo_kwargs, display_name, seed))
+    return results
 
 class RNGOrder:
     """
@@ -23,24 +58,65 @@ class RNGOrder:
         self.game_state = game_state
         # Initialize the RNG order with the current game state
         # setup the dragon and cave decks
-        self.dragon_deck = game_state.dragon_deck.copy()
-        random.shuffle(self.dragon_deck)
-        self.cave_deck = game_state.cave_deck.copy()
-        random.shuffle(self.cave_deck)
+        dragon_deck = game_state.dragon_deck.copy()
+        random.shuffle(dragon_deck)
+        cave_deck = game_state.cave_deck.copy()
+        random.shuffle(cave_deck)
         # setup the automa decks for each round
-        self.automa_decks = []
+        automa_decks = []
         for r in range(4):
             rnd_automa_deck = game_state.automa.decision_deck.copy()
             random.shuffle(rnd_automa_deck)
             rnd_automa_deck.pop()  # remove the last card, as only 7 are used in each round
-            self.automa_decks.extend(rnd_automa_deck)
+            automa_decks.extend(rnd_automa_deck)
+
+        # Keep deck orders immutable and only mutate tiny cursor indices.
+        self.dragon_deck = tuple(dragon_deck)
+        self.cave_deck = tuple(cave_deck)
+        self.automa_decks = tuple(automa_decks)
+        self._dragon_idx = len(self.dragon_deck) - 1
+        self._cave_idx = len(self.cave_deck) - 1
+        self._automa_idx = len(self.automa_decks) - 1
+
+    @classmethod
+    def _from_existing(cls, source: "RNGOrder") -> "RNGOrder":
+        """Fast copy constructor that shares immutable deck order data."""
+        new_obj = cls.__new__(cls)
+        new_obj.order = source.order
+        new_obj.game_state = source.game_state
+        new_obj.dragon_deck = source.dragon_deck
+        new_obj.cave_deck = source.cave_deck
+        new_obj.automa_decks = source.automa_decks
+        new_obj._dragon_idx = source._dragon_idx
+        new_obj._cave_idx = source._cave_idx
+        new_obj._automa_idx = source._automa_idx
+        return new_obj
+
+    def _draw_from_deck(self, deck_name: str):
+        if deck_name == "dragon":
+            if self._dragon_idx < 0:
+                return None
+            ret = self.dragon_deck[self._dragon_idx]
+            self._dragon_idx -= 1
+            return ret
+        if deck_name == "cave":
+            if self._cave_idx < 0:
+                return None
+            ret = self.cave_deck[self._cave_idx]
+            self._cave_idx -= 1
+            return ret
+        if self._automa_idx < 0:
+            return None
+        ret = self.automa_decks[self._automa_idx]
+        self._automa_idx -= 1
+        return ret
 
     def get_copy(self):
         """
         Get a copy of the RNGOrder object.
         This is useful for simulating multiple games from the same initial state.
         """
-        return copy.deepcopy(self)
+        return RNGOrder._from_existing(self)
 
     def get_random_outcome(self, game_state: GameState, event:dict, player:PlayerState):
         """
@@ -50,13 +126,13 @@ class RNGOrder:
         # check the event type
         if "automa_action" in event:
             # we return one card sampled from the automa's decision deck
-            return self.automa_decks.pop()
+            return self._draw_from_deck("automa")
         elif ("top_deck_reveal" in event) or ("refill_dragon_display" in event) or ("gain_dragon" in event) or ("tuck_from" in event):
             # we return one card sampled from the dragon deck
-            return self.dragon_deck.pop()
+            return self._draw_from_deck("dragon")
         elif ("refill_cave_display" in event) or ("play_cave" in event) or ("gain_cave" in event):
             # we return one card sampled from the cave deck
-            return self.cave_deck.pop()
+            return self._draw_from_deck("cave")
         elif "draw_decision" in event:
             # we return a number of cards sampled from the dragon deck
             num_cards = event["draw_decision"]["amount"]
@@ -70,11 +146,7 @@ class RNGOrder:
                         num_cards += 1
             ret = []
             for _ in range(num_cards):
-                if len(self.dragon_deck) == 0:
-                    # no more cards to draw, return None
-                    ret.append(None)
-                else:
-                    ret.append(self.dragon_deck.pop())
+                ret.append(self._draw_from_deck("dragon"))
             return tuple(ret)
         raise ValueError(f"Invalid random event: {event}")
 
@@ -298,9 +370,9 @@ def simulate_game(game_state: GameState, algo_name, algo_kwargs, display_name, s
     # else:
     #     return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000, display_name, end_time - start_time
     
-    score_based_reward = (game_state.player.score ** 2) / 160_000
+    score_based_reward = (game_state.player.score ** 2) / 40_000
     if game_state.player.score >= game_state.automa.score:
-        return score_based_reward + 0.95, display_name, end_time - start_time
+        return score_based_reward + 0.75, display_name, end_time - start_time
     else:
         return score_based_reward, display_name, end_time - start_time
 
@@ -312,7 +384,7 @@ def simulate_game(game_state: GameState, algo_name, algo_kwargs, display_name, s
     # return score / 50, display_name, end_time - start_time
 
 
-def simulate_multiple_games(game_state: GameState, algo_name, algo_kwargs, display_name, num_simulations) -> tuple:
+def simulate_multiple_games(game_state: GameState, algo_name, algo_kwargs, display_name, num_simulations, batch_size: int = DEFAULT_BATCH_SIZE) -> tuple:
     """
     Simulate multiple games from the given game state using the specified algorithm.
     Returns the average score for the simulations, the name of the algorithm used, and the time taken to simulate.
@@ -321,15 +393,24 @@ def simulate_multiple_games(game_state: GameState, algo_name, algo_kwargs, displ
     total_score = 0
     start_time = time.time()
     base_seed = int(time.time() * 1000)  # Use current time in milliseconds as a base seed
+    batch_size = max(1, batch_size)
     with ProcessPoolExecutor() as executor:
         futures = []
-        for s in range(num_simulations):
-            # create a new game state for each simulation
-            this_game_state = copy.deepcopy(game_state)
-            futures.append(executor.submit(simulate_game, this_game_state, algo_name, algo_kwargs, display_name, base_seed + s))
+        for start, end in _chunk_count(num_simulations, batch_size):
+            seeds = [base_seed + s for s in range(start, end)]
+            futures.append(
+                executor.submit(
+                    _run_seeded_game_batch,
+                    game_state,
+                    algo_name,
+                    algo_kwargs,
+                    display_name,
+                    seeds,
+                )
+            )
         # wait for all futures to complete and sum the scores
         for future in as_completed(futures):
-            score, _, _ = future.result()
+            score, _, _, _ = future.result()
             total_score += score
     end_time = time.time()
     return total_score, display_name, end_time - start_time
@@ -350,7 +431,6 @@ def simulate_game_given_rng(game_state: GameState, algo_name, algo_kwargs, displ
             game_state = logic.get_next_state(game_state, chosen_input)
         elif game_state.current_random_event is not None:
             # we have a random event to resolve
-            print(this_rng.cave_deck)
             chosen_input = this_rng.get_random_outcome(game_state, game_state.current_random_event, game_state.player)
             game_state = logic.get_next_state(game_state, chosen_input)
         else:
@@ -370,7 +450,7 @@ def simulate_game_given_rng(game_state: GameState, algo_name, algo_kwargs, displ
     else:
         return score_based_reward, display_name, end_time - start_time
 
-def compare_algorithms(game_state: GameState = None, num_simulations: int = 500, algos=None):
+def compare_algorithms(game_state: GameState = None, num_simulations: int = 500, algos=None, batch_size: int = DEFAULT_BATCH_SIZE):
     """
     Compare the performance of different simulation algorithms by running
     multiple simulations and returning the average score for each algorithm.
@@ -394,9 +474,12 @@ def compare_algorithms(game_state: GameState = None, num_simulations: int = 500,
         run_results[name] = {'total_score': 0, 'num_simulations': 0, 'total_time': 0.0}
 
     from concurrent.futures import ProcessPoolExecutor, as_completed
+    batch_size = max(1, batch_size)
     # run each algorithm in parallel num_simulations times
     with ProcessPoolExecutor() as executor:
         futures = []
+        task_batch = []
+        task_seed = int(time.time() * 1000)
         for _ in range(num_simulations):
             if game_state is None:
                 this_game_state = SoloGameState(automa_difficulty=1)
@@ -404,14 +487,21 @@ def compare_algorithms(game_state: GameState = None, num_simulations: int = 500,
             else:
                 this_game_state = game_state
             for algo_name, algo_kwargs, display_name in algos:
-                # submit the simulation task for each algorithm
-                futures.append(executor.submit(simulate_game, this_game_state, algo_name, algo_kwargs, display_name))
+                # batch the simulation tasks to reduce executor overhead
+                task_batch.append((copy.deepcopy(this_game_state), algo_name, algo_kwargs, display_name, task_seed))
+                task_seed += 1
+                if len(task_batch) >= batch_size:
+                    futures.append(executor.submit(_run_simulation_task_batch, task_batch))
+                    task_batch = []
+
+        if task_batch:
+            futures.append(executor.submit(_run_simulation_task_batch, task_batch))
 
         for i, future in enumerate(as_completed(futures)):
-            score, algo_name, time_taken = future.result()
-            run_results[algo_name]['total_score'] += score
-            run_results[algo_name]['num_simulations'] += 1
-            run_results[algo_name]['total_time'] += time_taken
+            for score, algo_name, time_taken in future.result():
+                run_results[algo_name]['total_score'] += score
+                run_results[algo_name]['num_simulations'] += 1
+                run_results[algo_name]['total_time'] += time_taken
             if i % 500 == 0:
                 print(f"\nCompleted {i+1} simulations")
                 for display_name, results in run_results.items():
