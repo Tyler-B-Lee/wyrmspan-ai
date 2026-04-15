@@ -1,6 +1,5 @@
 import argparse
 import cProfile
-import copy
 import io
 import pstats
 import random
@@ -34,7 +33,7 @@ def build_game(seed=None):
 def profile_single_game(game, algo_name, algo_kwargs, display_name, seed, top_n):
     profiler = cProfile.Profile()
     profiler.enable()
-    result = simulate_game(copy.deepcopy(game), algo_name, algo_kwargs, display_name, seed=seed)
+    result = simulate_game(game.make_copy(), algo_name, algo_kwargs, display_name, seed=seed)
     profiler.disable()
 
     stream = io.StringIO()
@@ -73,7 +72,7 @@ def main():
     print("Batched throughput run:\n")
     start = time.time()
     total_score, _, elapsed = simulate_multiple_games(
-        copy.deepcopy(game),
+        game.make_copy(),
         args.algo,
         algo_kwargs,
         display_name,

@@ -1,0 +1,5 @@
+mode,seed,uct_constant,player_score,automa_score,score_delta,elapsed_sec,sims_per_move,max_depth,max_random_children
+make_copy,13,1.0,70,84,-14,410.8063191000838,10,35,15
+make_copy,36,1.0,79,89,-10,341.642937000026,10,35,15
+make_copy,334,1.0,73,83,-10,343.6295344000682,10,35,15
+make_copy,2222,1.0,79,78,1,307.23847470001783,10,35,15

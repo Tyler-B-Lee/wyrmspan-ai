@@ -1,4 +1,3 @@
-import copy
 import logging
 import random
 import time
@@ -27,7 +26,7 @@ def _run_seeded_game_batch(game_state: GameState, algo_name, algo_kwargs, displa
     total_score = 0
     total_time = 0.0
     for seed in seeds:
-        score, _, elapsed = simulate_game(copy.deepcopy(game_state), algo_name, algo_kwargs, display_name, seed)
+        score, _, elapsed = simulate_game(game_state.make_copy(), algo_name, algo_kwargs, display_name, seed)
         total_score += score
         total_time += elapsed
     return total_score, display_name, total_time, len(seeds)
@@ -488,7 +487,7 @@ def compare_algorithms(game_state: GameState = None, num_simulations: int = 500,
                 this_game_state = game_state
             for algo_name, algo_kwargs, display_name in algos:
                 # batch the simulation tasks to reduce executor overhead
-                task_batch.append((copy.deepcopy(this_game_state), algo_name, algo_kwargs, display_name, task_seed))
+                task_batch.append((this_game_state.make_copy(), algo_name, algo_kwargs, display_name, task_seed))
                 task_seed += 1
                 if len(task_batch) >= batch_size:
                     futures.append(executor.submit(_run_simulation_task_batch, task_batch))

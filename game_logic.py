@@ -3644,7 +3644,7 @@ def get_next_state(game_state:GameState, chosen_input:Union[int,list]=None) -> G
         if chosen_input < 0 or chosen_input >= len(game_state.current_choice):
             raise ValueError(f"Invalid input for the choice: {chosen_input}")
         # apply the choice
-        new_state = copy.deepcopy(game_state)
+        new_state = game_state.make_copy()
         new_state.current_choice = None
         new_state.event_queue.append(game_state.current_choice[chosen_input])
     elif game_state.current_random_event is not None:
@@ -3654,7 +3654,7 @@ def get_next_state(game_state:GameState, chosen_input:Union[int,list]=None) -> G
         if chosen_input is None:
             raise ValueError("No input given for the random event")
         # apply the random event
-        new_state = copy.deepcopy(game_state)
+        new_state = game_state.make_copy()
         new_state.current_random_event = None
         rand_event = copy.deepcopy(game_state.current_random_event)
         # add outcome to the event

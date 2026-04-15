@@ -190,6 +190,44 @@ class PlayerState:
         self.adventurer_position = None
         self.passed_this_round = False
         self.const_end_game_abilities = []
+
+    def clone(self) -> 'PlayerState':
+        """Create a fast explicit copy of mutable player state fields."""
+        new_player = PlayerState.__new__(PlayerState)
+        new_player.dragon_hand = self.dragon_hand.copy()
+        new_player.cave_hand = self.cave_hand.copy()
+        new_player.resources = self.resources.copy()
+        new_player.egg_totals = self.egg_totals.copy()
+        new_player.num_dragons_played = self.num_dragons_played.copy()
+        new_player.score = self.score
+        new_player.guild_markers = self.guild_markers
+        new_player.coins = self.coins
+        new_player.caves_played = {
+            cave: slots.copy() for cave, slots in self.caves_played.items()
+        }
+        new_player.dragons_played = {
+            cave: slots.copy() for cave, slots in self.dragons_played.items()
+        }
+        new_player.hatchling_grown = {
+            cave: slots.copy() for cave, slots in self.hatchling_grown.items()
+        }
+        new_player.cached_resources = {
+            cave: [collections.defaultdict(int, slot) for slot in slots]
+            for cave, slots in self.cached_resources.items()
+        }
+        new_player.tucked_dragons = {
+            cave: [stack.copy() for stack in slots]
+            for cave, slots in self.tucked_dragons.items()
+        }
+        new_player.nested_eggs = {
+            cave: [pair.copy() for pair in slots]
+            for cave, slots in self.nested_eggs.items()
+        }
+        new_player.times_explored = self.times_explored.copy()
+        new_player.adventurer_position = self.adventurer_position
+        new_player.passed_this_round = self.passed_this_round
+        new_player.const_end_game_abilities = copy.deepcopy(self.const_end_game_abilities)
+        return new_player
     
     def __str__(self):
         """Returns a string representation of the player state, with newlines and tabs for formatting."""
@@ -273,6 +311,18 @@ class AutomaState:
         Resets the automa's deck based on the current difficulty level.
         """
         self.decision_deck = copy.deepcopy(AutomaState.difficulty_card_decks[self.difficulty])
+
+    def clone(self) -> 'AutomaState':
+        """Create a fast explicit copy of mutable automa fields."""
+        new_automa = AutomaState.__new__(AutomaState)
+        new_automa.decision_deck = self.decision_deck.copy()
+        new_automa.dragons = self.dragons.copy()
+        new_automa.caves = self.caves.copy()
+        new_automa.score = self.score
+        new_automa.difficulty = self.difficulty
+        new_automa.passed_this_round = self.passed_this_round
+        new_automa.const_end_game_abilities = copy.deepcopy(self.const_end_game_abilities)
+        return new_automa
         
 
 class GameState:
@@ -300,10 +350,51 @@ class GameState:
     
     def make_copy(self) -> 'GameState':
         """
-        Returns a deep copy of the current game state.
-        This is useful for undo/redo functionality or saving the game state.
+        Returns a copy of the current game state.
+        This is useful for simulation and branching game tree exploration.
         """
-        return copy.deepcopy(self)
+        return self.shallow_clone()
+
+    def shallow_clone(self) -> 'GameState':
+        """Create an explicit state copy while sharing immutable data resources."""
+        clone_cls = type(self)
+        new_state = clone_cls.__new__(clone_cls)
+
+        # Core turn / phase metadata
+        new_state.turn = self.turn
+        new_state.phase = self.phase
+        new_state.allowed_guilds = self.allowed_guilds
+        new_state.ending_round = self.ending_round
+        new_state.finished_end_game_abilities = self.finished_end_game_abilities
+        new_state.round_start_player = getattr(self, "round_start_player", 0)
+        new_state.current_player = getattr(self, "current_player", 0)
+
+        # Decks and tensors are mutable gameplay state and must be copied.
+        new_state.dragon_deck = self.dragon_deck.copy()
+        new_state.cave_deck = self.cave_deck.copy()
+        new_state.dragon_discard = self.dragon_discard.copy()
+        new_state.cave_discard = self.cave_discard.copy()
+        new_state.dragon_deck_tensor = self.dragon_deck_tensor.clone()
+        new_state.cave_deck_tensor = self.cave_deck_tensor.clone()
+
+        # Dynamic flow state often carries nested event payloads.
+        new_state.board = copy.deepcopy(self.board)
+        new_state.event_queue = copy.deepcopy(self.event_queue)
+        new_state.current_choice = copy.deepcopy(self.current_choice)
+        new_state.current_random_event = copy.deepcopy(self.current_random_event)
+
+        # Player containers differ between multiplayer and solo variants.
+        if hasattr(self, "players"):
+            new_state.players = [player.clone() for player in self.players]
+        if hasattr(self, "player"):
+            new_state.player = self.player.clone()
+
+        # Solo-only automa state.
+        if hasattr(self, "automa"):
+            new_state.automa = self.automa.clone()
+            new_state.automa_difficulty = self.automa_difficulty
+
+        return new_state
     
     def is_halted(self) -> bool:
         "Checks if the game is halted. Either we have a choice, a random event, or the game is over."

@@ -1,0 +1,5 @@
+mode,seed,uct_constant,player_score,automa_score,score_delta,elapsed_sec,sims_per_move,max_depth,max_random_children
+forced_deepcopy,13,1.0,70,84,-14,1230.1040109000169,10,35,15
+forced_deepcopy,36,1.0,79,89,-10,962.1842089000857,10,35,15
+forced_deepcopy,334,1.0,73,83,-10,1232.4834602000192,10,35,15
+forced_deepcopy,2222,1.0,79,78,1,749.7964695000555,10,35,15
