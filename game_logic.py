@@ -2941,7 +2941,7 @@ def handle_any_resource_decision(game_state:GameState, full_event:dict, player:P
                             }
                         )
                 else:
-                    # we have a specific location to tuck the dragon
+                    # we have a specific location to cache the resource
                     new_event["choice"].append(
                         {"any_resource_decision": {
                             "chosen_type": resource_type,
@@ -3006,17 +3006,45 @@ def handle_play_cave(game_state:GameState, full_event:dict, player:PlayerState) 
         if len(game_state.cave_deck) == 0:
             # refresh the dragon deck
             refresh_cave_deck(game_state)
-        # play the cave card
-        logger.info(f">> Player plays cave {cave_id} randomly drawn from the deck")
-        excavate_cave(player, game_state, event, cave_id)
+        # if cave location is already specified, play immediately (legacy event format)
+        if "cave_location" in event:
+            logger.info(f">> Player plays cave {cave_id} randomly drawn from the deck")
+            excavate_cave(player, game_state, event, cave_id)
+            return
+        # otherwise, draw first and then ask where to place that specific cave
+        valid_locations = []
+        for cave_name in CAVE_NAMES:
+            can_ex, cave_col = can_excavate_cave(player, cave_name, free=event.get("free", False))
+            if can_ex:
+                valid_locations.append((cave_name, cave_col))
+        if len(valid_locations) == 0:
+            # invalid state guard: keep card accounting consistent
+            game_state.cave_discard.append(cave_id)
+            # logger.warning(">> Random cave %s was drawn, but no valid cave location exists. Discarding drawn cave.", cave_id)
+            # logger.warning(f"\t- Player state: {player}")
+            return
+        new_event = {"choice": []}
+        for cave_name, cave_col in valid_locations:
+            new_event["choice"].append(
+                {
+                    "play_cave": {
+                        "source": "deck",
+                        "chosen_id": cave_id,
+                        "free": event.get("free", False),
+                        "cave_location": cave_name,
+                    }
+                }
+            )
+        game_state.event_queue.append({"adv_effects": new_event})
         return
     elif event.get("chosen_id", None) is not None:
-        # we have a specific cave to use from the hand
+        # we have a specific cave to use from the hand/deck
         cave_id = event["chosen_id"]
-        # remove the cave from the hand
-        player.cave_hand.remove(cave_id)
+        if event["source"] == "hand":
+            # remove the cave from the hand
+            player.cave_hand.remove(cave_id)
         # play the cave card
-        logger.info(f">> Player plays cave {cave_id} from their hand")
+        logger.info(f">> Player plays cave {cave_id} from {event['source']}")
         excavate_cave(player, game_state, event, cave_id)
         return
     
@@ -3074,19 +3102,19 @@ def handle_play_cave(game_state:GameState, full_event:dict, player:PlayerState) 
                     new_event["choice"].append(cost_event)
 
     elif event["source"] == "deck":
-        # take a random dragon from the deck
-        new_event = {"choice": []}
-        for cave_name, cave_col in valid_locations:
-            deck_outcomes = {"random": {
-                "play_cave": {
-                "source": "deck",
-                "free": event.get("free", False),
-                "cave_location": cave_name,
-                "possible_outcomes": "cave_deck"
-                }}
+        # draw from deck first; placement choice is created after rand_outcome is known
+        game_state.event_queue.append(
+            {
+                "random": {
+                    "play_cave": {
+                        "source": "deck",
+                        "free": event.get("free", False),
+                        "possible_outcomes": "cave_deck"
+                    }
+                }
             }
-            # add the random dragon to the choice
-            new_event["choice"].append(deck_outcomes)
+        )
+        return
     # add the choice to the event queue
     if len(new_event["choice"]) > 0:
         # we have multiple choices to make, add the choice to the event queue
@@ -3316,15 +3344,22 @@ def handle_resource_caching(game_state:GameState, full_event:dict, player:Player
             # we can cache any resource
             for resource in RESOURCES:
                 cache_cost = {resource: 1}
-                payments = get_all_payments(player, cache_cost)
-                for payment in payments:
-                    valid_resource_costs.append((payment, resource))
+                # if the player has the resource, we can pay it directly; otherwise, we can substitute with any other resource
+                if player.resources[resource] > 0:
+                    valid_resource_costs.append((cache_cost, resource))
+                else:
+                    payments = get_all_payments(player, cache_cost)
+                    for payment in payments:
+                        valid_resource_costs.append((payment, resource))
         else:
             # cache a specific resource, but we can substitute if necessary
             cache_cost = {event["type"]: 1}
-            payments = get_all_payments(player, cache_cost)
-            for payment in payments:
-                valid_resource_costs.append((payment, event["type"]))
+            if player.resources[event["type"]] > 0:
+                valid_resource_costs.append((cache_cost, event["type"]))
+            else:
+                payments = get_all_payments(player, cache_cost)
+                for payment in payments:
+                    valid_resource_costs.append((payment, event["type"]))
     elif event["L1"] == "general_supply":
         # we can cache any resource from the general supply
         if event["type"] == "any":
