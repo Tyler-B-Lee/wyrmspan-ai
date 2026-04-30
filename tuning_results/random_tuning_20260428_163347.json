@@ -1,0 +1,17 @@
+[
+  {
+    "params": {
+      "dragon_weight": 3.028,
+      "cave_weight": 2.297,
+      "explore_weight": 2.38,
+      "pass_penalty": 1.619,
+      "tie_threshold": 0.438
+    },
+    "mean_score": 0.022408333333333336,
+    "min_score": 0.011025,
+    "max_score": 0.0441,
+    "std_dev": 0.015344601837635134,
+    "num_successes": 3,
+    "success": true
+  }
+]

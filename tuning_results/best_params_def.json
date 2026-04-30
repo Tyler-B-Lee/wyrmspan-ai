@@ -1,0 +1,11 @@
+{
+    "reward": 0.07567499999999999,
+    "params": {
+        "dragon_weight": 4.207,
+        "cave_weight": 2.168,
+        "explore_weight": 1.0,
+        "pass_penalty": 1.0,
+        "tie_threshold": 0.166
+    },
+    "generation": 8
+}

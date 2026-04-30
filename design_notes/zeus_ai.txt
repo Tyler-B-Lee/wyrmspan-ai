@@ -1,0 +1,82 @@
+The following is an excerpt from "Learning to Play 7 Wonders Duel Without Human Supervision",
+a major inspiration for my own work for a model to play the game Wyrmspan.
+
+Citation:
+@misc{paolini2024learningplay7wonders,
+      title={Learning to Play 7 Wonders Duel Without Human Supervision}, 
+      author={Giovanni Paolini and Lorenzo Moreschini and Francesco Veneziano and Alessandro Iraci},
+      year={2024},
+      eprint={2406.00741},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2406.00741}, 
+}
+
+Excerpt:
+ZeusAI is an adaptation of the celebrated AlphaZero reinforcement learning algorithm [1], combining Monte Carlo Tree
+Search (MCTS) with a Deep Neural Network that models state
+values and policy. In this section, we give a technical overview
+of ZeusAI. Some details are omitted for brevity, and we defer
+a complete description to a future paper.
+
+A. The Model
+In 7 Wonders Duel, unlike Go and Chess, the state does
+not have a chessboard-like geometry, making Convolutional
+Neural Networks not well-suited. Instead, we use Transformer
+Encoder models [2] of different sizes. Our final model has 12
+layers and 12 attention heads; it maintains 768-dimensional
+representations, and the feedforward layers have a hidden dimension of 3072. A state is represented as a set of components
+(cards, wonders, progress tokens, etc.), each paired with their
+positional information (e.g., a card can be in a specific location
+of the age structure, in either player’s city, discarded, or used to
+build a wonder). All components and positions have a learned
+768-dimensional embedding, akin to words and positions in
+Transformer-based language models. No explicit information
+about the rules, and the costs and effects of game components,
+is encoded; it is all learned through self-play. Additional tokens
+encode other aspects of the state, such as the number of coins
+and the status of the military track.
+ZeusAI’s Transformer outputs a state value between −1 and
++1, representing the odds of the current player winning the
+game, and a probability distribution over all legal actions (the
+policy), with more promising actions having higher probabilities. The total number of trainable parameters is ∼92M.
+
+B. Action Selection
+To select an action in a given state, ZeusAI employs the
+MCTS algorithm. Specifically, the procedure begins with a tree
+consisting only of the root node, representing the current state.
+During each simulation, the tree is traversed starting from the
+root, until a new state is encountered and added; actions are
+chosen in a way that balances exploration (prioritizing less
+explored actions), and exploitation (favoring actions considered more promising by the model or that have previously led
+to high-value outcomes). In some cases, applying an action
+results in a state where a random event, such as revealing
+one or more cards, must occur. We refer to these states as
+afterstates. To reduce the branching factor of the search tree,
+each afterstate is limited to having at most 11 child states; in
+non-training games, this limit is gradually increased as the
+number of visits to an afterstate increases. If a simulation
+reaches an afterstate already at the limit, it continues randomly
+with one of the existing child states. The limit of 11 is based
+on the maximum number of child states possible when a single
+card must be revealed.
+When generating self-play games for training, we run
+MCTS for up to 1k simulations; the action is selected randomly, weighted by the number of visits. In non-training
+games, we run up to 5k simulations and deterministically
+select the action with the highest number of visits.
+
+C. Training
+We initially generated 35k games using three simple rulebased policies: the first policy selects actions at random, with
+a preference for not discarding; the second and third policies
+attempt to build random green and red cards, which are required to achieve scientific and military victories respectively,
+and otherwise behave as the first policy. We trained the value
+head of our Transformer model on all states from these games,
+assigning a target value based on the game’s outcome (+1 for
+a win, −1 for a loss, and 0 for a draw).
+Subsequent self-play games were generated with ZeusAI.
+Every ∼3k games, the Transformer model was re-trained on
+the states from the most recent ∼100k games. Specifically, the
+policy head was trained to predict the visit distribution of the
+legal actions at the MCTS root node. We generated a total of
+∼420k self-play games for training, which would take 9 years
+of real-time training for a human player on BGA.
