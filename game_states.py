@@ -62,7 +62,7 @@ OBJECTIVE_POSITION_SCORES = [
 EXPLORE_CAVE_EFFECTS = {
     "crimson_cavern": {
         0: {"gain_resource": {"type": "any"}},
-        1: {"gain_guild": {"source": "any"}},
+        1: {"gain_guild": True},
         2: {"gain_resource": {"type": "any"}},
         3: {"lay_egg": {"location": "any"}},
         4: {"adv_effects": {
@@ -76,7 +76,7 @@ EXPLORE_CAVE_EFFECTS = {
     },
     "golden_grotto": {
         0: {"gain_dragon": {"source": "any"}},
-        1: {"gain_guild": {"source": "any"}},
+        1: {"gain_guild": True},
         2: {"gain_dragon": {"source": "any"}},
         3: {"lay_egg": {"location": "any"}},
         4: {"adv_effects": {
@@ -89,7 +89,7 @@ EXPLORE_CAVE_EFFECTS = {
     },
     "amethyst_abyss": {
         0: {"gain_cave": {"source": "any"}},
-        1: {"gain_guild": {"source": "any"}},
+        1: {"gain_guild": True},
         2: {"gain_cave": {"source": "any"}},
         3: {"lay_egg": {"location": "any"}},
         4: {"adv_effects": {
@@ -187,7 +187,6 @@ class PlayerState:
             "golden_grotto": 0,
             "amethyst_abyss": 0,
         }
-        self.adventurer_position = None
         self.passed_this_round = False
         self.const_end_game_abilities = []
 
@@ -224,7 +223,6 @@ class PlayerState:
             for cave, slots in self.nested_eggs.items()
         }
         new_player.times_explored = self.times_explored.copy()
-        new_player.adventurer_position = self.adventurer_position
         new_player.passed_this_round = self.passed_this_round
         new_player.const_end_game_abilities = copy.deepcopy(self.const_end_game_abilities)
         return new_player

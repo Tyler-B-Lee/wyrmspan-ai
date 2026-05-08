@@ -99,8 +99,8 @@
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -163,7 +163,7 @@
         },
         "on_feed": {
             "type": "meat",
-            "effect": {"gain_guild": {"source": "any"}}
+            "effect": {"gain_guild": true}
         },
         "on_grow_up": {
             "adv_effects": {
@@ -200,7 +200,7 @@
         },
         "on_feed": {
             "type": "tuck",
-            "effect": {"gain_guild": {"source": "any"}}
+            "effect": {"gain_guild": true}
         },
         "on_grow_up": {
             "gain_coin": {"amount": 1}
@@ -237,8 +237,8 @@
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -274,7 +274,7 @@
             "adv_effects": {
                 "sequence": [
                     {"gain_dragon": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -415,8 +415,8 @@
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -621,8 +621,8 @@
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             }
         },
@@ -866,7 +866,7 @@
         },
         "on_feed": {
             "type": "milk",
-            "effect": {"gain_guild": {"source": "any"}}
+            "effect": {"gain_guild": true}
         },
         "on_grow_up": {
             "adv_effects": {
@@ -941,7 +941,7 @@
             "adv_effects": {
                 "sequence": [
                     {"gain_dragon": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -977,8 +977,8 @@
         "on_grow_up": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -1039,7 +1039,7 @@
         },
         "on_feed": {
             "type": "tuck",
-            "effect": {"gain_guild": {"source": "any"}}
+            "effect": {"gain_guild": true}
         },
         "on_grow_up": {
             "adv_effects": {
@@ -1348,7 +1348,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "gain_guild": {"source": "any"}
+            "gain_guild": true
         }
     },
     {
@@ -1780,8 +1780,8 @@
         "when_played": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             },
             "opponent_effect": {
@@ -1887,8 +1887,8 @@
         "if_activated": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             },
             "cost": {
@@ -2054,12 +2054,12 @@
         "if_activated": {
             "adv_effects": {
                 "choice": [
-                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_guild": true}]}},
                     {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_cave": {"source": "any"}}]}},
                     {"adv_effects": {"sequence":[{"gain_dragon": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
-                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_guild": {"source": "any"}}]}},
+                    {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_guild": true}]}},
                     {"adv_effects": {"sequence":[{"gain_cave": {"source": "any"}}, {"gain_resource": {"type": "any"}}]}},
-                    {"adv_effects": {"sequence":[{"gain_resource": {"type": "any"}}, {"gain_guild": {"source": "any"}}]}}
+                    {"adv_effects": {"sequence":[{"gain_resource": {"type": "any"}}, {"gain_guild": true}]}}
                 ]
             },
             "cost": {
@@ -2202,8 +2202,8 @@
         "once_per_round": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             },
             "cost": {
@@ -2289,7 +2289,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "gain_guild": {"source": "any"}
+            "gain_guild": true
         }
     },
     {
@@ -2521,7 +2521,7 @@
             "adv_effects": {
                 "sequence": [
                     {"gain_coin": {"amount": 1}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true}
                 ]
             }
         }
@@ -2840,8 +2840,8 @@
         "if_activated": {
             "adv_effects": {
                 "choice": [
-                    {"adv_effects": {"gain_guild": {"source": "any"}}, "cost": {"dragon_card": 1}},
-                    {"adv_effects": {"gain_guild": {"source": "any"}}, "cost": {"cave_card": 1}}
+                    {"adv_effects": {"gain_guild": true}, "cost": {"dragon_card": 1}},
+                    {"adv_effects": {"gain_guild": true}, "cost": {"cave_card": 1}}
                 ]
             }
         }
@@ -3238,7 +3238,7 @@
                     {"gain_dragon": {"source":"any"}},
                     {"gain_cave": {"source":"any"}},
                     {"gain_resource": {"type":"any"}},
-                    {"gain_guild": {"source":"any"}}
+                    {"gain_guild": true}
                 ]
             },
             "cost": {
@@ -3598,9 +3598,9 @@
         "when_played": {
             "adv_effects": {
                 "sequence": [
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}},
-                    {"gain_guild": {"source": "any"}}
+                    {"gain_guild": true},
+                    {"gain_guild": true},
+                    {"gain_guild": true}
                 ]
             },
             "cost": {
@@ -3894,9 +3894,7 @@
         "egg_cost": 0,
         "milk_cost": 0,
         "if_activated": {
-            "gain_guild": {
-                "source": "any"
-            }
+            "gain_guild": true
         }
     },
     {

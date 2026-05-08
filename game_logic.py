@@ -11,127 +11,6 @@ DragonNumber = int
 CaveNumber = int
 
 
-# state conversion functions
-def player_state_to_dict(player_state: PlayerState) -> dict:
-    return {
-        "dragon_hand": player_state.dragon_hand,
-        "cave_hand": player_state.cave_hand,
-        "resources": player_state.resources,
-        "egg_totals": player_state.egg_totals,
-        "num_dragons_played": player_state.num_dragons_played,
-        "score": player_state.score,
-        "guild_markers": player_state.guild_markers,
-        "coins": player_state.coins,
-        "caves_played": player_state.caves_played,
-        "dragons_played": player_state.dragons_played,
-        "cached_resources": player_state.cached_resources,
-        "tucked_dragons": player_state.tucked_dragons,
-        "nested_eggs": player_state.nested_eggs,
-        "times_explored": player_state.times_explored,
-        "adventurer_position": player_state.adventurer_position
-    }
-
-def dict_to_player_state(data: dict) -> PlayerState:
-    player_state = PlayerState()
-    player_state.dragon_hand = data["dragon_hand"]
-    player_state.cave_hand = data["cave_hand"]
-    player_state.resources = data["resources"]
-    player_state.egg_totals = data["egg_totals"]
-    player_state.num_dragons_played = data["num_dragons_played"]
-    player_state.score = data["score"]
-    player_state.guild_markers = data["guild_markers"]
-    player_state.coins = data["coins"]
-    player_state.caves_played = data["caves_played"]
-    player_state.dragons_played = data["dragons_played"]
-    player_state.cached_resources = data["cached_resources"]
-    player_state.tucked_dragons = data["tucked_dragons"]
-    player_state.nested_eggs = data["nested_eggs"]
-    player_state.times_explored = data["times_explored"]
-    player_state.adventurer_position = data["adventurer_position"]
-    return player_state
-
-def automa_state_to_dict(automa_state: AutomaState) -> dict:
-    return {
-        "dragons": automa_state.dragons,
-        "caves": automa_state.caves,
-        "score": automa_state.score,
-        "difficulty": automa_state.difficulty,
-    }
-
-def dict_to_automa_state(data: dict) -> AutomaState:
-    automa_state = AutomaState()
-    automa_state.dragons = data["dragons"]
-    automa_state.caves = data["caves"]
-    automa_state.score = data["score"]
-    automa_state.difficulty = data["difficulty"]
-    return automa_state
-
-def game_state_to_dict(game_state: GameState) -> dict:
-    return {
-        "turn": game_state.turn,
-        "phase": game_state.phase,
-        "board": game_state.board,
-        "dragon_deck": game_state.dragon_deck,
-        "cave_deck": game_state.cave_deck,
-        "dragon_discard": game_state.dragon_discard,
-        "cave_discard": game_state.cave_discard,
-        "event_queue": game_state.event_queue,
-        "players": [player_state_to_dict(player) for player in game_state.players],
-        "round_start_player": game_state.round_start_player,
-        "current_player": game_state.current_player,
-    }
-
-def dict_to_game_state(data: dict) -> GameState:
-    game_state = GameState()
-    game_state.turn = data["turn"]
-    game_state.phase = data["phase"]
-    game_state.board = data["board"]
-    game_state.dragon_deck = data["dragon_deck"]
-    game_state.cave_deck = data["cave_deck"]
-    game_state.dragon_discard = data["dragon_discard"]
-    game_state.cave_discard = data["cave_discard"]
-    game_state.event_queue = data["event_queue"]
-    game_state.players = [dict_to_player_state(player) for player in data["players"]]
-    game_state.round_start_player = data["round_start_player"]
-    game_state.current_player = data["current_player"]
-    return game_state
-
-def solo_game_state_to_dict(solo_game_state: SoloGameState) -> dict:
-    return {
-        "turn": solo_game_state.turn,
-        "phase": solo_game_state.phase,
-        "board": solo_game_state.board,
-        "dragon_deck": solo_game_state.dragon_deck,
-        "cave_deck": solo_game_state.cave_deck,
-        "dragon_discard": solo_game_state.dragon_discard,
-        "cave_discard": solo_game_state.cave_discard,
-        # turn deque into list
-        "event_queue": solo_game_state.event_queue,
-        "automa_difficulty": solo_game_state.automa_difficulty,
-        "automa": automa_state_to_dict(solo_game_state.automa),
-        "player": player_state_to_dict(solo_game_state.player),
-        "round_start_player": solo_game_state.round_start_player,
-        "current_player": solo_game_state.current_player,
-    }
-
-def dict_to_solo_game_state(data: dict) -> SoloGameState:
-    solo_game_state = SoloGameState()
-    solo_game_state.turn = data["turn"]
-    solo_game_state.phase = data["phase"]
-    solo_game_state.board = data["board"]
-    solo_game_state.dragon_deck = data["dragon_deck"]
-    solo_game_state.cave_deck = data["cave_deck"]
-    solo_game_state.dragon_discard = data["dragon_discard"]
-    solo_game_state.cave_discard = data["cave_discard"]
-    solo_game_state.event_queue = data["event_queue"]
-    solo_game_state.automa_difficulty = data["automa_difficulty"]
-    solo_game_state.automa = dict_to_automa_state(data["automa"])
-    solo_game_state.player = dict_to_player_state(data["player"])
-    solo_game_state.round_start_player = data["round_start_player"]
-    solo_game_state.current_player = data["current_player"]
-    return solo_game_state
-
-
 # basic / logical functions
 def can_lay_egg_at(player_state: PlayerState, coords:tuple) -> bool:
     """
@@ -528,8 +407,8 @@ def excavate_cave(player_state: PlayerState, game_state:GameState, event:dict, c
             new_event = {
                 "adv_effects": 
                     {"choice": [
-                        {"adv_effects": {"sequence":[{"4th_space": False}, new_event]}},
-                        {"adv_effects": {"sequence":[new_event, {"4th_space": False}]}}
+                        {"adv_effects": {"sequence":[{"4th_space": True}, new_event]}},
+                        {"adv_effects": {"sequence":[new_event, {"4th_space": True}]}}
                     ]}
             }
             game_state.event_queue.append(new_event)
@@ -736,9 +615,9 @@ def progress_game(game_state:GameState) -> GameState:
                     logger.info(">> Player has more than 9 cards. Adding discard event.")
                     new_event = {"choice": []}
                     for dragon in current_player_obj.dragon_hand:
-                        new_event["choice"].append({"discard_dragon": {"dragon": dragon}})
+                        new_event["choice"].append({"discard_dragon": {"chosen_id": dragon}})
                     for cave in current_player_obj.cave_hand:
-                        new_event["choice"].append({"discard_cave": {"cave": cave}})
+                        new_event["choice"].append({"discard_cave": {"chosen_id": cave}})
                     game_state.event_queue.append({"adv_effects": new_event})
                     break
                 if sum(current_player_obj.resources.values()) > 9:
@@ -929,9 +808,9 @@ def progress_game(game_state:GameState) -> GameState:
                 logger.info(">> Player must discard down to 4 cards.")
                 discard_events = []
                 for dragon in current_player_obj.dragon_hand:
-                    discard_events.append({"discard_dragon": {"dragon": dragon}})
+                    discard_events.append({"discard_dragon": {"chosen_id": dragon}})
                 for cave in current_player_obj.cave_hand:
-                    discard_events.append({"discard_cave": {"cave": cave}})
+                    discard_events.append({"discard_cave": {"chosen_id": cave}})
                 discard_combos = itertools.combinations(discard_events, 2)
                 for combo in discard_combos:
                     new_event["choice"].append({"adv_effects": {"sequence": list(combo)}})
@@ -2017,11 +1896,11 @@ def handle_simple_event(game_state:GameState, event:dict, player:PlayerState=Non
         deduct_resources(player, cost_dict)
     elif "discard_dragon" in event:
         # discard dragon
-        dragon = event["discard_dragon"]["dragon"]
+        dragon = event["discard_dragon"]["chosen_id"]
         discard_dragon(player, game_state, dragon)
     elif "discard_cave" in event:
         # discard cave
-        cave = event["discard_cave"]["cave"]
+        cave = event["discard_cave"]["chosen_id"]
         discard_cave(player, game_state, cave)
     elif "swap_dragons" in event:
         # player chooses two dragons on their mat to swap
@@ -2588,8 +2467,8 @@ def handle_swap_dragons(game_state:GameState, full_event:dict, player:PlayerStat
         # we have chosen two dragons to swap
         coords1 = event["coords1"]
         coords2 = event["coords2"]
-        dragon1 = player.dragons_played[coords1[0]][coords1[1]]
-        dragon2 = player.dragons_played[coords2[0]][coords2[1]]
+        dragon1 = event["dragon_id1"]
+        dragon2 = event["dragon_id2"]
         # swap the dragons
         player.dragons_played[coords1[0]][coords1[1]] = dragon2
         player.dragons_played[coords2[0]][coords2[1]] = dragon1
@@ -2603,9 +2482,13 @@ def handle_swap_dragons(game_state:GameState, full_event:dict, player:PlayerStat
         item1,item2 = player.tucked_dragons[coords1[0]][coords1[1]], player.tucked_dragons[coords2[0]][coords2[1]]
         player.tucked_dragons[coords1[0]][coords1[1]] = item2
         player.tucked_dragons[coords2[0]][coords2[1]] = item1
-        item1,item2 = player.nested_eggs[coords1[0]][coords1[1]], player.nested_eggs[coords2[0]][coords2[1]]
-        player.nested_eggs[coords1[0]][coords1[1]] = item2
-        player.nested_eggs[coords2[0]][coords2[1]] = item1
+        coords1_eggs,coords2_eggs = player.nested_eggs[coords1[0]][coords1[1]], player.nested_eggs[coords2[0]][coords2[1]]
+        player.nested_eggs[coords1[0]][coords1[1]] = coords2_eggs
+        player.nested_eggs[coords2[0]][coords2[1]] = coords1_eggs
+        # finally, update the egg totals
+        player.egg_totals[coords1[0]] += (coords2_eggs - coords1_eggs)
+        player.egg_totals[coords2[0]] += (coords1_eggs - coords2_eggs)
+
         logger.info(f">> Player swaps dragons {dragon1} and {dragon2} at {coords1} and {coords2}")
         return
     # else we need to create a choice event
@@ -2617,6 +2500,8 @@ def handle_swap_dragons(game_state:GameState, full_event:dict, player:PlayerStat
             # add the dragons to the list of choices
             new_event["choice"].append(
                 {"swap_dragons": {
+                    "dragon_id1": dragon_id1,
+                    "dragon_id2": dragon_id2,
                     "coords1": coords1,
                     "coords2": coords2,
                 }}
@@ -2636,7 +2521,7 @@ def handle_other_ability_on_mat(game_state:GameState, full_event:dict, player:Pl
     event = full_event["other_ability_on_mat"]
     if "coords" in event:
         # we have chosen a specific dragon to activate
-        dragon_id = player.dragons_played[event["coords"][0]][event["coords"][1]]
+        dragon_id = event["dragon_id"]
         event_ability = copy.deepcopy(DRAGON_CARDS[dragon_id][event["type"]])
         # add the coordinates to the event
         event_ability["coords"] = event["coords"]
@@ -2661,6 +2546,7 @@ def handle_other_ability_on_mat(game_state:GameState, full_event:dict, player:Pl
             new_event["choice"].append(
                 {"other_ability_on_mat": {
                     "coords": coords,
+                    "dragon_id": dragon_id,
                     "type": event["type"],
                 }}
             )
@@ -2921,7 +2807,7 @@ def handle_any_resource_decision(game_state:GameState, full_event:dict, player:P
     if new_remaining_resources == 0:
         # we are done with the event, so we can remove it from the queue
         return
-    # we have more dragons to choose from, so we need to create the next event
+    # we have more resources to choose from, so we need to create the next event
     new_event = {"choice": []}
     for i,choice in enumerate(ordered_choices):
         if choice in new_limits:
@@ -3395,7 +3281,7 @@ def handle_resource_caching(game_state:GameState, full_event:dict, player:Player
     }
     if event["L1"] == "player_supply" and len(valid_resource_costs) > 0:
         # add a choice to skip the caching
-        new_event["choice"].append({"skip": None})
+        new_event["choice"].append({"skip": True})
     if len(new_event["choice"]) > 0:
         game_state.event_queue.append({"adv_effects": new_event})
 
@@ -3480,13 +3366,13 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
                         if DRAGON_CARDS[dragon_id]["personality"] == event["include"]
                     ]
                 },
-                {"skip": None} # add a choice to skip the tucks
+                {"skip": True} # add a choice to skip the tucks
             ]
         }
         game_state.event_queue.append({"adv_effects": new_event})
         return
     # we have a choice to construct
-    new_event = {"choice": [{"skip": None}]} # add a choice to skip the tuck
+    new_event = {"choice": [{"skip": True}]} # add a choice to skip the tuck
     # go through each possibility
     if event["L2"] == "here":
         valid_locations.append(full_event["coords"])
@@ -3498,12 +3384,11 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
         valid_locations = [(cave_name, col_index) for (d, (cave_name, col_index)) in get_dragon_list(player, "any")]
     # add valid dragon sources to the event
     if event["L1"] == "display":
-        choice_event = {"choice": []}
         for dragon_index in range(3):
             # use a dragon from the display
             if game_state.board["card_display"]["dragon_cards"][dragon_index] is not None:
                 for coords in valid_locations:
-                    choice_event["choice"].append(
+                    new_event["choice"].append(
                         {
                             "tuck_from": {
                                 "L1": "display",
@@ -3513,14 +3398,11 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
                             "coords": coords
                         }
                     )
-        if len(choice_event["choice"]) > 0:
-            new_event["choice"].append(choice_event)
     elif event["L1"] == "hand":
-        choice_event = {"choice": []}
         for dragon_id in player.dragon_hand:
             # use a dragon from the hand
             for coords in valid_locations:
-                choice_event["choice"].append(
+                new_event["choice"].append(
                     {
                         "tuck_from": {
                             "L1": "hand",
@@ -3531,8 +3413,6 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
                         "coords": coords,
                     }
                 )
-        if len(choice_event["choice"]) > 0:
-            new_event["choice"].append(choice_event)
     elif event["L1"] == "deck":
         # take a random dragon from the deck
         for coords in valid_locations:
@@ -3549,7 +3429,7 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
             # add the random dragon to the choice
             new_event["choice"].append(deck_outcomes)
     # add the choice to the event queue
-    if len(new_event["choice"]) > 0:
+    if len(new_event["choice"]) > 1:
         # we have multiple choices to make, add the choice to the event queue
         game_state.event_queue.append({"adv_effects": new_event})
 
