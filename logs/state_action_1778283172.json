@@ -1,0 +1,49 @@
+Game State:
+Game State:
+	Turn: 0
+	Phase: main_action
+	Dragon Discard: [17, 142, 87, 128, 165, 41, 61, 148, 35, 33, 31, 63]
+	Cave Discard: [11, 63, 16, 54, 15, 1, 51, 65]
+	Event Queue: []
+	Guild Board: {'guild_index': 2, 'ability_uses': {1: [], 2: [], 3: [1], 4: [1], 5: []}, 'player_position': 2, 'automa_position': 11, 'automa_markers_ready': 1} (Guild of Highlands)
+Player State:
+	Dragon Hand: [(34, 'Kindly Sea Serpent'), (18, 'Keening Amphiptere'), (21, 'Fae Tamarin'), (71, 'Multicolor Flyer')]
+	Cave Hand: [(67, 'Tuck [DragonCard][DragonCard] from the deck behind any dragon(s).'), (44, 'Gain [Meat][Meat].'), (22, 'Gain [DragonCard][DragonGuild].')]
+	Resources: {'meat': 1, 'gold': 0, 'crystal': 0, 'milk': 0}
+	Egg Totals: {'mat_slots': 0, 'crimson_cavern': 0, 'golden_grotto': 1, 'amethyst_abyss': 0}
+	Dragons Played: {'crimson_cavern': 1, 'golden_grotto': 1, 'amethyst_abyss': 1}
+	Score: 15
+	Guild Markers: 4
+	Coins: 4
+	Caves Played: {'crimson_cavern': [-1, 47, None, None], 'golden_grotto': [-1, None, None, None], 'amethyst_abyss': [-1, None, None, None]}
+	Dragons Played: {'crimson_cavern': [157, None, None, None], 'golden_grotto': [51, None, None, None], 'amethyst_abyss': [139, None, None, None]}
+	Cached Resources: {'crimson_cavern': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'golden_grotto': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'amethyst_abyss': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})]}
+	Tucked Dragons: {'crimson_cavern': [[], [], [], []], 'golden_grotto': [[], [], [], []], 'amethyst_abyss': [[], [], [], []]}
+	Nested Eggs: {'crimson_cavern': [[0, 2], [0, 0], [0, 0], [0, 0]], 'golden_grotto': [[1, 3], [0, 0], [0, 0], [0, 0]], 'amethyst_abyss': [[0, 4], [0, 0], [0, 0], [0, 0]]}
+	Times Explored: {'crimson_cavern': 0, 'golden_grotto': 1, 'amethyst_abyss': 2}
+
+Automa State:
+	Dragons: [(97, 'Dappled Glade Spirit'), (158, 'Brushwood Dragonette'), (16, 'Peregrine Firedragon')]
+	Caves: [52]
+	Score: 28
+	Difficulty: Automa Level 1 (Easy)
+	Passed this round: False
+	Decision Deck: [0, 1, 2, 4]
+
+
+Chosen Action:
+{
+  "swap_dragons": {
+    "dragon_id1": 51,
+    "dragon_id2": 139,
+    "coords1": [
+      "golden_grotto",
+      0
+    ],
+    "coords2": [
+      "amethyst_abyss",
+      0
+    ]
+  },
+  "coords": null
+}

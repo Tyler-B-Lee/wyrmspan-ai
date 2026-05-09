@@ -100,8 +100,8 @@ def get_global_info(game_state: SoloGameState) -> dict:
     # combine dragon and cave deck tensors from game state
     deck_tensor = torch.cat((
         deck_tensor,
-        game_state.dragon_deck_tensor,
-        game_state.cave_deck_tensor
+        game_state.dragon_deck_array,
+        game_state.cave_deck_array
     ), dim=0)
     info_dict["deck_status"] = deck_tensor
 

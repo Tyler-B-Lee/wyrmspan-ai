@@ -1,6 +1,8 @@
 from game_states import *
+from game_logic import get_next_state, get_random_outcome
 
-import torch
+import time
+import random
 import numpy as np
 import gymnasium as gym
 from gymnasium import spaces
@@ -48,7 +50,7 @@ def get_global_info(game_state: SoloGameState) -> dict:
     info_dict = {}
 
     # Game Timing (29 values)
-    timing_tensor = torch.zeros(29, dtype=torch.float32)
+    timing_tensor = np.zeros(29, dtype=np.float32)
     timing_tensor[game_state.board["round_tracker"]["round"]] = 1.0  # One-hot encode current round (0-3)
     current_phase_index = PHASE_INDEX.get(game_state.phase, 0)
     timing_tensor[4 + current_phase_index] = 1.0  # One-hot encode current phase (0-7)
@@ -64,7 +66,7 @@ def get_global_info(game_state: SoloGameState) -> dict:
     info_dict["timing"] = timing_tensor
 
     # Guild Board Status (67 combined values)
-    guild_tensor = torch.zeros(29, dtype=torch.float32)
+    guild_tensor = np.zeros(29, dtype=np.float32)
     guild_index = game_state.board["guild"]["guild_index"]
     # One-hot encode guild (4 possible guilds)
     if guild_index < 4:
@@ -74,7 +76,7 @@ def get_global_info(game_state: SoloGameState) -> dict:
     guild_tensor[27] = game_state.player.guild_markers / 4.0  # Player guild markers remaining
     guild_tensor[28] = game_state.board["guild"]["automa_markers_ready"] / 4.0  # Automa guild markers ready
     # Guild ability uses per player
-    guild_ability_tensor = torch.zeros((5, 6), dtype=torch.float32)
+    guild_ability_tensor = np.zeros((5, 6), dtype=np.float32)
     ability_uses = game_state.board["guild"]["ability_uses"]
     for i in range(1, 6):
         uses = ability_uses[i]
@@ -84,30 +86,30 @@ def get_global_info(game_state: SoloGameState) -> dict:
             if count > 0:
                 guild_ability_tensor[i - 1, count - 1 + player_i * 3] = 1.0
     # append guild ability uses to the end of guild tensor
-    guild_tensor = torch.cat((guild_tensor, guild_ability_tensor.flatten()), dim=0)
+    guild_tensor = np.concatenate((guild_tensor, guild_ability_tensor.flatten()), axis=0)
     # extra info of end game point ability
-    end_game_ability_tensor = torch.zeros((2,4), dtype=torch.float32)
+    end_game_ability_tensor = np.zeros((2,4), dtype=np.float32)
     for player_i in range(2):
         count = ability_uses[5][2:].count(player_i)
         if count > 0:
             end_game_ability_tensor[player_i, count - 1] = 1.0
-    guild_tensor = torch.cat((guild_tensor, end_game_ability_tensor.flatten()), dim=0)
+    guild_tensor = np.concatenate((guild_tensor, end_game_ability_tensor.flatten()), axis=0)
     info_dict["guild_status"] = guild_tensor
 
     # Deck Status (2 + 183 + 75 = 260 values)
-    deck_tensor = torch.zeros(2, dtype=torch.float32)
+    deck_tensor = np.zeros(2, dtype=np.float32)
     deck_tensor[0] = len(game_state.dragon_deck) / 183.0  # Dragon deck size
     deck_tensor[1] = len(game_state.cave_deck) / 75.0  # Cave deck size
     # combine dragon and cave deck tensors from game state
-    deck_tensor = torch.cat((
+    deck_tensor = np.concatenate((
         deck_tensor,
-        game_state.dragon_deck_tensor,
-        game_state.cave_deck_tensor
-    ), dim=0)
+        game_state.dragon_deck_array,
+        game_state.cave_deck_array
+    ), axis=0)
     info_dict["deck_status"] = deck_tensor
 
     # Player Resources (16 values: hand sizes, coins, resources, eggs)
-    player_tensor = torch.zeros(16, dtype=torch.float32)
+    player_tensor = np.zeros(16, dtype=np.float32)
     player_tensor[0] = len(game_state.player.dragon_hand) / 10.0  # Dragon cards in hand
     player_tensor[1] = len(game_state.player.cave_hand) / 10.0  # Cave cards in hand
     player_tensor[2] = game_state.player.coins / 10.0  # Coins
@@ -127,7 +129,7 @@ def get_global_info(game_state: SoloGameState) -> dict:
     info_dict["player_resources"] = player_tensor
 
     # Automa Status (29 values)
-    automa_tensor = torch.zeros(29, dtype=torch.float32)
+    automa_tensor = np.zeros(29, dtype=np.float32)
     for i in range(4):
         automa_tensor[i] = game_state.board["round_tracker"]["automa_bonus"][i] / 4.0
     automa_tensor[game_state.automa.difficulty + 4] = 1.0  # Automa difficulty level
@@ -172,7 +174,7 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
                 slot_types.append(1)  # Excavated but no dragon
             else:
                 slot_types.append(0)  # Empty slot
-    slot_types_tensor = torch.tensor(slot_types, dtype=torch.int64)
+    slot_types_tensor = np.array(slot_types, dtype=np.int64)
 
     # dragons on slots (12 values)
     dragons_on_slots = []
@@ -180,10 +182,10 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
         for col in range(4):
             dragon_id = player.dragons_played[cave_name][col]
             dragons_on_slots.append(dragon_id if dragon_id is not None else 0)
-    dragons_on_slots_tensor = torch.tensor(dragons_on_slots, dtype=torch.int64)
+    dragons_on_slots_tensor = np.array(dragons_on_slots, dtype=np.int64)
 
     # slot details (12 x 17 = 204 total values)
-    slot_details = torch.zeros((12, 17), dtype=torch.float32)
+    slot_details = np.zeros((12, 17), dtype=np.float32)
     for cave_name in CAVE_NAMES:
         for col in range(4):
             slot_index = CAVE_NAMES.index(cave_name) * 4 + col
@@ -202,7 +204,7 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
             for i, resource in enumerate(RESOURCES):
                 slot_details[slot_index, 12 + i] = cached_resources[resource] / 10.0  # Normalize to max 10
             # Tucked dragons count
-            slot_details[slot_index, 16] = player.tucked_dragons[cave_name][col] / 10.0  # Normalize tucked dragons
+            slot_details[slot_index, 16] = len(player.tucked_dragons[cave_name][col]) / 10.0  # Normalize tucked dragons
 
     return {
         "slot_types": slot_types_tensor,
@@ -212,20 +214,21 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
 
 
 class WyrmspanEnv(gym.Env):
-    ACTION_VEC_SIZE = 128  # Reduced from 192 (uses only 93 dims, padding was 99 dims)
-
-    def __init__(self, engine_fn=None):
+    def __init__(self):
         super().__init__()
         
-        # Function to initialize or access the game engine
-        self.engine_fn = engine_fn
-        self.engine = None
+        # SoloGameState contains all the game logic and state management; we will interact with it to step through the game
+        self.game_state = SoloGameState(automa_difficulty=0)
         
         # We assume a max number of legal actions the env will ever return
         self.max_legal_actions = 180
-        self.action_dim = self.ACTION_VEC_SIZE
+        self.max_action_tokens = 64
+        self.max_hand_size = 20
 
         self.token_strings = [
+            "<pad>",
+            "<unk>",
+
             # numbers (for amounts of resources, costs, points, etc.)
             "0",
             "1",
@@ -408,10 +411,11 @@ class WyrmspanEnv(gym.Env):
             "any_resource_decision_keep",
             "any_resource_decision_chosen_type",
             "any_resource_decision_remaining_resources",
-
-            # placeholders for very long or complex actions we don't have room to fully encode
-            "placeholder_tuck_from"
         ]
+
+        self.normal_token_counter = len(self.token_strings)
+        self.dragon_token_start_index = self.normal_token_counter
+        self.cave_token_start_index = self.normal_token_counter + 183
 
         # add dragons and caves
         for dragon_id in range(1, 184):
@@ -420,29 +424,44 @@ class WyrmspanEnv(gym.Env):
             self.token_strings.append(f"cave_{cave_id}")
 
         self.token_index = {key: idx for idx, key in enumerate(self.token_strings)}
-        
-        # Maximum number of cards that can be referenced by a single action
-        self.max_cards_per_action = 5
+        self.pad_token_id = self.token_index["<pad>"]
+        self.unk_token_id = self.token_index["<unk>"]
+        self.action_token_vocab_size = len(self.token_strings)
         
         self.observation_space = spaces.Dict({
             # 1. Global context (Resources, Guild, Round info)
-            "global_stats": spaces.Box(low=0, high=100, shape=(20,), dtype=np.float32),
-            
-            # 2. Card IDs for hand and board (model will handle embeddings)
-            "hand_card_ids": spaces.Box(low=0, high=200, shape=(15,), dtype=np.int64),
-            "board_slot_card_ids": spaces.Box(low=0, high=200, shape=(12,), dtype=np.int64),
-            
-            # 3. Action Features (128-dim scalar features only; embedding fusion happens in model)
-            "action_candidates": spaces.Box(low=-5, high=5, shape=(self.max_legal_actions, self.action_dim), dtype=np.float32),
+            "timing": spaces.Box(low=0, high=3, shape=(29,), dtype=np.float32),
+            "guild_status": spaces.Box(low=0, high=3, shape=(67,), dtype=np.float32),
+            "deck_status": spaces.Box(low=0, high=3, shape=(260,), dtype=np.float32),
+            "player_resources": spaces.Box(low=0, high=3, shape=(16,), dtype=np.float32),
+            "automa_status": spaces.Box(low=0, high=3, shape=(29,), dtype=np.float32),
 
-            # 4. Action Card References ([card_kind, card_id] pairs per action, padded)
-            # card_kind: 0=dragon, 1=cave
-            "action_cards": spaces.Box(low=0, high=200, shape=(self.max_legal_actions, self.max_cards_per_action, 2), dtype=np.int64),
+            # 2. Card IDs for hand and board (model will handle embeddings)
+            "hand_card_ids": spaces.Box(low=0, high=500, shape=(self.max_hand_size,), dtype=np.int64),
+            "slot_types": spaces.Box(low=0, high=3, shape=(12,), dtype=np.int64),
+            "dragons_on_slots": spaces.Box(low=0, high=200, shape=(12,), dtype=np.int64),
+            "slot_details": spaces.Box(low=0, high=3, shape=(12, 17), dtype=np.float32),
             
-            # 5. Action Card IDs (legacy, kept for backward compatibility during transition)
-            "action_card_ids": spaces.Box(low=0, high=200, shape=(self.max_legal_actions, 2), dtype=np.int64),
+            # 3. Other items to be tokenized - Guild, Objectives
+            "other_indices": spaces.Box(low=0, high=20, shape=(5,), dtype=np.int64),
+
+            # 4. Action tokens (tokenized JSON actions)
+            "action_token_ids": spaces.Box(
+                low=0,
+                high=self.action_token_vocab_size - 1,
+                shape=(self.max_legal_actions, self.max_action_tokens),
+                dtype=np.int64,
+            ),
+
+            # 5. Action token mask (which positions in action_token_ids are real)
+            "action_token_mask": spaces.Box(
+                low=0,
+                high=1,
+                shape=(self.max_legal_actions, self.max_action_tokens),
+                dtype=np.int8,
+            ),
             
-            # 6. Action Mask (Which indices in action_candidates are real)
+            # 6. Action Mask (Which indices in action_token_ids are real)
             "action_mask": spaces.Box(low=0, high=1, shape=(self.max_legal_actions,), dtype=np.int8)
         })
 
@@ -567,6 +586,10 @@ class WyrmspanEnv(gym.Env):
                 if action_key in {"play_cave", "gain_cave", "discard_cave"}:
                     tokens.append(to_card_token("cave", value))
                     return
+
+            if field_key in {"dragon_id1", "dragon_id2"}:
+                tokens.append(to_card_token("dragon", value))
+                return
             
             if field_key == "dragon_id":
                 tokens.append(to_card_token("dragon", value))
@@ -580,6 +603,10 @@ class WyrmspanEnv(gym.Env):
                 return
 
             if field_key in {"coords", "loc_info"}:
+                emit_coords(tokens, value)
+                return
+
+            if field_key in {"coords1", "coords2"}:
                 emit_coords(tokens, value)
                 return
 
@@ -752,119 +779,187 @@ class WyrmspanEnv(gym.Env):
         tokens = [tok for tok in tokens if tok != ""]
 
         if as_ids:
-            return [self.token_index.get(tok, tok) for tok in tokens]
+            return [self.token_index.get(tok, self.unk_token_id) for tok in tokens]
         return tokens
+
+    def save_state_action_info(self, action: dict):
+        """Utility function to save the current game state and a chosen action to a log file for testing."""
+        timestamp = int(time.time())
+        filename = f"logs/state_action_{timestamp}.json"
+        with open(filename, "w") as f:
+            # save string representation of game state for debugging
+            f.write("Game State:\n")
+            f.write(str(self.game_state))
+            f.write("\n\nChosen Action:\n")
+            json.dump(action, f, indent=2)
+        print(f"Saved state and action info to {filename}")
 
     def _get_obs(self):
         """Get observation from game state and legal actions."""
-        # 1. Get JSON actions from engine
-        if self.engine is None or not hasattr(self.engine, 'get_legal_actions'):
-            json_actions = []
+        # 1. Global context tensors
+        final_obs = get_global_info(self.game_state)
+
+        # 2. Card IDs for hand and board
+        hand_card_strings = [f"dragon_{card_id}" for card_id in self.game_state.player.dragon_hand] + [f"cave_{card_id}" for card_id in self.game_state.player.cave_hand]
+        hand_card_ids = [self.token_index.get(card_str, self.unk_token_id) for card_str in hand_card_strings]
+        # Pad hand card ids to fixed length
+        hand_card_ids += [self.unk_token_id] * (self.max_hand_size - len(hand_card_ids))
+        final_obs["hand_card_ids"] = np.array(hand_card_ids, dtype=np.int64)
+        
+        player_board_info = get_player_board_info(self.game_state)
+        final_obs.update(player_board_info)
+
+        # 3. Other items to be tokenized - Guild, Objectives
+        other_indices = np.zeros(5, dtype=np.int64)
+        other_indices[0] = self.game_state.board["guild"]["guild_index"]  # Guild index (0-3)
+        # Objectives - we will encode the presence of each objective type as a binary feature
+        for i, (tile_index, side) in enumerate(self.game_state.board["round_tracker"]["objectives"]):
+            other_indices[i + 1] = 2 * tile_index + (1 if side == "side_b" else 0)  # Encode objective as a single integer
+        final_obs["other_indices"] = other_indices
+
+        # 4-6. Action tokens, token mask, and action mask
+        if self.game_state.current_choice is not None:
+            action_jsons = self.game_state.current_choice
         else:
-            json_actions = self.engine.get_legal_actions()
-        
-        # 2. Convert JSON actions to vectors (Action Featurizer)
-        action_vectors = [self.featurize_json(a) for a in json_actions]
-        action_card_ids = [self.extract_action_card_ids(a) for a in json_actions]  # Legacy: (dragon_id, cave_id)
-        action_card_refs = [self.extract_action_card_refs(a) for a in json_actions]  # New: list of [card_kind, card_id]
-        
-        # 3. Pad to max_legal_actions
-        padded_actions = np.zeros((self.max_legal_actions, self.action_dim), dtype=np.float32)
-        padded_action_cards = np.zeros((self.max_legal_actions, 2), dtype=np.int64)  # Legacy
-        padded_action_refs = np.zeros((self.max_legal_actions, self.max_cards_per_action, 2), dtype=np.int64)  # New
-        mask = np.zeros(self.max_legal_actions, dtype=np.int8)
-        
-        for i, vec in enumerate(action_vectors):
+            action_jsons = []
+
+        # Initialize arrays: token ids filled with pad_token_id, token mask zeros
+        full_token_ids = np.full(
+            (self.max_legal_actions, self.max_action_tokens),
+            self.pad_token_id,
+            dtype=np.int64,
+        )
+        full_token_mask = np.zeros((self.max_legal_actions, self.max_action_tokens), dtype=np.int8)
+        action_mask = np.zeros((self.max_legal_actions,), dtype=np.int8)
+
+        error = False
+        for i, action in enumerate(action_jsons):
             if i >= self.max_legal_actions:
+                error = True
+                print("Warning: Number of legal actions exceeds max_legal_actions. Some actions will be truncated.")
                 break
-            padded_actions[i] = vec
-            padded_action_cards[i] = action_card_ids[i]  # Legacy
-            # Pack variable-length refs into fixed-size tensor
-            refs = action_card_refs[i]
-            for j, ref in enumerate(refs[:self.max_cards_per_action]):
-                padded_action_refs[i, j] = ref
-            mask[i] = 1
-        
-        # 4. Extract card IDs from game state
-        hand_card_ids = np.zeros(15, dtype=np.int64)
-        board_slot_card_ids = np.zeros(12, dtype=np.int64)
-        
-        game_state = getattr(self.engine, "game_state", None) if self.engine else None
-        if game_state is not None:
-            player = game_state.player
-            # Hand: player.dragon_hand is a list of dragon IDs
-            for i, dragon_id in enumerate(player.dragon_hand[:15]):
-                hand_card_ids[i] = dragon_id
-            # Board: player.dragons_played[cave_name][col] has dragon IDs in 4 slots per cave (3 caves = 12 total)
-            board_idx = 0
-            for cave_name in ["crimson_cavern", "golden_grotto", "amethyst_abyss"]:
-                if cave_name in player.dragons_played:
-                    for dragon_id in player.dragons_played[cave_name]:
-                        if board_idx < 12:
-                            if dragon_id is not None:
-                                board_slot_card_ids[board_idx] = dragon_id
-                            board_idx += 1
+            token_ids = self.tokenize_json(action, as_ids=True)
+            if self.unk_token_id in token_ids:
+                error = True
+                print(f"Warning: Action {action} contains tokens that were not recognized and mapped to <unk>: {token_ids}")
+            if not token_ids:
+                # empty action -> leave as pad
+                action_mask[i] = 1
+                continue
+            # clip tokens to max_action_tokens
+            if len(token_ids) > self.max_action_tokens:
+                error = True
+                print(f"Warning: Tokenized action exceeds max_action_tokens and will be truncated: {token_ids}")
+            token_ids = token_ids[: self.max_action_tokens]
+            L = len(token_ids)
+            full_token_ids[i, :L] = np.array(token_ids, dtype=np.int64)
+            full_token_mask[i, :L] = 1
+            action_mask[i] = 1
             
-        return {
-            "global_stats": np.zeros(20, dtype=np.float32),
-            "hand_card_ids": hand_card_ids,
-            "board_slot_card_ids": board_slot_card_ids,
-            "action_candidates": padded_actions,
-            "action_cards": padded_action_refs,
-            "action_card_ids": padded_action_cards,  # Legacy, kept for backward compatibility
-            "action_mask": mask
-        }
+            if error:
+                self.save_state_action_info(action)
+
+        final_obs["action_token_ids"] = full_token_ids
+        final_obs["action_token_mask"] = full_token_mask
+        final_obs["action_mask"] = action_mask
+
+        return final_obs
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        if self.engine_fn:
-            self.engine = self.engine_fn()
+        # set rng seed for the game engine
+        random.seed(seed)
+        # reset the game engine to start a new game
+        self.game_state = SoloGameState(automa_difficulty=0)
+        self.game_state.create_game()
+
+        # progress to the first choice point
+        while not self.game_state.is_halted():
+            self.game_state = get_next_state(self.game_state)
+
         return self._get_obs(), {}
         
     def step(self, action_idx):
-        json_list = self.engine.get_legal_actions()
-        chosen_json = json_list[action_idx]
-        
-        # Example engine hook - adapt this to your real game logic/engine execute setup
-        new_state, reward, done = self.engine.execute(chosen_json)
-        
+        prev_score = self.game_state.player.score
+        terminated = False
+        next_state = get_next_state(self.game_state, action_idx)
+        # continue progressing through the game until we reach the next choice point
+        while next_state.phase != PHASE_END_GAME:
+            if next_state.current_choice is not None:
+                break
+            if next_state.current_random_event is not None:
+                # resolve this random event immediately and continue
+                outcome = get_random_outcome(next_state, next_state.current_random_event, next_state.player)
+                next_state = get_next_state(next_state, outcome)
+            else:
+                next_state = get_next_state(next_state)
+
+        # we either have a choice or we've reached the end of the game
+        self.game_state = next_state
+        reward = (self.game_state.player.score - prev_score) / 10.0  # Reward is the score gained since last action, normalized
+        if self.game_state.phase == PHASE_END_GAME:
+            terminated = True
+            if self.game_state.player.score >= self.game_state.automa.score:
+                reward += 20  # Bonus for beating the automa
         obs = self._get_obs()
-        return obs, reward, done, False, {}
+
+        return obs, reward, terminated, False, {}
     
 
 if __name__ == "__main__":
     env = WyrmspanEnv()
 
-    test_file_name = input("Enter path to test game to load actions from: ")
-    errors = []
-    lengths = []
-    with open(f"logs/{test_file_name}", "r") as f:
-        # read line by line, look for actions
-        for line in f:
-            if "Best move" in line:
-                json_str = line.split("Best move: ")[1].strip()
-                # this is actually a printed Python dict
-                print(f"Testing tokenization for action JSON: {json_str}")
-                # for safety
-                assert json_str.startswith("{") and json_str.endswith("}"), "Expected a JSON-like dict string"
-                action_json = eval(json_str)  # Caution: using eval on untrusted input can be dangerous
-                tokens = env.tokenize_json(action_json)
-                print(f"Tokens for action: {tokens}\n")
-                token_ids = env.tokenize_json(action_json, as_ids=True)
-                lengths.append(len(tokens))
-                print(f"Token IDs for action: {token_ids}\n")
-                if any(isinstance(tok, str) for tok in token_ids):
-                    print(f">>>>> Warning: Some tokens were not recognized and kept as strings: {token_ids} <<<<<\n\n\n")
-                    errors.append((json_str, token_ids))
-    if errors:
-        print("Some actions had unrecognized tokens:")
-        for json_str, token_ids in errors:
-            print(f"Action JSON: {json_str}")
-            print(f"Token IDs: {token_ids}\n")
-    else:
-        print("All actions were successfully tokenized into known token IDs.")
+    # Test: Load a test game log and tokenize the actions to verify the tokenization logic.
+    # test_file_name = input("Enter path to test game to load actions from: ")
+    # errors = []
+    # lengths = []
+    # with open(f"logs/{test_file_name}", "r") as f:
+    #     # read line by line, look for actions
+    #     for line in f:
+    #         if "Best move" in line:
+    #             json_str = line.split("Best move: ")[1].strip()
+    #             # this is actually a printed Python dict
+    #             print(f"Testing tokenization for action JSON: {json_str}")
+    #             # for safety
+    #             assert json_str.startswith("{") and json_str.endswith("}"), "Expected a JSON-like dict string"
+    #             action_json = eval(json_str)  # Caution: using eval on untrusted input can be dangerous
+    #             tokens = env.tokenize_json(action_json)
+    #             print(f"Tokens for action: {tokens}\n")
+    #             token_ids = env.tokenize_json(action_json, as_ids=True)
+    #             lengths.append(len(tokens))
+    #             print(f"Token IDs for action: {token_ids}\n")
+    #             if any(isinstance(tok, str) for tok in token_ids):
+    #                 print(f">>>>> Warning: Some tokens were not recognized and kept as strings: {token_ids} <<<<<\n\n\n")
+    #                 errors.append((json_str, token_ids))
+    # if errors:
+    #     print("Some actions had unrecognized tokens:")
+    #     for json_str, token_ids in errors:
+    #         print(f"Action JSON: {json_str}")
+    #         print(f"Token IDs: {token_ids}\n")
+    # else:
+    #     print("All actions were successfully tokenized into known token IDs.")
 
-    # length statistics
-    if lengths:
-        print(f"Token lengths: min={min(lengths)}, max={max(lengths)}, avg={sum(lengths)/len(lengths):.2f}")
-        print(f"Median length: {sorted(lengths)[len(lengths)//2]}")
+    # # length statistics
+    # if lengths:
+    #     print(f"Token lengths: min={min(lengths)}, max={max(lengths)}, avg={sum(lengths)/len(lengths):.2f}")
+    #     print(f"Median length: {sorted(lengths)[len(lengths)//2]}")
+
+    # Test: Run a random action through the environment to verify it steps without errors and returns an observation of the correct format.
+    import pprint
+    obs, info = env.reset()
+    done = False
+    step_count = 0
+    total_reward = 0
+    while not done:
+        # pretty print every 20 steps
+        if step_count % 20 == 0:
+            print(f"Step {step_count} observation:")
+            pprint.pprint(obs)
+            
+        legal_actions = obs["action_mask"].sum()
+        chosen_action = random.randint(0, legal_actions - 1)  # Randomly choose among legal actions
+        obs, reward, done, _, info = env.step(chosen_action)
+
+        total_reward += reward
+        step_count += 1
+    print(f"Episode finished after {step_count} steps with total reward {total_reward:.2f}. Final score: {env.game_state.player.score}, Automa score: {env.game_state.automa.score}")

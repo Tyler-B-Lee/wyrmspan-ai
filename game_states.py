@@ -4,7 +4,7 @@ import json
 import random
 import typing
 import logging
-import torch
+import numpy as np
 
 # Configure logging
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -334,9 +334,9 @@ class GameState:
         self.phase = PHASE_SETUP
         self.board = {}
         self.dragon_deck = list(range(1, 184))  # Set of dragon cards IDs
-        self.dragon_deck_tensor = torch.ones(183, dtype=torch.float32)  # Tensor representation of dragon deck
+        self.dragon_deck_array = np.ones(183, dtype=np.float32)  # Tensor representation of dragon deck
         self.cave_deck = list(range(1, 76)) # Cave cards IDs
-        self.cave_deck_tensor = torch.ones(75, dtype=torch.float32)  # Tensor representation of cave deck
+        self.cave_deck_array = np.ones(75, dtype=np.float32)  # Tensor representation of cave deck
         self.dragon_discard = []  # Discard pile for dragon cards
         self.cave_discard = []  # Discard pile for cave cards
         self.event_queue = []  # Use list for the event queue
@@ -372,8 +372,8 @@ class GameState:
         new_state.cave_deck = self.cave_deck.copy()
         new_state.dragon_discard = self.dragon_discard.copy()
         new_state.cave_discard = self.cave_discard.copy()
-        new_state.dragon_deck_tensor = self.dragon_deck_tensor.clone()
-        new_state.cave_deck_tensor = self.cave_deck_tensor.clone()
+        new_state.dragon_deck_array = self.dragon_deck_array.copy()
+        new_state.cave_deck_array = self.cave_deck_array.copy()
 
         # Dynamic flow state often carries nested event payloads.
         new_state.board = copy.deepcopy(self.board)
@@ -415,7 +415,7 @@ class GameState:
         # remove drawn cards from the deck list
         for card in drawn_cards:
             self.dragon_deck.remove(card)
-            self.dragon_deck_tensor[card - 1] = 0.0
+            self.dragon_deck_array[card - 1] = 0.0
         return drawn_cards
     
     def draw_random_cave_cards(self, num:int=1) -> typing.List[int]:
@@ -435,7 +435,7 @@ class GameState:
         # remove drawn cards from the deck list
         for card in drawn_cards:
             self.cave_deck.remove(card)
-            self.cave_deck_tensor[card - 1] = 0.0
+            self.cave_deck_array[card - 1] = 0.0
         return drawn_cards
     
     def all_players_passed(self) -> bool:
@@ -562,7 +562,7 @@ class SoloGameState(GameState):
         # Remove ignored cards from the deck
         for card in SoloGameState.ignore_cards:
             self.dragon_deck.remove(card)
-            self.dragon_deck_tensor[card - 1] = 0.0
+            self.dragon_deck_array[card - 1] = 0.0
         # Card Display Board
         board_d_cards = self.draw_random_dragon_cards(3)
         board_c_cards = self.draw_random_cave_cards(3)
