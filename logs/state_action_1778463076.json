@@ -1,0 +1,52 @@
+Game State:
+Game State:
+	Turn: 0
+	Phase: final_scoring
+	Dragon Discard: [127, 119, 146, 160, 179, 101, 38, 152, 15, 158, 175, 5, 32, 121, 97, 159, 107, 123]
+	Cave Discard: [54, 18, 51, 12, 30, 11, 45, 46, 13, 39, 31]
+	Event Queue: [{'end_game': {'payments': [{'cost': {'any_resource': 1, 'cave_card': 1, 'dragon_card': 1}, 'amount': 5}]}, 'coords': ('amethyst_abyss', 0)}]
+	Guild Board: {'guild_index': 1, 'ability_uses': {1: [1], 2: [0], 3: [1, 1], 4: [1], 5: []}, 'player_position': 11, 'automa_position': 2, 'automa_markers_ready': 0} (Guild of Seafarers)
+Player State:
+	Dragon Hand: [(39, 'Weary Gryphdragon'), (132, 'Lilliputian Fae'), (20, 'Miniature Rex')]
+	Cave Hand: [(10, 'Gain [CaveCard]. Lay [Egg][Egg].'), (14, 'Gain [Coin].'), (67, 'Tuck [DragonCard][DragonCard] from the deck behind any dragon(s).'), (74, 'Up to 3x, pay [Egg] to gain [AnyResource][AnyResource]. Each opponent may do this 1x.'), (27, 'Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].')]
+	Resources: {'meat': 1, 'gold': 1, 'crystal': 0, 'milk': 1}
+	Egg Totals: {'mat_slots': 0, 'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Dragons Played: {'crimson_cavern': 1, 'golden_grotto': 1, 'amethyst_abyss': 2}
+	Score: 25
+	Guild Markers: 3
+	Coins: 1
+	Caves Played: {'crimson_cavern': [-1, 66, 26, None], 'golden_grotto': [-1, 58, None, None], 'amethyst_abyss': [-1, 29, 59, None]}
+	Dragons Played: {'crimson_cavern': [111, None, None, None], 'golden_grotto': [147, None, None, None], 'amethyst_abyss': [149, 87, None, None]}
+	Cached Resources: {'crimson_cavern': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 1}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'golden_grotto': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'amethyst_abyss': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})]}
+	Tucked Dragons: {'crimson_cavern': [[], [], [], []], 'golden_grotto': [[], [], [], []], 'amethyst_abyss': [[], [], [], []]}
+	Nested Eggs: {'crimson_cavern': [[0, 2], [0, 0], [0, 0], [0, 0]], 'golden_grotto': [[0, 1], [0, 0], [0, 0], [0, 0]], 'amethyst_abyss': [[0, 1], [0, 2], [0, 0], [0, 0]]}
+	Times Explored: {'crimson_cavern': 1, 'golden_grotto': 1, 'amethyst_abyss': 2}
+
+Automa State:
+	Dragons: [(62, 'Descending Firevern'), (53, 'Tawny Steppe Wyvern'), (44, 'Tawny Northern Drake'), (109, 'Bellicose Firevern'), (117, 'Antediluvian Basilisk'), (81, 'Stoic Gryphdragon')]
+	Caves: [68, 34]
+	Score: 68
+	Difficulty: Automa Level 1 (Easy)
+	Passed this round: True
+	Decision Deck: [1]
+
+
+Chosen Action:
+{
+  "end_game": {
+    "payments": [
+      {
+        "cost": {
+          "any_resource": 1,
+          "cave_card": 1,
+          "dragon_card": 1
+        },
+        "amount": 5
+      }
+    ]
+  },
+  "coords": [
+    "amethyst_abyss",
+    0
+  ]
+}

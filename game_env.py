@@ -49,8 +49,8 @@ def get_global_info(game_state: SoloGameState) -> dict:
     """
     info_dict = {}
 
-    # Game Timing (29 values)
-    timing_tensor = np.zeros(29, dtype=np.float32)
+    # Game Timing (30 values)
+    timing_tensor = np.zeros(30, dtype=np.float32)
     timing_tensor[game_state.board["round_tracker"]["round"]] = 1.0  # One-hot encode current round (0-3)
     current_phase_index = PHASE_INDEX.get(game_state.phase, 0)
     timing_tensor[4 + current_phase_index] = 1.0  # One-hot encode current phase (0-7)
@@ -63,6 +63,7 @@ def get_global_info(game_state: SoloGameState) -> dict:
     for i, cave_name in enumerate(CAVE_NAMES):
         num_explored = game_state.player.times_explored[cave_name]
         timing_tensor[17 + i * 4 + num_explored] = 1.0  # One-hot encode number of times explored (0-3)
+    timing_tensor[29] = 1.0 if game_state.board["round_tracker"]["egg_given"] else 0.0  # Player passed this round
     info_dict["timing"] = timing_tensor
 
     # Guild Board Status (67 combined values)
@@ -161,6 +162,7 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
         - Is this a grown hatchling (0/1)
         - What resources are cached on this slot (4 values)
         - Number of tucked dragons under this slot (1 value)
+        - Once-Per-Round ability used (0/1)
     """
     player = game_state.player
     
@@ -184,8 +186,8 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
             dragons_on_slots.append(dragon_id if dragon_id is not None else 0)
     dragons_on_slots_tensor = np.array(dragons_on_slots, dtype=np.int64)
 
-    # slot details (12 x 17 = 204 total values)
-    slot_details = np.zeros((12, 17), dtype=np.float32)
+    # slot details (12 x 18 = 216 total values)
+    slot_details = np.zeros((12, 18), dtype=np.float32)
     for cave_name in CAVE_NAMES:
         for col in range(4):
             slot_index = CAVE_NAMES.index(cave_name) * 4 + col
@@ -205,7 +207,16 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
                 slot_details[slot_index, 12 + i] = cached_resources[resource] / 10.0  # Normalize to max 10
             # Tucked dragons count
             slot_details[slot_index, 16] = len(player.tucked_dragons[cave_name][col]) / 10.0  # Normalize tucked dragons
-
+            # Once-Per-Round ability used
+            if game_state.board["round_tracker"]["opr_remaining"] is None:
+                slot_details[slot_index, 17] = 0.0  # No usage at the moment
+            else:
+                assert isinstance(game_state.board["round_tracker"]["opr_remaining"], list)
+                this_dragon_id = player.dragons_played[cave_name][col]
+                if this_dragon_id is not None and this_dragon_id in game_state.board["round_tracker"]["opr_remaining"]:
+                    slot_details[slot_index, 17] = 0.0  # OPR used for this dragon
+                else:
+                    slot_details[slot_index, 17] = 1.0  # OPR not used for this dragon
     return {
         "slot_types": slot_types_tensor,
         "dragons_on_slots": dragons_on_slots_tensor,
@@ -223,7 +234,8 @@ class WyrmspanEnv(gym.Env):
         # We assume a max number of legal actions the env will ever return
         self.max_legal_actions = 180
         self.max_action_tokens = 64
-        self.max_hand_size = 20
+        self.max_hand_size = 15
+        self.max_queue_size = 5
 
         self.token_strings = [
             "<pad>",
@@ -395,6 +407,7 @@ class WyrmspanEnv(gym.Env):
             "max_uses",
             "chosen_payment_start",
             "chosen_payment_end",
+            "amount",
 
             # other modifiers
             "rand_outcome",
@@ -430,22 +443,47 @@ class WyrmspanEnv(gym.Env):
         
         self.observation_space = spaces.Dict({
             # 1. Global context (Resources, Guild, Round info)
-            "timing": spaces.Box(low=0, high=3, shape=(29,), dtype=np.float32),
+            "timing": spaces.Box(low=0, high=3, shape=(30,), dtype=np.float32),
             "guild_status": spaces.Box(low=0, high=3, shape=(67,), dtype=np.float32),
             "deck_status": spaces.Box(low=0, high=3, shape=(260,), dtype=np.float32),
             "player_resources": spaces.Box(low=0, high=3, shape=(16,), dtype=np.float32),
             "automa_status": spaces.Box(low=0, high=3, shape=(29,), dtype=np.float32),
 
-            # 2. Card IDs for hand and board (model will handle embeddings)
+            # 2. Card display (dragon and cave cards on display)
+            "card_display_dragons": spaces.Box(low=0, high=500, shape=(3,), dtype=np.int64),
+            "card_display_caves": spaces.Box(low=0, high=600, shape=(3,), dtype=np.int64),
+
+            # 3. Card IDs for hand and board (model will handle embeddings)
             "hand_card_ids": spaces.Box(low=0, high=500, shape=(self.max_hand_size,), dtype=np.int64),
+            "hand_card_mask": spaces.Box(low=0, high=1, shape=(self.max_hand_size,), dtype=np.int8),  # mask to indicate real cards in hand
+
             "slot_types": spaces.Box(low=0, high=3, shape=(12,), dtype=np.int64),
             "dragons_on_slots": spaces.Box(low=0, high=200, shape=(12,), dtype=np.int64),
-            "slot_details": spaces.Box(low=0, high=3, shape=(12, 17), dtype=np.float32),
+            "slot_details": spaces.Box(low=0, high=3, shape=(12, 18), dtype=np.float32),
             
-            # 3. Other items to be tokenized - Guild, Objectives
+            # 4. Other items to be tokenized - Guild, Objectives
             "other_indices": spaces.Box(low=0, high=20, shape=(5,), dtype=np.int64),
 
-            # 4. Action tokens (tokenized JSON actions)
+            # 5. event queue (current stack of events that will resolve after the current action)
+            "queue_tokens": spaces.Box(
+                low=0, 
+                high=self.action_token_vocab_size - 1, 
+                shape=(self.max_queue_size, self.max_action_tokens), 
+                dtype=np.int64
+            ),
+
+            # 6. queue pad mask (which positions in queue_tokens are real)
+            "queue_pad_mask": spaces.Box(
+                low=0,
+                high=1,
+                shape=(self.max_queue_size, self.max_action_tokens),
+                dtype=np.int8,
+            ),
+            
+            # 7. valid queue slot mask (Which indices in queue_tokens are real)
+            "queue_slot_mask": spaces.Box(low=0, high=1, shape=(self.max_queue_size,), dtype=np.int8),
+
+            # 8. Action tokens (tokenized JSON actions)
             "action_token_ids": spaces.Box(
                 low=0,
                 high=self.action_token_vocab_size - 1,
@@ -453,7 +491,7 @@ class WyrmspanEnv(gym.Env):
                 dtype=np.int64,
             ),
 
-            # 5. Action token mask (which positions in action_token_ids are real)
+            # 9. Action token mask (which positions in action_token_ids are real)
             "action_token_mask": spaces.Box(
                 low=0,
                 high=1,
@@ -461,7 +499,7 @@ class WyrmspanEnv(gym.Env):
                 dtype=np.int8,
             ),
             
-            # 6. Action Mask (Which indices in action_token_ids are real)
+            # 10. Action Mask (Which indices in action_token_ids are real)
             "action_mask": spaces.Box(low=0, high=1, shape=(self.max_legal_actions,), dtype=np.int8)
         })
 
@@ -678,6 +716,11 @@ class WyrmspanEnv(gym.Env):
                     emit_scalar(tokens, value)
                     return
 
+            if action_key == "end_game" and field_key == "payments" and isinstance(value, list):
+                for payment in value:
+                    emit_action(tokens, payment)
+                return
+
             if field_key == "possible_outcomes":
                 emit_scalar(tokens, value)
                 return
@@ -799,17 +842,32 @@ class WyrmspanEnv(gym.Env):
         # 1. Global context tensors
         final_obs = get_global_info(self.game_state)
 
-        # 2. Card IDs for hand and board
+        # 2. Card display (dragon and cave cards on display)
+        card_display = self.game_state.board["card_display"]
+        display_dragons = card_display["dragon_cards"]
+        display_caves = card_display["cave_cards"]
+        # Replace None with unk token
+        display_dragons = [f"dragon_{card_id}" if card_id is not None else "<unk>" for card_id in display_dragons]
+        display_caves = [f"cave_{card_id}" if card_id is not None else "<unk>" for card_id in display_caves]
+        display_dragon_ids = [self.token_index.get(card_str, self.unk_token_id) for card_str in display_dragons]
+        display_cave_ids = [self.token_index.get(card_str, self.unk_token_id) for card_str in display_caves]
+        
+        final_obs["card_display_dragons"] = np.array(display_dragon_ids, dtype=np.int64)
+        final_obs["card_display_caves"] = np.array(display_cave_ids, dtype=np.int64)
+
+        # 3. Card IDs for hand and board
         hand_card_strings = [f"dragon_{card_id}" for card_id in self.game_state.player.dragon_hand] + [f"cave_{card_id}" for card_id in self.game_state.player.cave_hand]
         hand_card_ids = [self.token_index.get(card_str, self.unk_token_id) for card_str in hand_card_strings]
         # Pad hand card ids to fixed length
         hand_card_ids += [self.unk_token_id] * (self.max_hand_size - len(hand_card_ids))
         final_obs["hand_card_ids"] = np.array(hand_card_ids, dtype=np.int64)
-        
+        hand_card_mask = [1 if card_id != self.unk_token_id else 0 for card_id in hand_card_ids]
+        final_obs["hand_card_mask"] = np.array(hand_card_mask, dtype=np.int8)
+
         player_board_info = get_player_board_info(self.game_state)
         final_obs.update(player_board_info)
 
-        # 3. Other items to be tokenized - Guild, Objectives
+        # 4. Other items to be tokenized - Guild, Objectives
         other_indices = np.zeros(5, dtype=np.int64)
         other_indices[0] = self.game_state.board["guild"]["guild_index"]  # Guild index (0-3)
         # Objectives - we will encode the presence of each objective type as a binary feature
@@ -817,7 +875,45 @@ class WyrmspanEnv(gym.Env):
             other_indices[i + 1] = 2 * tile_index + (1 if side == "side_b" else 0)  # Encode objective as a single integer
         final_obs["other_indices"] = other_indices
 
-        # 4-6. Action tokens, token mask, and action mask
+        # 5-7. Event queue tokens, pad mask, and slot mask
+        queue_jsons = self.game_state.event_queue
+        full_queue_tokens = np.full((self.max_queue_size, self.max_action_tokens), self.pad_token_id, dtype=np.int64)
+        queue_pad_mask = np.zeros((self.max_queue_size, self.max_action_tokens), dtype=np.int8)
+        queue_slot_mask = np.zeros((self.max_queue_size,), dtype=np.int8)
+        
+        error = False
+        for i in range(1, len(queue_jsons) + 1):
+            # read queue in reverse order so that the next event to resolve is in slot 0
+            event = queue_jsons[-i]
+            if i > self.max_queue_size:
+                error = True
+                print("Warning: Event queue exceeds max_queue_size. Some events will be truncated.")
+                break
+            event_tokens = self.tokenize_json(event, as_ids=True)
+            if self.unk_token_id in event_tokens:
+                error = True
+                print(f"Warning: Event {event} contains tokens that were not recognized and mapped to <unk>: {event_tokens}")
+            if not event_tokens:
+                continue
+            # clip tokens to max_action_tokens
+            if len(event_tokens) > self.max_action_tokens:
+                error = True
+                print(f"Warning: Tokenized event exceeds max_action_tokens and will be truncated: {event_tokens}")
+            event_tokens = event_tokens[: self.max_action_tokens]
+            L = len(event_tokens)
+            full_queue_tokens[i - 1, :L] = np.array(event_tokens, dtype=np.int64)
+            queue_pad_mask[i - 1, :L] = 1
+            queue_slot_mask[i - 1] = 1
+
+            if error:
+                self.save_state_action_info(event)
+                error = False
+
+        final_obs["queue_tokens"] = full_queue_tokens
+        final_obs["queue_pad_mask"] = queue_pad_mask
+        final_obs["queue_slot_mask"] = queue_slot_mask
+
+        # 8-10. Action tokens, token mask, and action mask
         if self.game_state.current_choice is not None:
             action_jsons = self.game_state.current_choice
         else:
@@ -858,6 +954,7 @@ class WyrmspanEnv(gym.Env):
             
             if error:
                 self.save_state_action_info(action)
+                error = False
 
         final_obs["action_token_ids"] = full_token_ids
         final_obs["action_token_mask"] = full_token_mask
@@ -896,11 +993,11 @@ class WyrmspanEnv(gym.Env):
 
         # we either have a choice or we've reached the end of the game
         self.game_state = next_state
-        reward = (self.game_state.player.score - prev_score) / 10.0  # Reward is the score gained since last action, normalized
+        reward = (self.game_state.player.score - prev_score) / 100.0  # Reward is the score gained since last action, normalized
         if self.game_state.phase == PHASE_END_GAME:
             terminated = True
             if self.game_state.player.score >= self.game_state.automa.score:
-                reward += 20  # Bonus for beating the automa
+                reward += 2  # Bonus for beating the automa
         obs = self._get_obs()
 
         return obs, reward, terminated, False, {}
