@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import math
 
 class WyrmspanActionScorer(nn.Module):
     def __init__(self, state_dim, action_dim, fusion_dim=256, use_attention=False):
@@ -44,8 +45,15 @@ class WyrmspanActionScorer(nn.Module):
                 num_heads=4,
                 batch_first=True
             )
+
+    def reset_parameters(self):
+        for module in self.modules():
+            if isinstance(module, nn.Linear):
+                nn.init.orthogonal_(module.weight, gain=math.sqrt(2.0))
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
         
-    def forward(self, state_embedding, action_embeddings, action_mask=None):
+    def forward(self, state_embedding, action_embeddings, action_mask=None) -> torch.Tensor:
         """
         Score legal actions based on state embedding.
         
@@ -100,28 +108,38 @@ class WyrmspanActionScorer(nn.Module):
                 state_embedding.unsqueeze(1), 
                 projected_actions.transpose(1, 2)
             ).squeeze(1)  # [batch, num_actions]
+            scores = scores * (1.0 / math.sqrt(self.state_dim))
         
         # Apply mask to scores if provided (set invalid actions to large negative value)
         if action_mask is not None:
-            scores = scores.masked_fill(~action_mask, float('-inf'))
+            scores = scores.masked_fill(~action_mask, -1e9)
         
         return scores
 
 
 class ActionSequenceEncoder(nn.Module):
-    def __init__(self, action_vocab_size=512, action_emb_dim=128, max_action_tokens=64, padding_idx=0):
+    def __init__(self, action_vocab_size=512, action_emb_dim=128, max_action_tokens=64, padding_idx=0, dropout: float = 0.0):
         super().__init__()
         self.action_token_embed = nn.Embedding(action_vocab_size, action_emb_dim, padding_idx=padding_idx)
         self.position_embed = nn.Embedding(max_action_tokens, action_emb_dim)
         
         encoder_layer = nn.TransformerEncoderLayer(
-            d_model=action_emb_dim, nhead=8, dim_feedforward=512, batch_first=True
+            d_model=action_emb_dim, nhead=8, dim_feedforward=512, batch_first=True, dropout=dropout
         )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=2)
 
         self.output_proj = nn.Linear(action_emb_dim, action_emb_dim)  # Project to desired output dimension if needed
 
-    def forward(self, action_token_ids, action_token_mask):
+    def reset_parameters(self):
+        for module in self.modules():
+            if isinstance(module, nn.Linear):
+                nn.init.orthogonal_(module.weight, gain=math.sqrt(2.0))
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Embedding):
+                nn.init.xavier_uniform_(module.weight)
+
+    def forward(self, action_token_ids, action_token_mask) -> torch.Tensor:
         """
         action_token_ids: [batch, num_legal_actions, max_action_tokens]
         action_token_mask: [batch, num_legal_actions, max_action_tokens] (1 for valid tokens, 0 for padding)
@@ -174,6 +192,7 @@ class WyrmspanAgent(nn.Module):
         max_action_tokens=64,
         max_queue_size=5,
         max_hand_size=15,
+        dropout: float = 0.0,
     ):
         super().__init__()
         # linear layers to create a token per global info input
@@ -182,6 +201,7 @@ class WyrmspanAgent(nn.Module):
         self.deck_status_encoder = nn.Linear(260, main_emb_dim)
         self.player_resources_encoder = nn.Linear(16, main_emb_dim)
         self.automa_status_encoder = nn.Linear(29, main_emb_dim)
+        self.state_feature_norm = nn.LayerNorm(main_emb_dim)
 
         # card embedding layers - part of both state and action encoding processes
         self.slot_type_embed = nn.Embedding(3, main_emb_dim)  # 3 slot types: empty, excavated, occupied
@@ -199,11 +219,11 @@ class WyrmspanAgent(nn.Module):
 
         # Main state encoder that produces the 'thought' vector
         self.state_encoder = nn.TransformerEncoder(
-            nn.TransformerEncoderLayer(d_model=main_emb_dim, nhead=8, dim_feedforward=512, batch_first=True),
+            nn.TransformerEncoderLayer(d_model=main_emb_dim, nhead=8, dim_feedforward=512, batch_first=True, dropout=0.1),
             num_layers=3
         )
 
-        self.action_sequence_encoder = ActionSequenceEncoder(action_vocab_size, main_emb_dim, max_action_tokens, action_pad_id)
+        self.action_sequence_encoder = ActionSequenceEncoder(action_vocab_size, main_emb_dim, max_action_tokens, action_pad_id, dropout=dropout)
         self.actor_scorer = WyrmspanActionScorer(
             main_emb_dim, main_emb_dim, fusion_dim,
             use_attention=False
@@ -211,8 +231,27 @@ class WyrmspanAgent(nn.Module):
         self.critic = nn.Sequential(
             nn.Linear(main_emb_dim, 128),
             nn.ReLU(),
+            nn.Dropout(dropout if dropout > 0.0 else 0.0),
             nn.Linear(128, 1)
         )
+
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        for module in self.modules():
+            if module is self:
+                continue
+            if isinstance(module, nn.Linear):
+                nn.init.orthogonal_(module.weight, gain=math.sqrt(2.0))
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Embedding):
+                nn.init.xavier_uniform_(module.weight)
+
+        # Keep critic output head conservative to avoid early value spikes.
+        last_linear = self.critic[-1]
+        if isinstance(last_linear, nn.Linear):
+            nn.init.orthogonal_(last_linear.weight, gain=1.0)
 
     def forward(
         self,
@@ -255,12 +294,19 @@ class WyrmspanAgent(nn.Module):
         deck_status_emb = self.deck_status_encoder(observations["deck_status"])
         player_resources_emb = self.player_resources_encoder(observations["player_resources"])
         automa_status_emb = self.automa_status_encoder(observations["automa_status"])
+
+        timing_emb = self.state_feature_norm(timing_emb)
+        guild_status_emb = self.state_feature_norm(guild_status_emb)
+        deck_status_emb = self.state_feature_norm(deck_status_emb)
+        player_resources_emb = self.state_feature_norm(player_resources_emb)
+        automa_status_emb = self.state_feature_norm(automa_status_emb)
         
         guild_indices = observations["other_indices"][..., 0].long().clamp(
             min=0,
             max=self.guild_embed.num_embeddings - 1,
         )
         guild_emb = self.guild_embed(guild_indices)  # [batch, main_emb_dim]
+        guild_emb = self.state_feature_norm(guild_emb)
 
         state_emb_input = [timing_emb, guild_status_emb, deck_status_emb, player_resources_emb, automa_status_emb, guild_emb]
         if debug:
@@ -278,6 +324,7 @@ class WyrmspanAgent(nn.Module):
                 max=self.objective_embed.num_embeddings - 1,
             )  # [batch]
             objective_emb = self.objective_embed(objective_ids)  # [batch, main_emb_dim]
+            objective_emb = self.state_feature_norm(objective_emb)
             state_emb_input.append(objective_emb)  # combine objective and round info
             if debug:
                 print(f"Objective embedding for round {round_i+1}:", objective_emb)

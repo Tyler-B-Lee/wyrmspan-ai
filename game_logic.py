@@ -840,7 +840,7 @@ def progress_game(game_state:GameState) -> GameState:
             # The final round is over and we are scoring the game
             # NOTE - assume we have a SoloGameState for now
             logger.info("Phase: PHASE_SCORING")
-            # check for 
+            # check for end game abilities on the player
             if len(current_player_obj.const_end_game_abilities) > 0:
                 # add the event to the event queue
                 logger.info(">> Adding end game abilities to event queue")
@@ -2951,9 +2951,11 @@ def handle_play_cave(game_state:GameState, full_event:dict, player:PlayerState) 
                     new_event["choice"].append(
                         {"play_cave": {
                             "source": "display",
-                            "chosen_index": cave_index,
-                            "free": event.get("free", False),
                             "cave_location": cave_name,
+                            "chosen_index": cave_index,
+                            # give cave id for better tokenization, even though it is technically redundant with the index
+                            "chosen_id": game_state.board["card_display"]["cave_cards"][cave_index],
+                            "free": event.get("free", False),
                             }
                         }
                     )
@@ -3105,7 +3107,7 @@ def handle_play_dragon(game_state:GameState, full_event:dict, player:PlayerState
     # go through each possibility
     if event["L1"] == "display":
         for dragon_index in range(3):
-            # use a cave from the display
+            # use a dragon from the display
             dragon_id = game_state.board["card_display"]["dragon_cards"][dragon_index]
             if dragon_id is not None:
                 costs = get_dragon_enticement_options(player, DRAGON_CARDS[dragon_id], discount=event.get("discount", "none"))
@@ -3119,8 +3121,9 @@ def handle_play_dragon(game_state:GameState, full_event:dict, player:PlayerState
                             "play_dragon": {
                                 "L1": "display",
                                 "L2": event["L2"],
-                                "discount": event.get("discount", "none"),
                                 "chosen_index": dragon_index,
+                                "chosen_id": dragon_id,
+                                "discount": event.get("discount", "none"),
                             },
                             "coords": (cave_name, col),
                         }
@@ -3191,7 +3194,12 @@ def handle_gain_dragon_card(game_state:GameState, full_event:dict, player:Player
             for dragon_index in range(3):
                 # take a dragon from the display
                 if game_state.board["card_display"]["dragon_cards"][dragon_index] is not None:
-                    new_event["choice"].append({"gain_dragon": {"chosen": dragon_index}})
+                    new_event["choice"].append(
+                        {"gain_dragon": {
+                            "chosen": dragon_index,
+                            "chosen_id": game_state.board["card_display"]["dragon_cards"][dragon_index],
+                        }}
+                    )
         if event["source"] == "any" or event["source"] == "deck":
             # take a random dragon from the deck
             deck_outcomes = {"random": {"gain_dragon": {"possible_outcomes": "dragon_deck"}}}
@@ -3394,6 +3402,7 @@ def handle_tuck_dragon(game_state:GameState, full_event:dict, player:PlayerState
                                 "L1": "display",
                                 "L2": "here",
                                 "chosen_index": dragon_index,
+                                "chosen_id": game_state.board["card_display"]["dragon_cards"][dragon_index],
                             },
                             "coords": coords
                         }

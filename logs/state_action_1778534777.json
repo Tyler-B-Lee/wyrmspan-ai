@@ -1,0 +1,51 @@
+Game State:
+Game State:
+	Turn: 0
+	Phase: final_scoring
+	Dragon Discard: [102, 179, 55, 46, 98, 104, 35, 10, 65, 116, 37, 31, 153, 135, 19, 2, 69, 79, 43]
+	Cave Discard: [12, 13, 33, 58, 35, 20, 44, 50, 60, 68, 9, 5, 11, 19]
+	Event Queue: [{'end_game': {'if_true': {'amount': 3, 'condition': {'min_spaces_excavated': {'amount': 4, 'cave': 'this_cave'}}}}, 'coords': ('crimson_cavern', 0)}]
+	Guild Board: {'guild_index': 0, 'ability_uses': {1: [0], 2: [1], 3: [1], 4: [0], 5: [1]}, 'player_position': 0, 'automa_position': 6, 'automa_markers_ready': 1} (Plains Guild)
+Player State:
+	Dragon Hand: [(6, 'Flocking Dragonette'), (28, 'Silent Cobrette'), (64, 'Scaly Rock Dragon'), (34, 'Kindly Sea Serpent'), (7, 'Temperate Bamboo Dragon'), (148, 'Great Horned Wyvern'), (26, 'Bargaining Grazer'), (164, 'Metamorphic Feydragon')]
+	Cave Hand: [(36, 'Gain [Gold]. Lay [Egg].')]
+	Resources: {'meat': 0, 'gold': 0, 'crystal': 1, 'milk': 1}
+	Egg Totals: {'mat_slots': 0, 'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Dragons Played: {'crimson_cavern': 2, 'golden_grotto': 1, 'amethyst_abyss': 1}
+	Score: 32
+	Guild Markers: 2
+	Coins: 1
+	Caves Played: {'crimson_cavern': [-1, 67, None, None], 'golden_grotto': [-1, 31, None, None], 'amethyst_abyss': [-1, 45, None, None]}
+	Dragons Played: {'crimson_cavern': [74, 87, None, None], 'golden_grotto': [1, None, None, None], 'amethyst_abyss': [27, None, None, None]}
+	Cached Resources: {'crimson_cavern': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'golden_grotto': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'amethyst_abyss': [defaultdict(<class 'int'>, {'meat': 3, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})]}
+	Tucked Dragons: {'crimson_cavern': [[], [], [], []], 'golden_grotto': [[169, 107], [], [], []], 'amethyst_abyss': [[], [], [], []]}
+	Nested Eggs: {'crimson_cavern': [[0, 2], [0, 2], [0, 0], [0, 0]], 'golden_grotto': [[0, 0], [0, 0], [0, 0], [0, 0]], 'amethyst_abyss': [[0, 0], [0, 0], [0, 0], [0, 0]]}
+	Times Explored: {'crimson_cavern': 2, 'golden_grotto': 2, 'amethyst_abyss': 1}
+
+Automa State:
+	Dragons: [(93, 'Miniature Crested Coatl'), (94, 'Northern Gryphdragon'), (81, 'Stoic Gryphdragon'), (63, 'Guarding Horned Drake'), (17, 'Common Grass Lindworm'), (123, 'Selfish Lung Dragon'), (124, 'Mosaic Guardian')]
+	Caves: [22, 48, 70, 8]
+	Score: 75
+	Difficulty: Automa Level 1 (Easy)
+	Passed this round: True
+	Decision Deck: [3]
+
+
+Chosen Action:
+{
+  "end_game": {
+    "if_true": {
+      "amount": 3,
+      "condition": {
+        "min_spaces_excavated": {
+          "amount": 4,
+          "cave": "this_cave"
+        }
+      }
+    }
+  },
+  "coords": [
+    "crimson_cavern",
+    0
+  ]
+}

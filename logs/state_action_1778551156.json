@@ -1,0 +1,48 @@
+Game State:
+Game State:
+	Turn: 0
+	Phase: final_scoring
+	Dragon Discard: [106, 181, 78, 157, 95, 171, 57, 58, 156, 96, 68, 176, 29]
+	Cave Discard: [42, 13, 72, 11, 22, 47, 27, 63, 43, 21]
+	Event Queue: [{'end_game': {'if_true': {'amount': 3, 'condition': {'min_spaces_excavated': {'amount': 4, 'cave': 'this_cave'}}}}, 'coords': ('crimson_cavern', 1)}, {'end_game': {'for_each': {'type': 'lowest_objectives', 'amount': 2}}, 'coords': ('golden_grotto', 0)}, {'end_game': {'for_each': {'type': 'Aggressive', 'amount': -1, 'location': 'this_cave', 'exclude_self': True}}, 'coords': ('golden_grotto', 1)}]
+	Guild Board: {'guild_index': 0, 'ability_uses': {1: [], 2: [0], 3: [1], 4: [1], 5: [1, 1]}, 'player_position': 10, 'automa_position': 4, 'automa_markers_ready': 0} (Plains Guild)
+Player State:
+	Dragon Hand: [(169, 'Diving Moray')]
+	Cave Hand: [(34, 'Gain [Gold][Gold].')]
+	Resources: {'meat': 0, 'gold': 0, 'crystal': 2, 'milk': 0}
+	Egg Totals: {'mat_slots': 0, 'crimson_cavern': 0, 'golden_grotto': 0, 'amethyst_abyss': 0}
+	Dragons Played: {'crimson_cavern': 2, 'golden_grotto': 2, 'amethyst_abyss': 3}
+	Score: 45
+	Guild Markers: 3
+	Coins: 0
+	Caves Played: {'crimson_cavern': [-1, 40, None, None], 'golden_grotto': [-1, 33, 32, 46], 'amethyst_abyss': [-1, 28, 74, None]}
+	Dragons Played: {'crimson_cavern': [107, 74, None, None], 'golden_grotto': [41, 122, None, None], 'amethyst_abyss': [37, 87, 144, None]}
+	Cached Resources: {'crimson_cavern': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'golden_grotto': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})], 'amethyst_abyss': [defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0}), defaultdict(<class 'int'>, {'meat': 0, 'gold': 0, 'crystal': 0, 'milk': 0})]}
+	Tucked Dragons: {'crimson_cavern': [[], [], [], []], 'golden_grotto': [[], [], [], []], 'amethyst_abyss': [[], [], [], []]}
+	Nested Eggs: {'crimson_cavern': [[0, 3], [0, 2], [0, 0], [0, 0]], 'golden_grotto': [[0, 2], [0, 1], [0, 0], [0, 0]], 'amethyst_abyss': [[0, 3], [0, 2], [0, 4], [0, 0]]}
+	Times Explored: {'crimson_cavern': 2, 'golden_grotto': 2, 'amethyst_abyss': 1}
+
+Automa State:
+	Dragons: [(172, 'Augural Fae'), (131, 'Titanic Coatl'), (162, 'Cosmic Amphiptere'), (14, 'Scavenging Cricketcatcher'), (54, 'Colorful Gryphdragon'), (90, 'Protective Amphiptere')]
+	Caves: [68]
+	Score: 66
+	Difficulty: Automa Level 1 (Easy)
+	Passed this round: True
+	Decision Deck: [2]
+
+
+Chosen Action:
+{
+  "end_game": {
+    "for_each": {
+      "type": "Aggressive",
+      "amount": -1,
+      "location": "this_cave",
+      "exclude_self": true
+    }
+  },
+  "coords": [
+    "golden_grotto",
+    1
+  ]
+}

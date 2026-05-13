@@ -233,7 +233,7 @@ class WyrmspanEnv(gym.Env):
         
         # We assume a max number of legal actions the env will ever return
         self.max_legal_actions = 180
-        self.max_action_tokens = 64
+        self.max_action_tokens = 100
         self.max_hand_size = 15
         self.max_queue_size = 5
 
@@ -242,6 +242,8 @@ class WyrmspanEnv(gym.Env):
             "<unk>",
 
             # numbers (for amounts of resources, costs, points, etc.)
+            "-2",
+            "-1",
             "0",
             "1",
             "2",
@@ -249,6 +251,10 @@ class WyrmspanEnv(gym.Env):
             "4",
             "5",
             "6",
+            "7",
+            "8",
+            "9",
+            "10",
 
             # basic actions
             "play_dragon",
@@ -297,6 +303,7 @@ class WyrmspanEnv(gym.Env):
             "here",
             "this_column",
             "this_cave",
+            "this_position",
             "each_this_column",
             "each_this_cave",
             "dragon_on_mat",
@@ -395,6 +402,10 @@ class WyrmspanEnv(gym.Env):
             "cost_end",
             "condition_start",
             "condition_end",
+            "condition",
+            "if_true",
+            "min_spaces_excavated",
+            "cave",
             "or_start",
             "or_end",
             "or_option_start",
@@ -405,9 +416,26 @@ class WyrmspanEnv(gym.Env):
             "and_option_end",
             "coords",
             "max_uses",
-            "chosen_payment_start",
-            "chosen_payment_end",
             "amount",
+            "point_amount",
+
+            # end game keywords
+            "double_value",
+            "tuck",
+            "egg_pairs",
+            "min_dragons_in_cave",
+            "max_dragons_in_cave",
+            "min_dragons_this_column",
+            "for_each",
+            "payments",
+            "lowest_objectives",
+            "type",
+            "any_dragon",
+            "exclude_self",
+            "guild_markers",
+            "set_of_traits",
+            "set_of_sizes",
+            "max",
 
             # other modifiers
             "rand_outcome",
@@ -616,6 +644,67 @@ class WyrmspanEnv(gym.Env):
             elif value is not None:
                 tokens.append(str(value))
 
+        def emit_condition(tokens, condition_dict):
+            tokens.append("condition_start")
+            if not isinstance(condition_dict, dict):
+                emit_scalar(tokens, condition_dict)
+                tokens.append("condition_end")
+                return
+            for key, value in condition_dict.items():
+                if key == "or" and isinstance(value, list):
+                    tokens.append("or_start")
+                    for option in value:
+                        tokens.append("or_option_start")
+                        emit_condition(tokens, option)
+                        tokens.append("or_option_end")
+                    tokens.append("or_end")
+                    continue
+                elif key == "and" and isinstance(value, list):
+                    tokens.append("and_start")
+                    for option in value:
+                        tokens.append("and_option_start")
+                        emit_condition(tokens, option)
+                        tokens.append("and_option_end")
+                    tokens.append("and_end")
+                    continue
+                
+                emit_action(tokens, value)
+            tokens.append("condition_end")
+
+        def emit_end_game(tokens, end_game_dict):
+            tokens.append("end_game")
+            if not isinstance(end_game_dict, dict):
+                emit_scalar(tokens, end_game_dict)
+                return
+            for key, value in end_game_dict.items():
+                if key == "if_true" and isinstance(value, dict):
+                    tokens.append("if_true")
+                    tokens.append("point_amount")
+                    tokens.append(encode_number(value.get("amount", 0)))
+                    emit_condition(tokens, value.get("condition", {}))
+                    continue
+                
+                elif key == "for_each" and isinstance(value, dict):
+                    tokens.append("for_each")
+                    for field_key, field_value in value.items():
+                        if field_key == "amount":
+                            tokens.append("point_amount")
+                            tokens.append(encode_number(field_value))
+                        else:
+                            emit_key_value(tokens, "end_game", field_key, field_value)
+                    continue
+
+                elif key == "payments" and isinstance(value, list):
+                    tokens.append("payments")
+                    for payment in value:
+                        tokens.append("point_amount")
+                        tokens.append(encode_number(payment.get("amount", 0)))
+                        emit_cost(tokens, payment.get("cost", {}), include_card_choices=True)
+                    continue
+                
+                tokens.append(str(key))
+                emit_scalar(tokens, value)
+
         def emit_key_value(tokens, action_key: str, field_key: str, value):
             if field_key == "chosen_id":
                 if action_key in {"play_dragon", "gain_dragon", "tuck_from", "draw_decision", "discard_dragon"}:
@@ -716,11 +805,6 @@ class WyrmspanEnv(gym.Env):
                     emit_scalar(tokens, value)
                     return
 
-            if action_key == "end_game" and field_key == "payments" and isinstance(value, list):
-                for payment in value:
-                    emit_action(tokens, payment)
-                return
-
             if field_key == "possible_outcomes":
                 emit_scalar(tokens, value)
                 return
@@ -784,10 +868,13 @@ class WyrmspanEnv(gym.Env):
 
             if "cost" in obj:
                 emit_cost(tokens, obj["cost"])
+            
+            if "end_game" in obj:
+                emit_end_game(tokens, obj["end_game"])
 
             normal_keys = [
                 key for key in obj.keys()
-                if key not in {"make_payment", "adv_effects", "sequence", "choice", "random", "cost", "coords", "opponent_effect"}
+                if key not in {"make_payment", "adv_effects", "sequence", "choice", "random", "cost", "coords", "opponent_effect", "end_game"}
             ]
 
             for key in normal_keys:
@@ -997,7 +1084,7 @@ class WyrmspanEnv(gym.Env):
         if self.game_state.phase == PHASE_END_GAME:
             terminated = True
             if self.game_state.player.score >= self.game_state.automa.score:
-                reward += 2  # Bonus for beating the automa
+                reward += 8  # Bonus for beating the automa
         obs = self._get_obs()
 
         return obs, reward, terminated, False, {}
@@ -1005,6 +1092,7 @@ class WyrmspanEnv(gym.Env):
 
 if __name__ == "__main__":
     env = WyrmspanEnv()
+    print(f"Number of tokens in action token vocabulary: {env.action_token_vocab_size}")
 
     # Test: Load a test game log and tokenize the actions to verify the tokenization logic.
     # test_file_name = input("Enter path to test game to load actions from: ")
