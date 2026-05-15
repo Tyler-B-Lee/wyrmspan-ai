@@ -225,11 +225,28 @@ def get_player_board_info(game_state: SoloGameState) -> dict:
 
 
 class WyrmspanEnv(gym.Env):
+    # Multi-component reward configuration for training
+    # Tuned to guide agent toward competitive victory (beating automa) while exploring diverse strategies
+    REWARD_CONFIG = {
+        'margin_scaling': 100.0,      # Scaling factor for margin-based reward component
+        'point_weight': 0.3,          # Reduced weight on point accumulation (was 1.0, now 0.3)
+        'round_bonus_threshold': -5,  # Bonus if within X points of automa at round end
+        'round_bonus_amount': 0.15,   # Small competitive bonus awarded at round end
+        'target_score': 75,           # End-game target score for difficulty 0 automa
+        'win_bonus_base': 2.0,        # Base bonus for winning (beating automa)
+        'win_bonus_per_margin': 0.05, # Bonus per point of margin (incentivizes larger victories)
+        'target_bonus_max': 1.0,      # Max bonus for exceeding target score
+        'loss_penalty': -0.5,         # Small penalty for losing (not too harsh, encourages exploration)
+    }
+
     def __init__(self):
         super().__init__()
         
         # SoloGameState contains all the game logic and state management; we will interact with it to step through the game
         self.game_state = SoloGameState(automa_difficulty=0)
+        
+        # Track automa score to compute margin-based rewards
+        self.prev_automa_score = 0
         
         # We assume a max number of legal actions the env will ever return
         self.max_legal_actions = 180
@@ -1056,6 +1073,9 @@ class WyrmspanEnv(gym.Env):
         # reset the game engine to start a new game
         self.game_state = SoloGameState(automa_difficulty=0)
         self.game_state.create_game()
+        
+        # Initialize automa score tracking for margin-based rewards
+        self.prev_automa_score = self.game_state.automa.score
 
         # progress to the first choice point
         while not self.game_state.is_halted():
@@ -1064,7 +1084,8 @@ class WyrmspanEnv(gym.Env):
         return self._get_obs(), {}
         
     def step(self, action_idx):
-        prev_score = self.game_state.player.score
+        prev_player_score = self.game_state.player.score
+        prev_round = self.game_state.board["round_tracker"]["round"]
         terminated = False
         next_state = get_next_state(self.game_state, action_idx)
         # continue progressing through the game until we reach the next choice point
@@ -1080,11 +1101,55 @@ class WyrmspanEnv(gym.Env):
 
         # we either have a choice or we've reached the end of the game
         self.game_state = next_state
-        reward = (self.game_state.player.score - prev_score) / 100.0  # Reward is the score gained since last action, normalized
+        
+        # --- Multi-component reward calculation ---
+        
+        # Component 1: Score margin shaping
+        # Reward for improving (or maintaining) relative position to automa
+        current_margin = self.game_state.player.score - self.game_state.automa.score
+        prev_margin = prev_player_score - self.prev_automa_score
+        margin_delta = current_margin - prev_margin
+        reward_margin = margin_delta / self.REWARD_CONFIG['margin_scaling']
+        
+        # Component 2: Point accumulation (reduced weight to emphasize winning over point hoarding)
+        point_delta = self.game_state.player.score - prev_player_score
+        reward_points = (point_delta / 100.0) * self.REWARD_CONFIG['point_weight']
+        
+        # Component 3: Round-end competitive bonus
+        # Small incentive for being competitive at round boundaries
+        reward_round_bonus = 0.0
+        current_round = self.game_state.board["round_tracker"]["round"]
+        if (current_round > prev_round) and current_margin >= self.REWARD_CONFIG['round_bonus_threshold']:
+            reward_round_bonus = self.REWARD_CONFIG['round_bonus_amount']
+        
+        # Component 4: End-game scoring
+        reward_end_game = 0.0
         if self.game_state.phase == PHASE_END_GAME:
             terminated = True
             if self.game_state.player.score >= self.game_state.automa.score:
-                reward += 8  # Bonus for beating the automa
+                # Win bonus: base + scaled by victory margin
+                margin_at_end = self.game_state.player.score - self.game_state.automa.score
+                margin_bonus = min(margin_at_end * self.REWARD_CONFIG['win_bonus_per_margin'], 
+                                  self.REWARD_CONFIG['target_bonus_max'])
+                reward_end_game = self.REWARD_CONFIG['win_bonus_base'] + margin_bonus
+                
+                # Additional bonus for reaching target score (beating typical difficulty 0 score)
+                if self.game_state.player.score >= self.REWARD_CONFIG['target_score']:
+                    target_bonus = min(
+                        (self.game_state.player.score - self.REWARD_CONFIG['target_score']) / 50.0,
+                        self.REWARD_CONFIG['target_bonus_max']
+                    )
+                    reward_end_game += target_bonus
+            else:
+                # Loss: small penalty to discourage defeat but not too harsh
+                reward_end_game = self.REWARD_CONFIG['loss_penalty']
+        
+        # Combine all reward components
+        reward = reward_margin + reward_points + reward_round_bonus + reward_end_game
+        
+        # Update tracked automa score for next step's margin calculation
+        self.prev_automa_score = self.game_state.automa.score
+        
         obs = self._get_obs()
 
         return obs, reward, terminated, False, {}
@@ -1131,19 +1196,29 @@ if __name__ == "__main__":
 
     # Test: Run a random action through the environment to verify it steps without errors and returns an observation of the correct format.
     import pprint
+    from playout_compare import get_sim_algo
+
+    sim_algo = get_sim_algo("greedy_action_priority", {'dragon_weight': 2.845, 'cave_weight': 2.056, 'explore_weight': 1.431})
+    
     obs, info = env.reset()
     done = False
     step_count = 0
     total_reward = 0
     while not done:
         # pretty print every 20 steps
-        if step_count % 20 == 0:
-            print(f"Step {step_count} observation:")
-            pprint.pprint(obs)
+        # if step_count % 20 == 0:
+        #     print(f"Step {step_count} observation:")
+        #     pprint.pprint(obs)
             
         legal_actions = obs["action_mask"].sum()
-        chosen_action = random.randint(0, legal_actions - 1)  # Randomly choose among legal actions
+        chosen_action = sim_algo(env.game_state, None)
+        # chosen_action = random.randint(0, legal_actions - 1)  # Randomly choose among legal actions
+        
+        # check reward per step
+        print(f"Step {step_count}: Chosen action index {chosen_action} out of {legal_actions} legal actions.")
+        print(f"Round {env.game_state.board['round_tracker']['round']}, Player score: {env.game_state.player.score}, Automa score: {env.game_state.automa.score}")
         obs, reward, done, _, info = env.step(chosen_action)
+        print(f"After step - Round {env.game_state.board['round_tracker']['round']}, Player score: {env.game_state.player.score}, Automa score: {env.game_state.automa.score}, Reward: {reward:.2f}\n")
 
         total_reward += reward
         step_count += 1

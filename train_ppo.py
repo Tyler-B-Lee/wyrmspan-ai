@@ -513,7 +513,7 @@ def train(cfg: PPOConfig) -> None:
                 clip_fracs.append(clip_frac)
 
                 if cfg.target_kl is not None and approx_kl > cfg.target_kl:
-                    print(f"\t> Early stopping at epoch {epoch}, step {start} due to reaching target KL: {approx_kl:.4f} > {cfg.target_kl}")
+                    print(f"\t> Early stopping at epoch {epoch + 1}, step {start} due to reaching target KL: {approx_kl:.4f} > {cfg.target_kl}")
                     break
 
         avg_return = float(np.mean(recent_returns[-100:])) if recent_returns else 0.0
@@ -578,20 +578,20 @@ def parse_args() -> PPOConfig:
     parser.add_argument("--seed", type=int, default=456)
     parser.add_argument("--total-updates", type=int, default=200)
     parser.add_argument("--rollout-length", type=int, default=128)
-    parser.add_argument("--num-envs", type=int, default=8)
-    parser.add_argument("--learning-rate", type=float, default=1e-4)
-    parser.add_argument("--gamma", type=float, default=0.995)
+    parser.add_argument("--num-envs", type=int, default=16)
+    parser.add_argument("--learning-rate", type=float, default=5e-4)
+    parser.add_argument("--gamma", type=float, default=0.997)
     parser.add_argument("--gae-lambda", type=float, default=0.95)
     parser.add_argument("--clip-coef", type=float, default=0.2)
-    parser.add_argument("--update-epochs", type=int, default=6)
+    parser.add_argument("--update-epochs", type=int, default=5)
     parser.add_argument("--minibatch-size", type=int, default=128)
     parser.add_argument("--vf-coef", type=float, default=0.5)
-    parser.add_argument("--ent-coef", type=float, default=0.01)
+    parser.add_argument("--ent-coef", type=float, default=0.05)
     parser.add_argument("--max-grad-norm", type=float, default=0.5)
-    parser.add_argument("--target-kl", type=float, default=0.03)
-    parser.add_argument("--eval-interval", type=int, default=20)
+    parser.add_argument("--target-kl", type=float, default=0.05)
+    parser.add_argument("--eval-interval", type=int, default=5)
     parser.add_argument("--eval-episodes", type=int, default=100)
-    parser.add_argument("--save-interval", type=int, default=50)
+    parser.add_argument("--save-interval", type=int, default=5)
     parser.add_argument("--save-dir", type=str, default="checkpoints/ppo")
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--resume", action="store_true", help="Resume from latest checkpoint in save-dir if available")

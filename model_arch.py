@@ -124,9 +124,16 @@ class ActionSequenceEncoder(nn.Module):
         self.position_embed = nn.Embedding(max_action_tokens, action_emb_dim)
         
         encoder_layer = nn.TransformerEncoderLayer(
-            d_model=action_emb_dim, nhead=8, dim_feedforward=512, batch_first=True, dropout=dropout
+            d_model=action_emb_dim, 
+            nhead=8, 
+            dim_feedforward=action_emb_dim * 4, 
+            batch_first=True, 
+            dropout=dropout
         )
-        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=2)
+        self.transformer = nn.TransformerEncoder(
+            encoder_layer, 
+            num_layers=3
+        )
 
         self.output_proj = nn.Linear(action_emb_dim, action_emb_dim)  # Project to desired output dimension if needed
 
@@ -195,13 +202,21 @@ class WyrmspanAgent(nn.Module):
         dropout: float = 0.0,
     ):
         super().__init__()
-        # linear layers to create a token per global info input
+        # Project each global feature stream into its own token embedding.
         self.timing_encoder = nn.Linear(30, main_emb_dim)
         self.guild_status_encoder = nn.Linear(67, main_emb_dim)
         self.deck_status_encoder = nn.Linear(260, main_emb_dim)
         self.player_resources_encoder = nn.Linear(16, main_emb_dim)
         self.automa_status_encoder = nn.Linear(29, main_emb_dim)
-        self.state_feature_norm = nn.LayerNorm(main_emb_dim)
+        # Separate norms keep each feature type on its own scale.
+        self.timing_norm = nn.LayerNorm(main_emb_dim)
+        self.guild_status_norm = nn.LayerNorm(main_emb_dim)
+        self.deck_status_norm = nn.LayerNorm(main_emb_dim)
+        self.player_resources_norm = nn.LayerNorm(main_emb_dim)
+        self.automa_status_norm = nn.LayerNorm(main_emb_dim)
+        self.guild_embed_norm = nn.LayerNorm(main_emb_dim)
+        self.objective_embed_norm = nn.LayerNorm(main_emb_dim)
+        self.thinking_token = nn.Parameter(torch.empty(1, 1, main_emb_dim))
 
         # card embedding layers - part of both state and action encoding processes
         self.slot_type_embed = nn.Embedding(3, main_emb_dim)  # 3 slot types: empty, excavated, occupied
@@ -210,17 +225,30 @@ class WyrmspanAgent(nn.Module):
         # hand cards have no order, so they will share one position embedding
         self.max_hand_size = max_hand_size
         self.input_position_embed = nn.Embedding(
-            5 + 1 + 4 + max_queue_size + 1 + 6 + 12,
+            1 # thinking token
+            + 6 # global + guild + deck + player res + automa + guild embedding
+            + 4 # objectives (combined with round info)
+            + 12 # slot embeddings for board spaces
+            + 3 # display dragons
+            + 3 # display caves
+            + max_queue_size # event queue embeddings
+            + 1, # shared position for hand cards
             main_emb_dim)
 
         # other items
         self.guild_embed = nn.Embedding(4, main_emb_dim)  # 4 guilds
         self.objective_embed = nn.Embedding(20, main_emb_dim)  # 20 objectives
 
-        # Main state encoder that produces the 'thought' vector
+        # The first token is a learned thinking token that becomes the state summary.
         self.state_encoder = nn.TransformerEncoder(
-            nn.TransformerEncoderLayer(d_model=main_emb_dim, nhead=8, dim_feedforward=512, batch_first=True, dropout=0.1),
-            num_layers=3
+            nn.TransformerEncoderLayer(
+                d_model=main_emb_dim, 
+                nhead=8, 
+                dim_feedforward=main_emb_dim * 4, 
+                batch_first=True, 
+                dropout=0.1
+            ),
+            num_layers=6
         )
 
         self.action_sequence_encoder = ActionSequenceEncoder(action_vocab_size, main_emb_dim, max_action_tokens, action_pad_id, dropout=dropout)
@@ -248,7 +276,9 @@ class WyrmspanAgent(nn.Module):
             elif isinstance(module, nn.Embedding):
                 nn.init.xavier_uniform_(module.weight)
 
-        # Keep critic output head conservative to avoid early value spikes.
+        nn.init.normal_(self.thinking_token, mean=0.0, std=0.02)
+
+        # Keep the critic head conservative to avoid early value spikes.
         last_linear = self.critic[-1]
         if isinstance(last_linear, nn.Linear):
             nn.init.orthogonal_(last_linear.weight, gain=1.0)
@@ -295,18 +325,18 @@ class WyrmspanAgent(nn.Module):
         player_resources_emb = self.player_resources_encoder(observations["player_resources"])
         automa_status_emb = self.automa_status_encoder(observations["automa_status"])
 
-        timing_emb = self.state_feature_norm(timing_emb)
-        guild_status_emb = self.state_feature_norm(guild_status_emb)
-        deck_status_emb = self.state_feature_norm(deck_status_emb)
-        player_resources_emb = self.state_feature_norm(player_resources_emb)
-        automa_status_emb = self.state_feature_norm(automa_status_emb)
+        timing_emb = self.timing_norm(timing_emb)
+        guild_status_emb = self.guild_status_norm(guild_status_emb)
+        deck_status_emb = self.deck_status_norm(deck_status_emb)
+        player_resources_emb = self.player_resources_norm(player_resources_emb)
+        automa_status_emb = self.automa_status_norm(automa_status_emb)
         
         guild_indices = observations["other_indices"][..., 0].long().clamp(
             min=0,
             max=self.guild_embed.num_embeddings - 1,
         )
         guild_emb = self.guild_embed(guild_indices)  # [batch, main_emb_dim]
-        guild_emb = self.state_feature_norm(guild_emb)
+        guild_emb = self.guild_embed_norm(guild_emb)
 
         state_emb_input = [timing_emb, guild_status_emb, deck_status_emb, player_resources_emb, automa_status_emb, guild_emb]
         if debug:
@@ -324,10 +354,14 @@ class WyrmspanAgent(nn.Module):
                 max=self.objective_embed.num_embeddings - 1,
             )  # [batch]
             objective_emb = self.objective_embed(objective_ids)  # [batch, main_emb_dim]
-            objective_emb = self.state_feature_norm(objective_emb)
+            objective_emb = self.objective_embed_norm(objective_emb)
             state_emb_input.append(objective_emb)  # combine objective and round info
             if debug:
                 print(f"Objective embedding for round {round_i+1}:", objective_emb)
+
+        # Prepend the learned thinking token so position 0 is a dedicated summary slot.
+        thinking_token = self.thinking_token.expand(batch_size, -1, -1)
+        state_emb_input = [thinking_token.squeeze(1)] + state_emb_input
 
         state_emb_input = torch.stack(state_emb_input, dim=1)  # [batch, num_tokens, main_emb_dim]
         if debug:
@@ -374,20 +408,21 @@ class WyrmspanAgent(nn.Module):
             hand_card_embeddings, 
         ], dim=1)  # [batch, total_tokens, main_emb_dim]
 
-        # Next, we include the input position embeddings to help the model differentiate between different types of inputs
-        # The order constructed is the same, so we can assign fixed position indices to each type of input
-        # Note that hand cards have no intrinsic order, so they will all share the same position index
+        # Add fixed position embeddings for all non-hand tokens, plus a shared index for hand cards.
+        # This now includes the learned thinking token at position 0.
         total_tokens = encoder_input.shape[1]
         input_pos_emb_size = self.input_position_embed.num_embeddings
         position_ids = torch.arange(total_tokens - self.max_hand_size, device=encoder_input.device)
-        # add hand card position ids (all the same since hand cards are unordered)
+        # Hand cards are unordered, so they share the final reserved position index.
         hand_position_ids = torch.full((self.max_hand_size,), input_pos_emb_size - 1, device=encoder_input.device)  # last index reserved for hand cards
         position_ids = torch.cat([position_ids, hand_position_ids], dim=0)  # [total_tokens]
         position_emb = self.input_position_embed(position_ids)  # [total_tokens, main_emb_dim]
         encoder_input = encoder_input + position_emb.unsqueeze(0)  # [batch, total_tokens, main_emb_dim]
 
-        # next, we construct a mask for the transformer encoder to prevent attention to padded tokens
-        # we only have padding in the hand cards and event queue, so we can construct the mask based on those
+        if debug:
+            print("Position ids:", position_ids)
+
+        # Build the padding mask; only the queue and hand cards contribute masked positions.
         hand_card_mask = observations["hand_card_mask"]  # [batch, max_hand_size]
         queue_slot_mask = observations["queue_slot_mask"]  # [batch, max_queue_size]
         other_mask = torch.ones((batch_size, total_tokens - self.max_hand_size - queue_slot_mask.shape[1]), device=encoder_input.device) # [batch, tokens without hand and queue]
@@ -488,7 +523,7 @@ if __name__ == "__main__":
             # run the agent's forward pass with the current observation
             obs_tensor = {k: torch.tensor(v).unsqueeze(0) if not isinstance(v, torch.Tensor) else v.unsqueeze(0) for k, v in obs.items()}
             with torch.no_grad():
-                state_embedding, state_value = agent(obs_tensor, debug=False)
+                state_embedding, state_value = agent(obs_tensor, debug=True)
                 print(f"State value estimate: {state_value.item():.4f}")
                 
                 # Example: Score actions using the actor_scorer

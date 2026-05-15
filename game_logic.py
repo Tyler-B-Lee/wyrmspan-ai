@@ -718,13 +718,13 @@ def progress_game(game_state:GameState) -> GameState:
             curr_round = game_state.board["round_tracker"]["round"]
             score_objective(game_state, curr_round)
             # now we try moving to the next round
-            if (curr_round + 1) == game_state.ending_round:
+            game_state.board["round_tracker"]["round"] += 1
+            if game_state.board["round_tracker"]["round"] == game_state.ending_round:
                 # we are done with the game
                 game_state.phase = PHASE_FINAL_SCORING
             else:
                 # move to the next round
                 game_state.phase = PHASE_ROUND_START
-                game_state.board["round_tracker"]["round"] += 1
                 game_state.board["round_tracker"]["finished_opr"] = False
                 game_state.board["round_tracker"]["opr_remaining"] = None
                 game_state.current_player = game_state.round_start_player
