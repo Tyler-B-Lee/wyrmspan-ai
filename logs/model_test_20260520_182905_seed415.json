@@ -1,0 +1,5045 @@
+{
+  "model_path": "checkpoints\\ppo\\ppo_update_120_1459200_eval_-0.255.pt",
+  "seed": 415,
+  "steps": 92,
+  "total_reward": -0.204,
+  "final_player_score": 52,
+  "final_automa_score": 68,
+  "logs": [
+    {
+      "step": 0,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 14,
+      "chosen_logit": 14.228143692016602,
+      "chosen_prob": 0.18038558959960938,
+      "top_actions": [
+        {
+          "action_index": 14,
+          "logit": 14.228143692016602,
+          "prob": 0.18038558959960938,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_39",
+            "sequence_item_end",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_12",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 13,
+          "logit": 14.227548599243164,
+          "prob": 0.18027827143669128,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_22",
+            "sequence_item_end",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_12",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 12,
+          "logit": 14.134387969970703,
+          "prob": 0.1642419844865799,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_22",
+            "sequence_item_end",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_39",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.03376579284668,
+          "prob": 0.05463740974664688,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "discard_dragon",
+            "dragon_70",
+            "sequence_item_end",
+            "sequence_item_start",
+            "discard_dragon",
+            "dragon_43",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.89560604095459,
+          "prob": 0.04758697375655174,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "discard_dragon",
+            "dragon_70",
+            "sequence_item_end",
+            "sequence_item_start",
+            "discard_cave",
+            "cave_22",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 1,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 7,
+      "chosen_logit": 13.680078506469727,
+      "chosen_prob": 0.1111518070101738,
+      "top_actions": [
+        {
+          "action_index": 7,
+          "logit": 13.680078506469727,
+          "prob": 0.1111518070101738,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "gain_resource",
+            "meat",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 16,
+          "logit": 13.677523612976074,
+          "prob": 0.1108681783080101,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 13,
+          "logit": 13.675125122070312,
+          "prob": 0.11060259491205215,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "gain_resource",
+            "gold",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.647263526916504,
+          "prob": 0.1075635552406311,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "gain_resource",
+            "meat",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "meat",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        },
+        {
+          "action_index": 5,
+          "logit": 13.642983436584473,
+          "prob": 0.10710415989160538,
+          "tokens": [
+            "adv_effects_start",
+            "sequence_start",
+            "sequence_item_start",
+            "gain_resource",
+            "meat",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "gold",
+            "sequence_item_end",
+            "sequence_item_start",
+            "gain_resource",
+            "crystal",
+            "sequence_item_end",
+            "sequence_end",
+            "adv_effects_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 18.50143814086914,
+      "chosen_prob": 0.9662767648696899,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 18.50143814086914,
+          "prob": 0.9662767648696899,
+          "tokens": [
+            "play_dragon",
+            "hand",
+            "any"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 14.08149528503418,
+          "prob": 0.011629062704741955,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 14.078652381896973,
+          "prob": 0.01159605011343956,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.008689572103321552,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 12.036014556884766,
+          "prob": 0.0015038473065942526,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.022374153137207,
+      "chosen_prob": 0.2911205291748047,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.022374153137207,
+          "prob": 0.2911205291748047,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_70",
+            "coords",
+            "crimson_cavern",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "meat",
+            "1",
+            "crystal",
+            "1",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.89395809173584,
+          "prob": 0.2560368478298187,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_70",
+            "coords",
+            "amethyst_abyss",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "meat",
+            "1",
+            "crystal",
+            "1",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.438558578491211,
+          "prob": 0.16237714886665344,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_43",
+            "coords",
+            "amethyst_abyss",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "crystal",
+            "2",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.356396675109863,
+          "prob": 0.1495693027973175,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_17",
+            "coords",
+            "golden_grotto",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "milk",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 12.296660423278809,
+          "prob": 0.14089621603488922,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_17",
+            "coords",
+            "amethyst_abyss",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "milk",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.081496238708496,
+      "chosen_prob": 0.34483835101127625,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.081496238708496,
+          "prob": 0.34483835101127625,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 14.078653335571289,
+          "prob": 0.34385940432548523,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.25767290592193604,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036014556884766,
+          "prob": 0.04459376260638237,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439583778381348,
+          "prob": 0.00903551746159792,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.635191917419434,
+      "chosen_prob": 0.2686934471130371,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.635191917419434,
+          "prob": 0.2686934471130371,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595109939575195,
+          "prob": 0.2581366300582886,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696808516979218,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620185256004333,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935941696166992,
+      "chosen_prob": 0.5161529779434204,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935941696166992,
+          "prob": 0.5161529779434204,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871307373046875,
+          "prob": 0.483847051858902,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 18.50143814086914,
+      "chosen_prob": 0.9672334790229797,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 18.50143814086914,
+          "prob": 0.9672334790229797,
+          "tokens": [
+            "play_dragon",
+            "hand",
+            "any"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 14.078651428222656,
+          "prob": 0.011607520282268524,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.992607116699219,
+          "prob": 0.010650522075593472,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.79011058807373,
+          "prob": 0.008698167279362679,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 12.036014556884766,
+          "prob": 0.001505336258560419,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 12.438559532165527,
+      "chosen_prob": 0.3585731089115143,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 12.438559532165527,
+          "prob": 0.3585731089115143,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_43",
+            "coords",
+            "amethyst_abyss",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "crystal",
+            "2",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.35639762878418,
+          "prob": 0.33028990030288696,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_17",
+            "coords",
+            "golden_grotto",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "milk",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.296660423278809,
+          "prob": 0.31113702058792114,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_17",
+            "coords",
+            "amethyst_abyss",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "milk",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 14.07865047454834,
+      "chosen_prob": 0.35424914956092834,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 14.07865047454834,
+          "prob": 0.35424914956092834,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.992605209350586,
+          "prob": 0.3250422775745392,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790109634399414,
+          "prob": 0.2654587924480438,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036012649536133,
+          "prob": 0.04594121500849724,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439582824707031,
+          "prob": 0.009308545850217342,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 14.010836601257324,
+      "chosen_prob": 0.4478550851345062,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 14.010836601257324,
+          "prob": 0.4478550851345062,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_59"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.29107019305229187,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.864943504333496,
+          "prob": 0.14239099621772766,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_123"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.682828903198242,
+          "prob": 0.11868370324373245,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_112"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.992605209350586,
+      "chosen_prob": 0.3360324501991272,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.992605209350586,
+          "prob": 0.3360324501991272,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.981782913208008,
+          "prob": 0.3324154317378998,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790109634399414,
+          "prob": 0.274434357881546,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036012649536133,
+          "prob": 0.047494564205408096,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439582824707031,
+          "prob": 0.009623282589018345,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.456006050109863,
+      "chosen_prob": 0.5032646059989929,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.456006050109863,
+          "prob": 0.5032646059989929,
+          "tokens": [
+            "make_payment",
+            "cost_start",
+            "egg",
+            "crimson_cavern",
+            "col_0",
+            "cost_end",
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.442947387695312,
+          "prob": 0.4967353343963623,
+          "tokens": [
+            "make_payment",
+            "cost_start",
+            "egg",
+            "mat_slots",
+            "col_0",
+            "cost_end",
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 18.50143814086914,
+      "chosen_prob": 0.9787060618400574,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 18.50143814086914,
+          "prob": 0.9787060618400574,
+          "tokens": [
+            "play_dragon",
+            "hand",
+            "any"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.981783866882324,
+          "prob": 0.010660838335752487,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.008801346644759178,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036014556884766,
+          "prob": 0.0015231914585456252,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439583778381348,
+          "prob": 0.00030862665153108537,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 12.356398582458496,
+      "chosen_prob": 1.0,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 12.356398582458496,
+          "prob": 1.0,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_17",
+            "coords",
+            "golden_grotto",
+            "col_0",
+            "adv_effects_end",
+            "cost_start",
+            "milk",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.8328275680542,
+      "chosen_prob": 0.9826139807701111,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.8328275680542,
+          "prob": 0.9826139807701111,
+          "tokens": [
+            "opr_option",
+            "dragon_70",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.798276901245117,
+          "prob": 0.01738600619137287,
+          "tokens": [
+            "skip_opr"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935940742492676,
+      "chosen_prob": 0.3602577745914459,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935940742492676,
+          "prob": 0.3602577745914459,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871307373046875,
+          "prob": 0.3377096354961395,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.759655952453613,
+          "prob": 0.30203261971473694,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.081496238708496,
+      "chosen_prob": 0.34483835101127625,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.081496238708496,
+          "prob": 0.34483835101127625,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 14.078653335571289,
+          "prob": 0.34385940432548523,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.25767290592193604,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036014556884766,
+          "prob": 0.04459376260638237,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439583778381348,
+          "prob": 0.00903551746159792,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.635191917419434,
+      "chosen_prob": 0.26869335770606995,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.635191917419434,
+          "prob": 0.26869335770606995,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581368386745453,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.2369680255651474,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620179295539856,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 3,
+      "chosen_logit": 13.579931259155273,
+      "chosen_prob": 0.3093349039554596,
+      "top_actions": [
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.3093349039554596,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.427517890930176,
+          "prob": 0.26560524106025696,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_93"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.319705963134766,
+          "prob": 0.23845945298671722,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_85"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.07447624206543,
+          "prob": 0.1866004317998886,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_130"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 14.078651428222656,
+      "chosen_prob": 0.354248970746994,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 14.078651428222656,
+          "prob": 0.354248970746994,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.992607116699219,
+          "prob": 0.32504239678382874,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.2654589116573334,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.03601360321045,
+          "prob": 0.04594118893146515,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439584732055664,
+          "prob": 0.009308550506830215,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 3,
+      "chosen_logit": 13.579931259155273,
+      "chosen_prob": 0.3093346953392029,
+      "top_actions": [
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.3093346953392029,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.427518844604492,
+          "prob": 0.2656053304672241,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_93"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.319707870483398,
+          "prob": 0.23845969140529633,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_85"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.07447624206543,
+          "prob": 0.18660029768943787,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_130"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.738502502441406,
+      "chosen_prob": 0.27367833256721497,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.738502502441406,
+          "prob": 0.27367833256721497,
+          "tokens": [
+            "gain_cave",
+            "display_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.70605754852295,
+          "prob": 0.26494136452674866,
+          "tokens": [
+            "gain_cave",
+            "display_1"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.607514381408691,
+          "prob": 0.24007834494113922,
+          "tokens": [
+            "gain_cave",
+            "display_2"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.526077270507812,
+          "prob": 0.22130198776721954,
+          "tokens": [
+            "random_start",
+            "gain_cave",
+            "cave_deck",
+            "random_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.992605209350586,
+      "chosen_prob": 0.33603253960609436,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.992605209350586,
+          "prob": 0.33603253960609436,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.981781959533691,
+          "prob": 0.3324151933193207,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.790109634399414,
+          "prob": 0.2744344174861908,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.03601360321045,
+          "prob": 0.047494612634181976,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439582824707031,
+          "prob": 0.009623284451663494,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.2686934471130371,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.2686934471130371,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581366300582886,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509547233581543,
+          "prob": 0.23696808516979218,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506308555603027,
+          "prob": 0.23620185256004333,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.790111541748047,
+      "chosen_prob": 0.827725887298584,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.827725887298584,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.036014556884766,
+          "prob": 0.14324910938739777,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 10.439584732055664,
+          "prob": 0.029024936258792877,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 3,
+      "chosen_logit": 13.963399887084961,
+      "chosen_prob": 0.1987825632095337,
+      "top_actions": [
+        {
+          "action_index": 3,
+          "logit": 13.963399887084961,
+          "prob": 0.1987825632095337,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_35",
+            "crimson_cavern",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.962061882019043,
+          "prob": 0.19851675629615784,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_22",
+            "crimson_cavern",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.795827865600586,
+          "prob": 0.16811352968215942,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_22",
+            "golden_grotto",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 13.73287582397461,
+          "prob": 0.15785667300224304,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_35",
+            "golden_grotto",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.607124328613281,
+          "prob": 0.13920336961746216,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_22",
+            "amethyst_abyss",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 18.501440048217773,
+      "chosen_prob": 0.9892522692680359,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 18.501440048217773,
+          "prob": 0.9892522692680359,
+          "tokens": [
+            "play_dragon",
+            "hand",
+            "any"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.79011058807373,
+          "prob": 0.008896161802113056,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036014556884766,
+          "prob": 0.001539601944386959,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439584732055664,
+          "prob": 0.00031195199699141085,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.128414154052734,
+      "chosen_prob": 0.678432285785675,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.128414154052734,
+          "prob": 0.678432285785675,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_59",
+            "coords",
+            "crimson_cavern",
+            "col_1",
+            "adv_effects_end",
+            "cost_start",
+            "meat",
+            "2",
+            "gold",
+            "1",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.381837844848633,
+          "prob": 0.32156774401664734,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_146",
+            "coords",
+            "crimson_cavern",
+            "col_1",
+            "adv_effects_end",
+            "cost_start",
+            "meat",
+            "2",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.790111541748047,
+      "chosen_prob": 0.827725887298584,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.790111541748047,
+          "prob": 0.827725887298584,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.036014556884766,
+          "prob": 0.14324910938739777,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 10.439584732055664,
+          "prob": 0.029024936258792877,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.795827865600586,
+      "chosen_prob": 0.547036349773407,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.795827865600586,
+          "prob": 0.547036349773407,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_22",
+            "golden_grotto",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.607124328613281,
+          "prob": 0.45296359062194824,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_22",
+            "amethyst_abyss",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.953352928161621,
+      "chosen_prob": 0.3803419768810272,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.953352928161621,
+          "prob": 0.3803419768810272,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_86"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.2618178725242615,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.49477767944336,
+          "prob": 0.24044600129127502,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_173"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.77781867980957,
+          "prob": 0.1173940971493721,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_80"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 4,
+      "chosen_logit": 15.254934310913086,
+      "chosen_prob": 0.9661825895309448,
+      "top_actions": [
+        {
+          "action_index": 4,
+          "logit": 15.254934310913086,
+          "prob": 0.9661825895309448,
+          "tokens": [
+            "brown_space_5"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.583895683288574,
+          "prob": 0.009045924060046673,
+          "tokens": [
+            "brown_space_4"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 10.565285682678223,
+          "prob": 0.00887913629412651,
+          "tokens": [
+            "brown_space_2"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 10.504228591918945,
+          "prob": 0.0083532202988863,
+          "tokens": [
+            "brown_space_3"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.401683807373047,
+          "prob": 0.007539096754044294,
+          "tokens": [
+            "brown_space_1"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.832825660705566,
+      "chosen_prob": 0.9826139807701111,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.832825660705566,
+          "prob": 0.9826139807701111,
+          "tokens": [
+            "opr_option",
+            "dragon_70",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.798276901245117,
+          "prob": 0.017386041581630707,
+          "tokens": [
+            "skip_opr"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935943603515625,
+      "chosen_prob": 0.2654062807559967,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935943603515625,
+          "prob": 0.2654062807559967,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927934646606445,
+          "prob": 0.2632891535758972,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871307373046875,
+          "prob": 0.2487940937280655,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.2225104719400406,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 14.081496238708496,
+      "chosen_prob": 0.4645369350910187,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 14.081496238708496,
+          "prob": 0.4645369350910187,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 14.078653335571289,
+          "prob": 0.46321818232536316,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036014556884766,
+          "prob": 0.06007293239235878,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439584732055664,
+          "prob": 0.012171894311904907,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935941696166992,
+      "chosen_prob": 0.2654061019420624,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935941696166992,
+          "prob": 0.2654061019420624,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927933692932129,
+          "prob": 0.263289213180542,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871305465698242,
+          "prob": 0.24879392981529236,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.22251074016094208,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.07865047454834,
+      "chosen_prob": 0.482272207736969,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.07865047454834,
+          "prob": 0.482272207736969,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.992607116699219,
+          "prob": 0.4425109624862671,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036014556884766,
+          "prob": 0.06254415214061737,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439584732055664,
+          "prob": 0.012672609649598598,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.987092018127441,
+      "chosen_prob": 0.47585752606391907,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.987092018127441,
+          "prob": 0.47585752606391907,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_39"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.31670090556144714,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.505804061889648,
+          "prob": 0.10818368196487427,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_18"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.419694900512695,
+          "prob": 0.09925788640975952,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_139"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 14.265096664428711,
+      "chosen_prob": 0.9712510704994202,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 14.265096664428711,
+          "prob": 0.9712510704994202,
+          "tokens": [
+            "cache_from",
+            "milk",
+            "player_supply",
+            "here",
+            "crystal",
+            "2",
+            "coords",
+            "golden_grotto",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 10.745111465454102,
+          "prob": 0.02874891087412834,
+          "tokens": [
+            "skip"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.992605209350586,
+      "chosen_prob": 0.463131844997406,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.992605209350586,
+          "prob": 0.463131844997406,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.981781959533691,
+          "prob": 0.45814627408981323,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036012649536133,
+          "prob": 0.06545869261026382,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439582824707031,
+          "prob": 0.013263149186968803,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 3,
+      "chosen_logit": 13.579931259155273,
+      "chosen_prob": 0.47563084959983826,
+      "top_actions": [
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.47563084959983826,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.77577018737793,
+          "prob": 0.21282729506492615,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_69"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.505804061889648,
+          "prob": 0.16247348487377167,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_18"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.419694900512695,
+          "prob": 0.1490684598684311,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_139"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.635191917419434,
+      "chosen_prob": 0.26869329810142517,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.635191917419434,
+          "prob": 0.26869329810142517,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367790699005,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509547233581543,
+          "prob": 0.23696815967559814,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.981783866882324,
+      "chosen_prob": 0.8533685207366943,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.981783866882324,
+          "prob": 0.8533685207366943,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.036014556884766,
+          "prob": 0.12192695587873459,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 10.439582824707031,
+          "prob": 0.024704625830054283,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 3,
+      "chosen_logit": 13.579931259155273,
+      "chosen_prob": 0.47563084959983826,
+      "top_actions": [
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.47563084959983826,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.77577018737793,
+          "prob": 0.21282729506492615,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_69"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.505804061889648,
+          "prob": 0.16247348487377167,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_18"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.419694900512695,
+          "prob": 0.1490684598684311,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_139"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 14.320701599121094,
+      "chosen_prob": 0.5066083073616028,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 14.320701599121094,
+          "prob": 0.5066083073616028,
+          "tokens": [
+            "cache_from",
+            "milk",
+            "player_supply",
+            "here",
+            "gold",
+            "1",
+            "crystal",
+            "1",
+            "coords",
+            "golden_grotto",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 14.265096664428711,
+          "prob": 0.47920721769332886,
+          "tokens": [
+            "cache_from",
+            "milk",
+            "player_supply",
+            "here",
+            "crystal",
+            "2",
+            "coords",
+            "golden_grotto",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 10.745111465454102,
+          "prob": 0.014184474013745785,
+          "tokens": [
+            "skip"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 50,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 12.036014556884766,
+      "chosen_prob": 0.831518828868866,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 12.036014556884766,
+          "prob": 0.831518828868866,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 10.439584732055664,
+          "prob": 0.16848118603229523,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 51,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.738502502441406,
+      "chosen_prob": 0.2736782431602478,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.738502502441406,
+          "prob": 0.2736782431602478,
+          "tokens": [
+            "gain_cave",
+            "display_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.706058502197266,
+          "prob": 0.2649415135383606,
+          "tokens": [
+            "gain_cave",
+            "display_1"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.607514381408691,
+          "prob": 0.24007828533649445,
+          "tokens": [
+            "gain_cave",
+            "display_2"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.526077270507812,
+          "prob": 0.22130192816257477,
+          "tokens": [
+            "random_start",
+            "gain_cave",
+            "cave_deck",
+            "random_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 52,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 18.501440048217773,
+      "chosen_prob": 0.9894373416900635,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 18.501440048217773,
+          "prob": 0.9894373416900635,
+          "tokens": [
+            "play_dragon",
+            "hand",
+            "any"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.79011058807373,
+          "prob": 0.008897826075553894,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 11.906482696533203,
+          "prob": 0.0013528034323826432,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439583778381348,
+          "prob": 0.00031201005913317204,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 53,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 12.44233512878418,
+      "chosen_prob": 1.0,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 12.44233512878418,
+          "prob": 1.0,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_16",
+            "coords",
+            "golden_grotto",
+            "col_1",
+            "adv_effects_end",
+            "cost_start",
+            "milk",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 54,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.790109634399414,
+      "chosen_prob": 0.9661220908164978,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.790109634399414,
+          "prob": 0.9661220908164978,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 10.439584732055664,
+          "prob": 0.03387797996401787,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 55,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.636083602905273,
+      "chosen_prob": 1.0,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.636083602905273,
+          "prob": 1.0,
+          "tokens": [
+            "adv_effects_start",
+            "play_cave",
+            "hand",
+            "cave_33",
+            "amethyst_abyss",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 56,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.832825660705566,
+      "chosen_prob": 0.9826139807701111,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.832825660705566,
+          "prob": 0.9826139807701111,
+          "tokens": [
+            "opr_option",
+            "dragon_70",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.7982759475708,
+          "prob": 0.017386024817824364,
+          "tokens": [
+            "skip_opr"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 57,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 12.619108200073242,
+      "chosen_prob": 0.5019502639770508,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 12.619108200073242,
+          "prob": 0.5019502639770508,
+          "tokens": [
+            "make_payment",
+            "cost_start",
+            "crystal",
+            "1",
+            "cost_end",
+            "adv_effects_start",
+            "lay_egg",
+            "any",
+            "adv_effects_end",
+            "cost_start",
+            "any_resource",
+            "1",
+            "cost_end",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.611307144165039,
+          "prob": 0.4980497658252716,
+          "tokens": [
+            "make_payment",
+            "cost_start",
+            "gold",
+            "1",
+            "cost_end",
+            "adv_effects_start",
+            "lay_egg",
+            "any",
+            "adv_effects_end",
+            "cost_start",
+            "any_resource",
+            "1",
+            "cost_end",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 58,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935941696166992,
+      "chosen_prob": 0.2654061019420624,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935941696166992,
+          "prob": 0.2654061019420624,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927933692932129,
+          "prob": 0.263289213180542,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871305465698242,
+          "prob": 0.24879392981529236,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.22251074016094208,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 59,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 12.619109153747559,
+      "chosen_prob": 0.5019505023956299,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 12.619109153747559,
+          "prob": 0.5019505023956299,
+          "tokens": [
+            "make_payment",
+            "cost_start",
+            "crystal",
+            "1",
+            "cost_end",
+            "adv_effects_start",
+            "lay_egg",
+            "any",
+            "adv_effects_end",
+            "cost_start",
+            "any_resource",
+            "1",
+            "cost_end",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 12.611307144165039,
+          "prob": 0.4980495274066925,
+          "tokens": [
+            "make_payment",
+            "cost_start",
+            "gold",
+            "1",
+            "cost_end",
+            "adv_effects_start",
+            "lay_egg",
+            "any",
+            "adv_effects_end",
+            "cost_start",
+            "any_resource",
+            "1",
+            "cost_end",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 60,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935940742492676,
+      "chosen_prob": 0.2654061019420624,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935940742492676,
+          "prob": 0.2654061019420624,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927932739257812,
+          "prob": 0.263289213180542,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871304512023926,
+          "prob": 0.24879392981529236,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759654998779297,
+          "prob": 0.22251074016094208,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 61,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935941696166992,
+      "chosen_prob": 0.2654060423374176,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935941696166992,
+          "prob": 0.2654060423374176,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927934646606445,
+          "prob": 0.2632894217967987,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871305465698242,
+          "prob": 0.24879387021064758,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.2225106805562973,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 62,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 14.08149528503418,
+      "chosen_prob": 0.4645371437072754,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 14.08149528503418,
+          "prob": 0.4645371437072754,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 14.078651428222656,
+          "prob": 0.46321791410446167,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036014556884766,
+          "prob": 0.06007302179932594,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439582824707031,
+          "prob": 0.01217188686132431,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 63,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 64,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 15.254935264587402,
+      "chosen_prob": 0.9838176965713501,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 15.254935264587402,
+          "prob": 0.9838176965713501,
+          "tokens": [
+            "brown_space_5"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 10.504228591918945,
+          "prob": 0.008505677804350853,
+          "tokens": [
+            "brown_space_3"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.401683807373047,
+          "prob": 0.007676695007830858,
+          "tokens": [
+            "brown_space_1"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 65,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 66,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 18.501440048217773,
+      "chosen_prob": 0.9757204055786133,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 18.501440048217773,
+          "prob": 0.9757204055786133,
+          "tokens": [
+            "play_dragon",
+            "hand",
+            "any"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 14.078651428222656,
+          "prob": 0.011709347367286682,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.992607116699219,
+          "prob": 0.010743954218924046,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036014556884766,
+          "prob": 0.0015185419470071793,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439583778381348,
+          "prob": 0.0003076845605392009,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 67,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 12.429672241210938,
+      "chosen_prob": 1.0,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 12.429672241210938,
+          "prob": 1.0,
+          "tokens": [
+            "adv_effects_start",
+            "play_dragon",
+            "hand",
+            "any",
+            "none",
+            "dragon_79",
+            "coords",
+            "amethyst_abyss",
+            "col_1",
+            "adv_effects_end",
+            "cost_start",
+            "gold",
+            "1",
+            "crystal",
+            "1",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 68,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.078651428222656,
+      "chosen_prob": 0.4822724759578705,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.078651428222656,
+          "prob": 0.4822724759578705,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.992607116699219,
+          "prob": 0.44251081347465515,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036014556884766,
+          "prob": 0.06254412233829498,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439584732055664,
+          "prob": 0.0126726059243083,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 69,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.019439697265625,
+      "chosen_prob": 0.4308307468891144,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.019439697265625,
+          "prob": 0.4308307468891144,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_131"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.27760711312294006,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.247081756591797,
+          "prob": 0.1990104615688324,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_99"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.481491088867188,
+          "prob": 0.09255163371562958,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_19"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 70,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935941696166992,
+      "chosen_prob": 0.21674342453479767,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935941696166992,
+          "prob": 0.21674342453479767,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927934646606445,
+          "prob": 0.21501488983631134,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871305465698242,
+          "prob": 0.20317712426185608,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 13.768632888793945,
+          "prob": 0.18335159122943878,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.18171299993991852,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 71,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.579931259155273,
+      "chosen_prob": 0.487741082906723,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.579931259155273,
+          "prob": 0.487741082906723,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.24708080291748,
+          "prob": 0.3496505320072174,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_99"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.481491088867188,
+          "prob": 0.162608340382576,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_19"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 72,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.992605209350586,
+      "chosen_prob": 0.463131844997406,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.992605209350586,
+          "prob": 0.463131844997406,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.981781959533691,
+          "prob": 0.45814627408981323,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036012649536133,
+          "prob": 0.06545869261026382,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439582824707031,
+          "prob": 0.013263149186968803,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 73,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 74,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.63519287109375,
+      "chosen_prob": 0.26869356632232666,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.63519287109375,
+          "prob": 0.26869356632232666,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581367492675781,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696796596050262,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620173335075378,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 75,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.981783866882324,
+      "chosen_prob": 0.4648372232913971,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.981783866882324,
+          "prob": 0.4648372232913971,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "1",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.961033821105957,
+          "prob": 0.4552912414073944,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "2",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.036014556884766,
+          "prob": 0.06641467660665512,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 10.439583778381348,
+          "prob": 0.013456836342811584,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 76,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.985092163085938,
+      "chosen_prob": 0.4397525489330292,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.985092163085938,
+          "prob": 0.4397525489330292,
+          "tokens": [
+            "gain_dragon",
+            "display_0",
+            "dragon_181"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.579931259155273,
+          "prob": 0.29325756430625916,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.030082702636719,
+          "prob": 0.16922050714492798,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_24"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 12.481491088867188,
+          "prob": 0.0977693498134613,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_19"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 77,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 14.310343742370605,
+      "chosen_prob": 0.5040191411972046,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 14.310343742370605,
+          "prob": 0.5040191411972046,
+          "tokens": [
+            "cache_from",
+            "milk",
+            "player_supply",
+            "here",
+            "meat",
+            "1",
+            "crystal",
+            "1",
+            "coords",
+            "golden_grotto",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 14.265096664428711,
+          "prob": 0.481721967458725,
+          "tokens": [
+            "cache_from",
+            "milk",
+            "player_supply",
+            "here",
+            "crystal",
+            "2",
+            "coords",
+            "golden_grotto",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 10.745111465454102,
+          "prob": 0.014258909039199352,
+          "tokens": [
+            "skip"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 78,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.579933166503906,
+      "chosen_prob": 0.5234432220458984,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.579933166503906,
+          "prob": 0.5234432220458984,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.030083656311035,
+          "prob": 0.30204588174819946,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_24"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.481492042541504,
+          "prob": 0.1745109260082245,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_19"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 79,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 14.10319709777832,
+      "chosen_prob": 0.9663686156272888,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 14.10319709777832,
+          "prob": 0.9663686156272888,
+          "tokens": [
+            "cache_from",
+            "meat",
+            "player_supply",
+            "here",
+            "crystal",
+            "2",
+            "coords",
+            "golden_grotto",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 10.745111465454102,
+          "prob": 0.03363138809800148,
+          "tokens": [
+            "skip"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 80,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.738502502441406,
+      "chosen_prob": 0.2736785113811493,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.738502502441406,
+          "prob": 0.2736785113811493,
+          "tokens": [
+            "gain_cave",
+            "display_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.706056594848633,
+          "prob": 0.2649413049221039,
+          "tokens": [
+            "gain_cave",
+            "display_1"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.607513427734375,
+          "prob": 0.24007830023765564,
+          "tokens": [
+            "gain_cave",
+            "display_2"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.526076316833496,
+          "prob": 0.22130192816257477,
+          "tokens": [
+            "random_start",
+            "gain_cave",
+            "cave_deck",
+            "random_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 81,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.579933166503906,
+      "chosen_prob": 0.5234432816505432,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.579933166503906,
+          "prob": 0.5234432816505432,
+          "tokens": [
+            "random_start",
+            "gain_dragon",
+            "dragon_deck",
+            "random_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.030083656311035,
+          "prob": 0.30204594135284424,
+          "tokens": [
+            "gain_dragon",
+            "display_1",
+            "dragon_24"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 12.481491088867188,
+          "prob": 0.17451079189777374,
+          "tokens": [
+            "gain_dragon",
+            "display_2",
+            "dragon_19"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 82,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 14.190544128417969,
+      "chosen_prob": 0.14565898478031158,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 14.190544128417969,
+          "prob": 0.14565898478031158,
+          "tokens": [
+            "discard_dragon",
+            "dragon_39"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 14.180801391601562,
+          "prob": 0.14424675703048706,
+          "tokens": [
+            "discard_dragon",
+            "dragon_131"
+          ]
+        },
+        {
+          "action_index": 6,
+          "logit": 13.957436561584473,
+          "prob": 0.11537186801433563,
+          "tokens": [
+            "discard_dragon",
+            "dragon_181"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.945207595825195,
+          "prob": 0.113969586789608,
+          "tokens": [
+            "discard_dragon",
+            "dragon_86"
+          ]
+        },
+        {
+          "action_index": 9,
+          "logit": 13.871940612792969,
+          "prob": 0.10591793060302734,
+          "tokens": [
+            "discard_cave",
+            "cave_6"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 83,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.96103286743164,
+      "chosen_prob": 0.33189907670021057,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.96103286743164,
+          "prob": 0.33189907670021057,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "crimson_cavern",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "2",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.955665588378906,
+          "prob": 0.3301224708557129,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "golden_grotto",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "egg",
+            "2",
+            "any",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.79011058807373,
+          "prob": 0.2797534465789795,
+          "tokens": [
+            "play_cave",
+            "hand"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 12.036014556884766,
+          "prob": 0.04841514304280281,
+          "tokens": [
+            "adv_effects_start",
+            "explore",
+            "amethyst_abyss",
+            "explore_0",
+            "adv_effects_end",
+            "cost_start",
+            "coin",
+            "1",
+            "cost_end"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 10.439583778381348,
+          "prob": 0.009809799492359161,
+          "tokens": [
+            "pass"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 84,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.635190963745117,
+      "chosen_prob": 0.2686932384967804,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.635190963745117,
+          "prob": 0.2686932384967804,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595109939575195,
+          "prob": 0.25813671946525574,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.23696811497211456,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.2362019121646881,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 85,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 0,
+      "chosen_logit": 13.738502502441406,
+      "chosen_prob": 0.2736785113811493,
+      "top_actions": [
+        {
+          "action_index": 0,
+          "logit": 13.738502502441406,
+          "prob": 0.2736785113811493,
+          "tokens": [
+            "gain_cave",
+            "display_0"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.706056594848633,
+          "prob": 0.2649413049221039,
+          "tokens": [
+            "gain_cave",
+            "display_1"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.607513427734375,
+          "prob": 0.24007830023765564,
+          "tokens": [
+            "gain_cave",
+            "display_2"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.526076316833496,
+          "prob": 0.22130192816257477,
+          "tokens": [
+            "random_start",
+            "gain_cave",
+            "cave_deck",
+            "random_end"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 86,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 2,
+      "chosen_logit": 13.635191917419434,
+      "chosen_prob": 0.26869335770606995,
+      "top_actions": [
+        {
+          "action_index": 2,
+          "logit": 13.635191917419434,
+          "prob": 0.26869335770606995,
+          "tokens": [
+            "gain_resource",
+            "crystal"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.595110893249512,
+          "prob": 0.2581368386745453,
+          "tokens": [
+            "gain_resource",
+            "gold"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.509546279907227,
+          "prob": 0.2369680255651474,
+          "tokens": [
+            "gain_resource",
+            "meat"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.506307601928711,
+          "prob": 0.23620179295539856,
+          "tokens": [
+            "gain_resource",
+            "milk"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 87,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 3,
+      "chosen_logit": 14.18079948425293,
+      "chosen_prob": 0.14690305292606354,
+      "top_actions": [
+        {
+          "action_index": 3,
+          "logit": 14.18079948425293,
+          "prob": 0.14690305292606354,
+          "tokens": [
+            "discard_dragon",
+            "dragon_131"
+          ]
+        },
+        {
+          "action_index": 9,
+          "logit": 14.057989120483398,
+          "prob": 0.1299256682395935,
+          "tokens": [
+            "discard_cave",
+            "cave_62"
+          ]
+        },
+        {
+          "action_index": 5,
+          "logit": 13.957436561584473,
+          "prob": 0.11749666929244995,
+          "tokens": [
+            "discard_dragon",
+            "dragon_181"
+          ]
+        },
+        {
+          "action_index": 1,
+          "logit": 13.945205688476562,
+          "prob": 0.11606832593679428,
+          "tokens": [
+            "discard_dragon",
+            "dragon_86"
+          ]
+        },
+        {
+          "action_index": 8,
+          "logit": 13.871938705444336,
+          "prob": 0.10786841064691544,
+          "tokens": [
+            "discard_cave",
+            "cave_6"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 88,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 14.832828521728516,
+      "chosen_prob": 0.6999670267105103,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 14.832828521728516,
+          "prob": 0.6999670267105103,
+          "tokens": [
+            "opr_option",
+            "dragon_70",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.943532943725586,
+          "prob": 0.2876480519771576,
+          "tokens": [
+            "opr_option",
+            "dragon_79",
+            "coords",
+            "amethyst_abyss",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.798276901245117,
+          "prob": 0.012384945526719093,
+          "tokens": [
+            "skip_opr"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 89,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935941696166992,
+      "chosen_prob": 0.21674342453479767,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935941696166992,
+          "prob": 0.21674342453479767,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927933692932129,
+          "prob": 0.21501466631889343,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871305465698242,
+          "prob": 0.20317712426185608,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 13.768633842468262,
+          "prob": 0.18335175514221191,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.18171299993991852,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 90,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.935943603515625,
+      "chosen_prob": 0.2167435884475708,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.935943603515625,
+          "prob": 0.2167435884475708,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 2,
+          "logit": 13.927935600280762,
+          "prob": 0.21501483023166656,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "crimson_cavern",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 13.871306419372559,
+          "prob": 0.2031770646572113,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "mat_slots",
+            "col_0"
+          ]
+        },
+        {
+          "action_index": 4,
+          "logit": 13.768634796142578,
+          "prob": 0.18335172533988953,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 3,
+          "logit": 13.759655952453613,
+          "prob": 0.1817127913236618,
+          "tokens": [
+            "lay_egg",
+            "here",
+            "coords",
+            "amethyst_abyss",
+            "col_0"
+          ]
+        }
+      ]
+    },
+    {
+      "step": 91,
+      "state_value": -0.39281120896339417,
+      "chosen_action": 1,
+      "chosen_logit": 13.943533897399902,
+      "chosen_prob": 0.958721399307251,
+      "top_actions": [
+        {
+          "action_index": 1,
+          "logit": 13.943533897399902,
+          "prob": 0.958721399307251,
+          "tokens": [
+            "opr_option",
+            "dragon_79",
+            "coords",
+            "amethyst_abyss",
+            "col_1"
+          ]
+        },
+        {
+          "action_index": 0,
+          "logit": 10.798276901245117,
+          "prob": 0.041278570890426636,
+          "tokens": [
+            "skip_opr"
+          ]
+        }
+      ]
+    }
+  ]
+}

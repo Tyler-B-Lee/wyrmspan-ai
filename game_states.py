@@ -2,6 +2,7 @@ import collections
 import copy
 import json
 import random
+from pathlib import Path
 import typing
 import logging
 import numpy as np
@@ -110,15 +111,17 @@ EXPLORE_CAVE_EFFECTS = {
 }
 
 # load the game data saved in multiple json files
-with open('data/dragon_cards.json', 'r') as f:
+DATA_DIR = Path(__file__).resolve().parent / 'data'
+
+with open(DATA_DIR / 'dragon_cards.json', 'r') as f:
     DRAGON_CARDS:list[dict] = json.load(f)
-with open('data/cave_cards.json', 'r') as f:
+with open(DATA_DIR / 'cave_cards.json', 'r') as f:
     CAVE_CARDS:list[dict] = json.load(f)
-with open('data/guild_tiles.json', 'r') as f:
+with open(DATA_DIR / 'guild_tiles.json', 'r') as f:
     GUILD_TILES:list[dict] = json.load(f)
-with open('data/objective_tiles.json', 'r') as f:
+with open(DATA_DIR / 'objective_tiles.json', 'r') as f:
     OBJECTIVE_TILES:list[dict] = json.load(f)
-with open('data/automa_cards.json', 'r') as f:
+with open(DATA_DIR / 'automa_cards.json', 'r') as f:
     AUTOMA_CARDS:list[dict] = json.load(f)
 
 

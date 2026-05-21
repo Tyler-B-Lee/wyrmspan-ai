@@ -112,7 +112,7 @@ class WyrmspanActionScorer(nn.Module):
         
         # Apply mask to scores if provided (set invalid actions to large negative value)
         if action_mask is not None:
-            scores = scores.masked_fill(~action_mask, -1e9)
+            scores = scores.masked_fill(~action_mask, torch.finfo(scores.dtype).min)
         
         return scores
 
@@ -164,11 +164,7 @@ class ActionSequenceEncoder(nn.Module):
         token_emb = token_emb + position_emb   # [batch*num_actions, max_tokens, action_emb_dim]
 
         valid_rows = flat_mask.any(dim=1)
-        output = torch.zeros(
-            (flat_seqs.shape[0], token_emb.shape[-1]),
-            device=token_emb.device,
-            dtype=token_emb.dtype,
-        )
+        output = token_emb.new_zeros((flat_seqs.shape[0], token_emb.shape[-1]))
 
         if valid_rows.any():
             valid_token_emb = token_emb[valid_rows]
@@ -184,7 +180,7 @@ class ActionSequenceEncoder(nn.Module):
 
             # Project if needed
             valid_output = self.output_proj(pooled)
-            output[valid_rows] = valid_output
+            output[valid_rows] = valid_output.to(output.dtype)
 
         return output.view(batch_size, num_actions, -1)  # [batch, num_actions, action_emb_dim]
 

@@ -1,4 +1,5 @@
 import argparse
+import gc
 import os
 import random
 import time
@@ -180,12 +181,12 @@ def evaluate_agent(model: WyrmspanAgent, device: torch.device, episodes: int, se
 
     while episode_count < episodes:
         obs_t = obs_to_torch(obs, device)
-        with torch.no_grad():
+        with torch.inference_mode():
             logits, _ = model.policy_value(obs_t)
             action_mask = obs_t["action_mask"].bool()
             if logits.shape != action_mask.shape:
                 raise RuntimeError(f"logits/action_mask shape mismatch in eval: {logits.shape} vs {action_mask.shape}")
-            masked_logits = logits.masked_fill(~action_mask, -1e9)
+            masked_logits = logits.masked_fill(~action_mask, torch.finfo(logits.dtype).min)
             actions = torch.argmax(masked_logits, dim=1)
 
         actions_np = actions.cpu().numpy()
@@ -291,6 +292,7 @@ class PPOConfig:
     max_grad_norm: float = 0.5
     target_kl: float = 0.03
     dropout: float = 0.0
+    use_amp: bool = True
     eval_interval: int = 20
     eval_episodes: int = 10
     save_interval: int = 50
@@ -305,6 +307,8 @@ def train(cfg: PPOConfig) -> None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     else:
         device = torch.device(cfg.device)
+
+    amp_enabled = bool(cfg.use_amp and device.type == "cuda")
 
     set_seed(cfg.seed)
 
@@ -324,6 +328,7 @@ def train(cfg: PPOConfig) -> None:
     ).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.learning_rate)
+    scaler = torch.amp.GradScaler("cuda", enabled=amp_enabled)
 
     batch_size = cfg.rollout_length * cfg.num_envs
     if batch_size % cfg.minibatch_size != 0:
@@ -336,6 +341,7 @@ def train(cfg: PPOConfig) -> None:
     episode_lengths = np.zeros(cfg.num_envs, dtype=np.int32)
     recent_returns: List[float] = []
     recent_lengths: List[int] = []
+    latest_eval_return: Optional[float] = None
 
     start_update = 1
 
@@ -373,8 +379,10 @@ def train(cfg: PPOConfig) -> None:
         for step in range(cfg.rollout_length):
             obs_t = obs_to_torch(obs, device)
 
-            with torch.no_grad():
+            with torch.inference_mode(), torch.autocast(device_type=device.type, dtype=torch.float16, enabled=amp_enabled):
                 logits, values = model.policy_value(obs_t)
+                logits = logits.float()
+                values = values.float()
                 if not torch.isfinite(logits).all():
                     raise RuntimeError("Non-finite logits detected during rollout collection")
                 if not torch.isfinite(values).all():
@@ -386,7 +394,7 @@ def train(cfg: PPOConfig) -> None:
                 if not torch.all(action_mask.any(dim=1)):
                     raise RuntimeError("No legal actions available for at least one env")
 
-                masked_logits = logits.masked_fill(~action_mask, -1e9)
+                masked_logits = logits.masked_fill(~action_mask, torch.finfo(logits.dtype).min)
                 dist = torch.distributions.Categorical(logits=masked_logits)
                 actions = dist.sample()
                 logprobs = dist.log_prob(actions)
@@ -407,6 +415,8 @@ def train(cfg: PPOConfig) -> None:
                 dones,
             )
 
+            del logits, values, masked_logits, dist, actions, logprobs
+
             episode_returns += rewards
             episode_lengths += 1
             for i, done in enumerate(dones):
@@ -420,7 +430,11 @@ def train(cfg: PPOConfig) -> None:
             obs = next_obs
             global_step += cfg.num_envs
 
-        with torch.no_grad():
+        del obs_t, next_obs
+        if device.type == "cuda":
+            torch.cuda.empty_cache()
+
+        with torch.inference_mode():
             next_obs_t = obs_to_torch(obs, device)
             _, next_values = model.policy_value(next_obs_t)
 
@@ -465,8 +479,10 @@ def train(cfg: PPOConfig) -> None:
                 mb_returns = flat_returns[mb_inds].to(device)
                 mb_advantages = flat_advantages[mb_inds].to(device)
 
-                logits, values = model.policy_value(mb_obs)
-                values = values.squeeze(-1)
+                with torch.autocast(device_type=device.type, dtype=torch.float16, enabled=amp_enabled):
+                    logits, values = model.policy_value(mb_obs)
+                logits = logits.float()
+                values = values.float().squeeze(-1)
                 if not torch.isfinite(logits).all():
                     raise RuntimeError("Non-finite logits detected during PPO update")
                 if not torch.isfinite(values).all():
@@ -478,7 +494,7 @@ def train(cfg: PPOConfig) -> None:
                 if not torch.all(action_mask.any(dim=1)):
                     raise RuntimeError("No legal actions available for at least one minibatch sample")
 
-                masked_logits = logits.masked_fill(~action_mask, -1e9)
+                masked_logits = logits.masked_fill(~action_mask, torch.finfo(logits.dtype).min)
                 logits_max.append(float(masked_logits.max().item()))
                 logits_min.append(float(masked_logits.min().item()))
 
@@ -497,10 +513,12 @@ def train(cfg: PPOConfig) -> None:
                 value_loss = 0.5 * F.mse_loss(values, mb_returns)
                 loss = policy_loss + cfg.vf_coef * value_loss - cfg.ent_coef * entropy
 
-                optimizer.zero_grad()
-                loss.backward()
+                optimizer.zero_grad(set_to_none=True)
+                scaler.scale(loss).backward()
+                scaler.unscale_(optimizer)
                 grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.max_grad_norm)
-                optimizer.step()
+                scaler.step(optimizer)
+                scaler.update()
 
                 policy_losses.append(float(policy_loss.item()))
                 value_losses.append(float(value_loss.item()))
@@ -515,6 +533,17 @@ def train(cfg: PPOConfig) -> None:
                 if cfg.target_kl is not None and approx_kl > cfg.target_kl:
                     print(f"\t> Early stopping at epoch {epoch + 1}, step {start} due to reaching target KL: {approx_kl:.4f} > {cfg.target_kl}")
                     break
+
+                del mb_obs, mb_actions, mb_logprobs, mb_returns, mb_advantages
+                del logits, values, masked_logits, dist, new_logprobs, entropy, ratio
+                del pg_loss_1, pg_loss_2, policy_loss, value_loss, loss
+                if device.type == "cuda":
+                    torch.cuda.empty_cache()
+
+            if device.type == "cuda":
+                torch.cuda.empty_cache()
+
+        gc.collect()
 
         avg_return = float(np.mean(recent_returns[-100:])) if recent_returns else 0.0
         avg_length = float(np.mean(recent_lengths[-100:])) if recent_lengths else 0.0
@@ -535,6 +564,7 @@ def train(cfg: PPOConfig) -> None:
             model.eval()
             eval_seed = random.randint(0, 100_000_000)
             agent_metrics = evaluate_agent(model, device, cfg.eval_episodes, seed=eval_seed, num_envs=8)
+            latest_eval_return = float(agent_metrics["return"])
             print(
                 "eval_agent "
                 f"win={agent_metrics['win_rate']:.2f} diff={agent_metrics['score_diff']:.2f} ret={agent_metrics['return']:.3f}"
@@ -559,7 +589,12 @@ def train(cfg: PPOConfig) -> None:
             model.train()
 
         if cfg.save_interval and update % cfg.save_interval == 0:
-            checkpoint_path = os.path.join(cfg.save_dir, f"ppo_update_{update}_{global_step}_eval_{agent_metrics['return']:.3f}.pt")
+            checkpoint_score = latest_eval_return if latest_eval_return is not None else avg_return
+            checkpoint_tag = "eval" if latest_eval_return is not None else "train"
+            checkpoint_path = os.path.join(
+                cfg.save_dir,
+                f"ppo_update_{update}_{global_step}_{checkpoint_tag}_{checkpoint_score:.3f}.pt",
+            )
             print(f"Saving checkpoint at update {update} to {checkpoint_path}...")
             torch.save(
                 {
@@ -594,6 +629,7 @@ def parse_args() -> PPOConfig:
     parser.add_argument("--save-interval", type=int, default=5)
     parser.add_argument("--save-dir", type=str, default="checkpoints/ppo")
     parser.add_argument("--device", type=str, default="auto")
+    parser.add_argument("--use-amp", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--resume", action="store_true", help="Resume from latest checkpoint in save-dir if available")
     parser.add_argument("--resume-path", type=str, default=None, help="Explicit checkpoint path to resume from")
     parser.add_argument("--dropout", type=float, default=0.1)
@@ -619,6 +655,7 @@ def parse_args() -> PPOConfig:
         eval_episodes=args.eval_episodes,
         save_interval=args.save_interval,
         save_dir=args.save_dir,
+        use_amp=args.use_amp,
         resume=args.resume,
         resume_path=args.resume_path,
         device=args.device,

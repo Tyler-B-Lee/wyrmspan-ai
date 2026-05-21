@@ -1,7 +1,10 @@
 import json
+from pathlib import Path
 import numpy as np
 import torch
 from sentence_transformers import SentenceTransformer
+
+DATA_DIR = Path(__file__).resolve().parent
 
 def load_model(model_name):
     try:
@@ -79,7 +82,7 @@ if __name__ == "__main__":
         print("Failed to load model")
 
     # create and save cave card embeddings
-    with open('data/cave_cards.json', 'r') as f:
+    with open(DATA_DIR / 'cave_cards.json', 'r') as f:
         cave_cards = json.load(f)
     
     strings= []
@@ -94,12 +97,12 @@ if __name__ == "__main__":
     embeddings_tensor = torch.cat((embeddings_tensor, vector_part), dim=1)
     
     print(f"Final cave embeddings shape: {embeddings_tensor.shape}")
-    torch.save(embeddings_tensor, 'data/cave_card_embeddings.pth')
+    torch.save(embeddings_tensor, DATA_DIR / 'cave_card_embeddings.pth')
 
     print(f"Similarities in first few embeddings: {model.similarity(embeddings_tensor[37:42], embeddings_tensor[37:42])}")
 
     # dragon card embeddings
-    with open('data/dragon_cards.json', 'r') as f:
+    with open(DATA_DIR / 'dragon_cards.json', 'r') as f:
         dragon_cards = json.load(f)
     
     strings= []
@@ -118,6 +121,6 @@ if __name__ == "__main__":
     embeddings_tensor = torch.cat((embeddings_tensor, all_vectors), dim=1)
     
     print(f"Final dragon embeddings shape: {embeddings_tensor.shape}")
-    torch.save(embeddings_tensor, 'data/dragon_card_embeddings.pth')
+    torch.save(embeddings_tensor, DATA_DIR / 'dragon_card_embeddings.pth')
 
     print(f"Similarities in first few embeddings: {model.similarity(embeddings_tensor[37:42], embeddings_tensor[37:42])}")
