@@ -400,19 +400,19 @@ def excavate_cave(player_state: PlayerState, game_state:GameState, event:dict, c
     else:
         new_event = cave_effect
     if index_to_excavate == 3:
-        # we must check if the player can do the 4th space exchange
-        if len(player_state.dragon_hand) + len(player_state.cave_hand) + sum(player_state.resources.values()) >= 3:
-            # add the cave effect to the event queue
-            logger.info("\tPlayer can perform the 4th space exchange")
-            new_event = {
-                "adv_effects": 
-                    {"choice": [
-                        {"adv_effects": {"sequence":[{"4th_space": True}, new_event]}},
-                        {"adv_effects": {"sequence":[new_event, {"4th_space": True}]}}
-                    ]}
-            }
-            game_state.event_queue.append(new_event)
-            return
+        # we will check for the 4th space in the "4th_space" effect itself, so no check here
+        # the player just gets to choose the order they want
+        # add the cave effect to the event queue
+        logger.info("\tPlayer can perform the 4th space exchange")
+        new_event = {
+            "adv_effects": 
+                {"choice": [
+                    {"adv_effects": {"sequence":[{"4th_space": True}, new_event]}},
+                    {"adv_effects": {"sequence":[new_event, {"4th_space": True}]}}
+                ]}
+        }
+        game_state.event_queue.append(new_event)
+        return
     # add the cave effect to the event queue
     game_state.event_queue.append(new_event)
 
@@ -3042,8 +3042,9 @@ def handle_gain_cave_card(game_state:GameState, full_event:dict, player:PlayerSt
         new_event = {"choice": []}
         for cave_index in range(3):
             # take a cave from the display
-            if game_state.board["card_display"]["cave_cards"][cave_index] is not None:
-                new_event["choice"].append({"gain_cave": {"chosen": cave_index}})
+            cave_id = game_state.board["card_display"]["cave_cards"][cave_index]
+            if cave_id is not None:
+                new_event["choice"].append({"gain_cave": {"chosen": cave_index, "chosen_id": cave_id}})
         # take a random cave from the deck
         deck_outcomes = {"random": {"gain_cave": {"possible_outcomes": "cave_deck"}}}
         # add the random cave to the choice
