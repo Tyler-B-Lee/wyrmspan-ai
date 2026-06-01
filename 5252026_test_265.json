@@ -1,0 +1,1047 @@
+{
+  "model_path": "checkpoints\\ppo\\ppo_update_265_3530240_eval_1.212.pt",
+  "device": "cpu",
+  "metric": "margin",
+  "threshold": 0.0,
+  "seeds": [
+    5212026,
+    5212027,
+    5212028,
+    5212029,
+    5212030,
+    5212031,
+    5212032,
+    5212033,
+    5212034,
+    5212035,
+    5212036,
+    5212037,
+    5212038,
+    5212039,
+    5212040,
+    5212041,
+    5212042,
+    5212043,
+    5212044,
+    5212045,
+    5212046,
+    5212047,
+    5212048,
+    5212049,
+    5212050,
+    5212051,
+    5212052,
+    5212053,
+    5212054,
+    5212055,
+    5212056,
+    5212057,
+    5212058,
+    5212059,
+    5212060,
+    5212061,
+    5212062,
+    5212063,
+    5212064,
+    5212065,
+    5212066,
+    5212067,
+    5212068,
+    5212069,
+    5212070,
+    5212071,
+    5212072,
+    5212073,
+    5212074,
+    5212075,
+    5212076,
+    5212077,
+    5212078,
+    5212079,
+    5212080,
+    5212081,
+    5212082,
+    5212083,
+    5212084,
+    5212085,
+    5212086,
+    5212087,
+    5212088,
+    5212089,
+    5212090,
+    5212091,
+    5212092,
+    5212093,
+    5212094,
+    5212095,
+    5212096,
+    5212097,
+    5212098,
+    5212099,
+    5212100,
+    5212101,
+    5212102,
+    5212103,
+    5212104,
+    5212105,
+    5212106,
+    5212107,
+    5212108,
+    5212109,
+    5212110,
+    5212111,
+    5212112,
+    5212113,
+    5212114,
+    5212115,
+    5212116,
+    5212117,
+    5212118,
+    5212119,
+    5212120,
+    5212121,
+    5212122,
+    5212123,
+    5212124,
+    5212125
+  ],
+  "positive_seeds": [
+    5212029,
+    5212032,
+    5212037,
+    5212040,
+    5212041,
+    5212042,
+    5212046,
+    5212047,
+    5212048,
+    5212057,
+    5212058,
+    5212063,
+    5212064,
+    5212066,
+    5212069,
+    5212070,
+    5212072,
+    5212073,
+    5212075,
+    5212082,
+    5212084,
+    5212086,
+    5212088,
+    5212092,
+    5212093,
+    5212099,
+    5212101,
+    5212104,
+    5212111,
+    5212112,
+    5212113,
+    5212115,
+    5212116,
+    5212121,
+    5212122
+  ],
+  "results": [
+    {
+      "seed": 5212026,
+      "steps": 112,
+      "total_reward": 0.31500000000000017,
+      "final_player_score": 75,
+      "final_automa_score": 76,
+      "score_margin": -1,
+      "positive": false
+    },
+    {
+      "seed": 5212027,
+      "steps": 115,
+      "total_reward": -0.23399999999999996,
+      "final_player_score": 52,
+      "final_automa_score": 71,
+      "score_margin": -19,
+      "positive": false
+    },
+    {
+      "seed": 5212028,
+      "steps": 89,
+      "total_reward": -0.041000000000000036,
+      "final_player_score": 63,
+      "final_automa_score": 66,
+      "score_margin": -3,
+      "positive": false
+    },
+    {
+      "seed": 5212029,
+      "steps": 95,
+      "total_reward": 3.254,
+      "final_player_score": 78,
+      "final_automa_score": 72,
+      "score_margin": 6,
+      "positive": true
+    },
+    {
+      "seed": 5212030,
+      "steps": 83,
+      "total_reward": -0.489,
+      "final_player_score": 47,
+      "final_automa_score": 75,
+      "score_margin": -28,
+      "positive": false
+    },
+    {
+      "seed": 5212031,
+      "steps": 87,
+      "total_reward": -0.264,
+      "final_player_score": 52,
+      "final_automa_score": 74,
+      "score_margin": -22,
+      "positive": false
+    },
+    {
+      "seed": 5212032,
+      "steps": 112,
+      "total_reward": 3.0650000000000004,
+      "final_player_score": 75,
+      "final_automa_score": 71,
+      "score_margin": 4,
+      "positive": true
+    },
+    {
+      "seed": 5212033,
+      "steps": 88,
+      "total_reward": -0.396,
+      "final_player_score": 58,
+      "final_automa_score": 80,
+      "score_margin": -22,
+      "positive": false
+    },
+    {
+      "seed": 5212034,
+      "steps": 131,
+      "total_reward": 0.15900000000000014,
+      "final_player_score": 73,
+      "final_automa_score": 74,
+      "score_margin": -1,
+      "positive": false
+    },
+    {
+      "seed": 5212035,
+      "steps": 105,
+      "total_reward": -0.624,
+      "final_player_score": 52,
+      "final_automa_score": 80,
+      "score_margin": -28,
+      "positive": false
+    },
+    {
+      "seed": 5212036,
+      "steps": 96,
+      "total_reward": -0.2219999999999998,
+      "final_player_score": 56,
+      "final_automa_score": 75,
+      "score_margin": -19,
+      "positive": false
+    },
+    {
+      "seed": 5212037,
+      "steps": 116,
+      "total_reward": 3.9550000000000005,
+      "final_player_score": 85,
+      "final_automa_score": 70,
+      "score_margin": 15,
+      "positive": true
+    },
+    {
+      "seed": 5212038,
+      "steps": 118,
+      "total_reward": 0.12900000000000017,
+      "final_player_score": 73,
+      "final_automa_score": 77,
+      "score_margin": -4,
+      "positive": false
+    },
+    {
+      "seed": 5212039,
+      "steps": 99,
+      "total_reward": 0.027000000000000135,
+      "final_player_score": 59,
+      "final_automa_score": 69,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212040,
+      "steps": 97,
+      "total_reward": 2.651,
+      "final_player_score": 67,
+      "final_automa_score": 67,
+      "score_margin": 0,
+      "positive": true
+    },
+    {
+      "seed": 5212041,
+      "steps": 93,
+      "total_reward": 3.591,
+      "final_player_score": 77,
+      "final_automa_score": 65,
+      "score_margin": 12,
+      "positive": true
+    },
+    {
+      "seed": 5212042,
+      "steps": 146,
+      "total_reward": 4.2410000000000005,
+      "final_player_score": 87,
+      "final_automa_score": 68,
+      "score_margin": 19,
+      "positive": true
+    },
+    {
+      "seed": 5212043,
+      "steps": 116,
+      "total_reward": 0.2670000000000001,
+      "final_player_score": 69,
+      "final_automa_score": 73,
+      "score_margin": -4,
+      "positive": false
+    },
+    {
+      "seed": 5212044,
+      "steps": 110,
+      "total_reward": -0.14999999999999997,
+      "final_player_score": 50,
+      "final_automa_score": 75,
+      "score_margin": -25,
+      "positive": false
+    },
+    {
+      "seed": 5212045,
+      "steps": 107,
+      "total_reward": -0.3219999999999999,
+      "final_player_score": 66,
+      "final_automa_score": 83,
+      "score_margin": -17,
+      "positive": false
+    },
+    {
+      "seed": 5212046,
+      "steps": 135,
+      "total_reward": 3.854,
+      "final_player_score": 78,
+      "final_automa_score": 62,
+      "score_margin": 16,
+      "positive": true
+    },
+    {
+      "seed": 5212047,
+      "steps": 118,
+      "total_reward": 2.7510000000000003,
+      "final_player_score": 77,
+      "final_automa_score": 74,
+      "score_margin": 3,
+      "positive": true
+    },
+    {
+      "seed": 5212048,
+      "steps": 100,
+      "total_reward": 2.8100000000000005,
+      "final_player_score": 70,
+      "final_automa_score": 70,
+      "score_margin": 0,
+      "positive": true
+    },
+    {
+      "seed": 5212049,
+      "steps": 97,
+      "total_reward": -0.43700000000000006,
+      "final_player_score": 51,
+      "final_automa_score": 75,
+      "score_margin": -24,
+      "positive": false
+    },
+    {
+      "seed": 5212050,
+      "steps": 139,
+      "total_reward": -0.17999999999999994,
+      "final_player_score": 60,
+      "final_automa_score": 76,
+      "score_margin": -16,
+      "positive": false
+    },
+    {
+      "seed": 5212051,
+      "steps": 94,
+      "total_reward": -0.374,
+      "final_player_score": 62,
+      "final_automa_score": 68,
+      "score_margin": -6,
+      "positive": false
+    },
+    {
+      "seed": 5212052,
+      "steps": 105,
+      "total_reward": -0.24799999999999997,
+      "final_player_score": 54,
+      "final_automa_score": 75,
+      "score_margin": -21,
+      "positive": false
+    },
+    {
+      "seed": 5212053,
+      "steps": 87,
+      "total_reward": -0.11099999999999999,
+      "final_player_score": 63,
+      "final_automa_score": 73,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212054,
+      "steps": 110,
+      "total_reward": -0.14599999999999996,
+      "final_player_score": 68,
+      "final_automa_score": 83,
+      "score_margin": -15,
+      "positive": false
+    },
+    {
+      "seed": 5212055,
+      "steps": 117,
+      "total_reward": -0.488,
+      "final_player_score": 54,
+      "final_automa_score": 69,
+      "score_margin": -15,
+      "positive": false
+    },
+    {
+      "seed": 5212056,
+      "steps": 97,
+      "total_reward": -0.46399999999999997,
+      "final_player_score": 62,
+      "final_automa_score": 77,
+      "score_margin": -15,
+      "positive": false
+    },
+    {
+      "seed": 5212057,
+      "steps": 84,
+      "total_reward": 3.697,
+      "final_player_score": 79,
+      "final_automa_score": 66,
+      "score_margin": 13,
+      "positive": true
+    },
+    {
+      "seed": 5212058,
+      "steps": 123,
+      "total_reward": 3.3739999999999997,
+      "final_player_score": 78,
+      "final_automa_score": 70,
+      "score_margin": 8,
+      "positive": true
+    },
+    {
+      "seed": 5212059,
+      "steps": 108,
+      "total_reward": 0.29400000000000004,
+      "final_player_score": 68,
+      "final_automa_score": 69,
+      "score_margin": -1,
+      "positive": false
+    },
+    {
+      "seed": 5212060,
+      "steps": 105,
+      "total_reward": -0.2789999999999998,
+      "final_player_score": 57,
+      "final_automa_score": 82,
+      "score_margin": -25,
+      "positive": false
+    },
+    {
+      "seed": 5212061,
+      "steps": 104,
+      "total_reward": -0.04099999999999998,
+      "final_player_score": 73,
+      "final_automa_score": 79,
+      "score_margin": -6,
+      "positive": false
+    },
+    {
+      "seed": 5212062,
+      "steps": 88,
+      "total_reward": -0.482,
+      "final_player_score": 46,
+      "final_automa_score": 73,
+      "score_margin": -27,
+      "positive": false
+    },
+    {
+      "seed": 5212063,
+      "steps": 110,
+      "total_reward": 3.987,
+      "final_player_score": 89,
+      "final_automa_score": 75,
+      "score_margin": 14,
+      "positive": true
+    },
+    {
+      "seed": 5212064,
+      "steps": 118,
+      "total_reward": 3.7520000000000002,
+      "final_player_score": 84,
+      "final_automa_score": 72,
+      "score_margin": 12,
+      "positive": true
+    },
+    {
+      "seed": 5212065,
+      "steps": 89,
+      "total_reward": 0.2810000000000002,
+      "final_player_score": 67,
+      "final_automa_score": 69,
+      "score_margin": -2,
+      "positive": false
+    },
+    {
+      "seed": 5212066,
+      "steps": 82,
+      "total_reward": 3.0210000000000004,
+      "final_player_score": 77,
+      "final_automa_score": 72,
+      "score_margin": 5,
+      "positive": true
+    },
+    {
+      "seed": 5212067,
+      "steps": 88,
+      "total_reward": 0.03600000000000003,
+      "final_player_score": 62,
+      "final_automa_score": 72,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212068,
+      "steps": 119,
+      "total_reward": -0.18299999999999994,
+      "final_player_score": 59,
+      "final_automa_score": 75,
+      "score_margin": -16,
+      "positive": false
+    },
+    {
+      "seed": 5212069,
+      "steps": 102,
+      "total_reward": 3.305,
+      "final_player_score": 75,
+      "final_automa_score": 67,
+      "score_margin": 8,
+      "positive": true
+    },
+    {
+      "seed": 5212070,
+      "steps": 93,
+      "total_reward": 2.878,
+      "final_player_score": 76,
+      "final_automa_score": 73,
+      "score_margin": 3,
+      "positive": true
+    },
+    {
+      "seed": 5212071,
+      "steps": 120,
+      "total_reward": -0.05599999999999994,
+      "final_player_score": 68,
+      "final_automa_score": 74,
+      "score_margin": -6,
+      "positive": false
+    },
+    {
+      "seed": 5212072,
+      "steps": 100,
+      "total_reward": 2.9299999999999997,
+      "final_player_score": 70,
+      "final_automa_score": 68,
+      "score_margin": 2,
+      "positive": true
+    },
+    {
+      "seed": 5212073,
+      "steps": 108,
+      "total_reward": 3.359,
+      "final_player_score": 73,
+      "final_automa_score": 64,
+      "score_margin": 9,
+      "positive": true
+    },
+    {
+      "seed": 5212074,
+      "steps": 111,
+      "total_reward": 0.04500000000000015,
+      "final_player_score": 65,
+      "final_automa_score": 75,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212075,
+      "steps": 118,
+      "total_reward": 3.125,
+      "final_player_score": 75,
+      "final_automa_score": 70,
+      "score_margin": 5,
+      "positive": true
+    },
+    {
+      "seed": 5212076,
+      "steps": 100,
+      "total_reward": 0.09200000000000008,
+      "final_player_score": 64,
+      "final_automa_score": 69,
+      "score_margin": -5,
+      "positive": false
+    },
+    {
+      "seed": 5212077,
+      "steps": 111,
+      "total_reward": -0.2670000000000001,
+      "final_player_score": 51,
+      "final_automa_score": 73,
+      "score_margin": -22,
+      "positive": false
+    },
+    {
+      "seed": 5212078,
+      "steps": 116,
+      "total_reward": 0.07400000000000001,
+      "final_player_score": 68,
+      "final_automa_score": 76,
+      "score_margin": -8,
+      "positive": false
+    },
+    {
+      "seed": 5212079,
+      "steps": 93,
+      "total_reward": -0.09200000000000014,
+      "final_player_score": 66,
+      "final_automa_score": 75,
+      "score_margin": -9,
+      "positive": false
+    },
+    {
+      "seed": 5212080,
+      "steps": 88,
+      "total_reward": -0.16299999999999998,
+      "final_player_score": 59,
+      "final_automa_score": 73,
+      "score_margin": -14,
+      "positive": false
+    },
+    {
+      "seed": 5212081,
+      "steps": 105,
+      "total_reward": 0.021999999999999964,
+      "final_player_score": 64,
+      "final_automa_score": 76,
+      "score_margin": -12,
+      "positive": false
+    },
+    {
+      "seed": 5212082,
+      "steps": 108,
+      "total_reward": 3.116,
+      "final_player_score": 72,
+      "final_automa_score": 67,
+      "score_margin": 5,
+      "positive": true
+    },
+    {
+      "seed": 5212083,
+      "steps": 101,
+      "total_reward": -0.1349999999999999,
+      "final_player_score": 55,
+      "final_automa_score": 65,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212084,
+      "steps": 89,
+      "total_reward": 3.5679999999999996,
+      "final_player_score": 76,
+      "final_automa_score": 64,
+      "score_margin": 12,
+      "positive": true
+    },
+    {
+      "seed": 5212085,
+      "steps": 82,
+      "total_reward": 0.07599999999999996,
+      "final_player_score": 62,
+      "final_automa_score": 68,
+      "score_margin": -6,
+      "positive": false
+    },
+    {
+      "seed": 5212086,
+      "steps": 99,
+      "total_reward": 2.987,
+      "final_player_score": 69,
+      "final_automa_score": 66,
+      "score_margin": 3,
+      "positive": true
+    },
+    {
+      "seed": 5212087,
+      "steps": 106,
+      "total_reward": 0.28000000000000025,
+      "final_player_score": 70,
+      "final_automa_score": 73,
+      "score_margin": -3,
+      "positive": false
+    },
+    {
+      "seed": 5212088,
+      "steps": 114,
+      "total_reward": 3.095,
+      "final_player_score": 75,
+      "final_automa_score": 68,
+      "score_margin": 7,
+      "positive": true
+    },
+    {
+      "seed": 5212089,
+      "steps": 104,
+      "total_reward": -0.1339999999999999,
+      "final_player_score": 62,
+      "final_automa_score": 74,
+      "score_margin": -12,
+      "positive": false
+    },
+    {
+      "seed": 5212090,
+      "steps": 120,
+      "total_reward": -0.14999999999999994,
+      "final_player_score": 60,
+      "final_automa_score": 73,
+      "score_margin": -13,
+      "positive": false
+    },
+    {
+      "seed": 5212091,
+      "steps": 98,
+      "total_reward": 0.046000000000000096,
+      "final_player_score": 62,
+      "final_automa_score": 71,
+      "score_margin": -9,
+      "positive": false
+    },
+    {
+      "seed": 5212092,
+      "steps": 104,
+      "total_reward": 2.4259999999999997,
+      "final_player_score": 72,
+      "final_automa_score": 71,
+      "score_margin": 1,
+      "positive": true
+    },
+    {
+      "seed": 5212093,
+      "steps": 149,
+      "total_reward": 2.942,
+      "final_player_score": 74,
+      "final_automa_score": 72,
+      "score_margin": 2,
+      "positive": true
+    },
+    {
+      "seed": 5212094,
+      "steps": 114,
+      "total_reward": -0.382,
+      "final_player_score": 46,
+      "final_automa_score": 78,
+      "score_margin": -32,
+      "positive": false
+    },
+    {
+      "seed": 5212095,
+      "steps": 92,
+      "total_reward": 0.09499999999999997,
+      "final_player_score": 65,
+      "final_automa_score": 70,
+      "score_margin": -5,
+      "positive": false
+    },
+    {
+      "seed": 5212096,
+      "steps": 113,
+      "total_reward": -0.08499999999999996,
+      "final_player_score": 65,
+      "final_automa_score": 73,
+      "score_margin": -8,
+      "positive": false
+    },
+    {
+      "seed": 5212097,
+      "steps": 124,
+      "total_reward": 0.09699999999999998,
+      "final_player_score": 69,
+      "final_automa_score": 75,
+      "score_margin": -6,
+      "positive": false
+    },
+    {
+      "seed": 5212098,
+      "steps": 101,
+      "total_reward": -0.12499999999999994,
+      "final_player_score": 65,
+      "final_automa_score": 77,
+      "score_margin": -12,
+      "positive": false
+    },
+    {
+      "seed": 5212099,
+      "steps": 101,
+      "total_reward": 2.933,
+      "final_player_score": 71,
+      "final_automa_score": 69,
+      "score_margin": 2,
+      "positive": true
+    },
+    {
+      "seed": 5212100,
+      "steps": 110,
+      "total_reward": -0.07100000000000001,
+      "final_player_score": 63,
+      "final_automa_score": 69,
+      "score_margin": -6,
+      "positive": false
+    },
+    {
+      "seed": 5212101,
+      "steps": 101,
+      "total_reward": 3.0650000000000004,
+      "final_player_score": 75,
+      "final_automa_score": 71,
+      "score_margin": 4,
+      "positive": true
+    },
+    {
+      "seed": 5212102,
+      "steps": 98,
+      "total_reward": 0.04400000000000004,
+      "final_player_score": 68,
+      "final_automa_score": 79,
+      "score_margin": -11,
+      "positive": false
+    },
+    {
+      "seed": 5212103,
+      "steps": 95,
+      "total_reward": 0.2840000000000002,
+      "final_player_score": 68,
+      "final_automa_score": 70,
+      "score_margin": -2,
+      "positive": false
+    },
+    {
+      "seed": 5212104,
+      "steps": 117,
+      "total_reward": 3.0020000000000002,
+      "final_player_score": 74,
+      "final_automa_score": 71,
+      "score_margin": 3,
+      "positive": true
+    },
+    {
+      "seed": 5212105,
+      "steps": 107,
+      "total_reward": -0.252,
+      "final_player_score": 66,
+      "final_automa_score": 76,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212106,
+      "steps": 87,
+      "total_reward": -0.09100000000000014,
+      "final_player_score": 63,
+      "final_automa_score": 71,
+      "score_margin": -8,
+      "positive": false
+    },
+    {
+      "seed": 5212107,
+      "steps": 83,
+      "total_reward": 0.06900000000000012,
+      "final_player_score": 63,
+      "final_automa_score": 70,
+      "score_margin": -7,
+      "positive": false
+    },
+    {
+      "seed": 5212108,
+      "steps": 120,
+      "total_reward": -0.48600000000000004,
+      "final_player_score": 48,
+      "final_automa_score": 76,
+      "score_margin": -28,
+      "positive": false
+    },
+    {
+      "seed": 5212109,
+      "steps": 97,
+      "total_reward": -0.354,
+      "final_player_score": 62,
+      "final_automa_score": 81,
+      "score_margin": -19,
+      "positive": false
+    },
+    {
+      "seed": 5212110,
+      "steps": 99,
+      "total_reward": -0.11699999999999999,
+      "final_player_score": 61,
+      "final_automa_score": 71,
+      "score_margin": -10,
+      "positive": false
+    },
+    {
+      "seed": 5212111,
+      "steps": 87,
+      "total_reward": 3.125,
+      "final_player_score": 75,
+      "final_automa_score": 70,
+      "score_margin": 5,
+      "positive": true
+    },
+    {
+      "seed": 5212112,
+      "steps": 121,
+      "total_reward": 3.217,
+      "final_player_score": 79,
+      "final_automa_score": 74,
+      "score_margin": 5,
+      "positive": true
+    },
+    {
+      "seed": 5212113,
+      "steps": 109,
+      "total_reward": 3.122,
+      "final_player_score": 74,
+      "final_automa_score": 69,
+      "score_margin": 5,
+      "positive": true
+    },
+    {
+      "seed": 5212114,
+      "steps": 99,
+      "total_reward": 0.30600000000000016,
+      "final_player_score": 72,
+      "final_automa_score": 73,
+      "score_margin": -1,
+      "positive": false
+    },
+    {
+      "seed": 5212115,
+      "steps": 100,
+      "total_reward": 2.9899999999999998,
+      "final_player_score": 70,
+      "final_automa_score": 67,
+      "score_margin": 3,
+      "positive": true
+    },
+    {
+      "seed": 5212116,
+      "steps": 86,
+      "total_reward": 3.425,
+      "final_player_score": 75,
+      "final_automa_score": 65,
+      "score_margin": 10,
+      "positive": true
+    },
+    {
+      "seed": 5212117,
+      "steps": 128,
+      "total_reward": -0.187,
+      "final_player_score": 61,
+      "final_automa_score": 78,
+      "score_margin": -17,
+      "positive": false
+    },
+    {
+      "seed": 5212118,
+      "steps": 129,
+      "total_reward": 0.29700000000000015,
+      "final_player_score": 69,
+      "final_automa_score": 70,
+      "score_margin": -1,
+      "positive": false
+    },
+    {
+      "seed": 5212119,
+      "steps": 139,
+      "total_reward": 0.08299999999999996,
+      "final_player_score": 71,
+      "final_automa_score": 79,
+      "score_margin": -8,
+      "positive": false
+    },
+    {
+      "seed": 5212120,
+      "steps": 103,
+      "total_reward": -0.22899999999999995,
+      "final_player_score": 57,
+      "final_automa_score": 77,
+      "score_margin": -20,
+      "positive": false
+    },
+    {
+      "seed": 5212121,
+      "steps": 107,
+      "total_reward": 3.4290000000000003,
+      "final_player_score": 83,
+      "final_automa_score": 76,
+      "score_margin": 7,
+      "positive": true
+    },
+    {
+      "seed": 5212122,
+      "steps": 109,
+      "total_reward": 2.93,
+      "final_player_score": 70,
+      "final_automa_score": 68,
+      "score_margin": 2,
+      "positive": true
+    },
+    {
+      "seed": 5212123,
+      "steps": 144,
+      "total_reward": -0.464,
+      "final_player_score": 52,
+      "final_automa_score": 79,
+      "score_margin": -27,
+      "positive": false
+    },
+    {
+      "seed": 5212124,
+      "steps": 94,
+      "total_reward": -0.06500000000000006,
+      "final_player_score": 55,
+      "final_automa_score": 73,
+      "score_margin": -18,
+      "positive": false
+    },
+    {
+      "seed": 5212125,
+      "steps": 128,
+      "total_reward": 0.07000000000000012,
+      "final_player_score": 70,
+      "final_automa_score": 79,
+      "score_margin": -9,
+      "positive": false
+    }
+  ]
+}
