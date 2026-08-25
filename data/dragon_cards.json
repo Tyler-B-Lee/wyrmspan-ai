@@ -3,7 +3,7 @@
     {
         "number": 1,
         "name": "White-Bellied Grazer",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [CaveCard]. When the 3rd [Milk] is cached, also lay [Egg][Egg].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [CaveCard]. On_grow_up, lay [Egg and Egg].",
         "VP": 4,
         "size": "Hatchling",
         "capacity": 0,
@@ -40,7 +40,7 @@
     {
         "number": 2,
         "name": "Genial Mothdragon",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, lay [Egg]. When the 3rd [DragonCard] is tucked, also gain [Coin].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, lay [Egg]. On_grow_up, gain [Coin].",
         "VP": 5,
         "size": "Hatchling",
         "capacity": 0,
@@ -71,7 +71,7 @@
     {
         "number": 3,
         "name": "Algal Lindworm",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [AnyResource]. When the 3rd [Milk] is cached, also gain [DragonGuild][DragonGuild].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [AnyResource]. On_grow_up, gain [DragonGuild and DragonGuild].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -108,7 +108,7 @@
     {
         "number": 4,
         "name": "Frugivorous Grazer",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Crystal]. When the 3rd [Milk] is cached, also gain [Coin].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [Crystal]. On_grow_up, gain [Coin].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -140,7 +140,7 @@
     {
         "number": 5,
         "name": "Fanged Feydragon",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [DragonGuild]. When the 3rd [Meat] is cached, also gain [Gold][Crystal][Meat].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [DragonGuild]. On_grow_up, gain [Gold and Crystal and Meat].",
         "VP": 0,
         "size": "Hatchling",
         "capacity": 0,
@@ -178,7 +178,7 @@
     {
         "number": 6,
         "name": "Flocking Dragonette",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [DragonGuild]. When the 3rd [DragonCard] is tucked, also gain [Coin].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [DragonGuild]. On_grow_up, gain [Coin].",
         "VP": 0,
         "size": "Hatchling",
         "capacity": 0,
@@ -209,7 +209,7 @@
     {
         "number": 7,
         "name": "Temperate Bamboo Dragon",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Gold]. When the 3rd [Milk] is cached, also gain [DragonGuild][DragonGuild].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [Gold]. On_grow_up, gain [DragonGuild and DragonGuild].",
         "VP": 5,
         "size": "Hatchling",
         "capacity": 0,
@@ -246,7 +246,7 @@
     {
         "number": 8,
         "name": "Loyal Feydragon",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [AnyResource]. When the 3rd [DragonCard] is tucked, also gain [DragonCard][DragonGuild].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [AnyResource]. On_grow_up, gain [DragonCard and DragonGuild].",
         "VP": 4,
         "size": "Hatchling",
         "capacity": 0,
@@ -282,7 +282,7 @@
     {
         "number": 9,
         "name": "Leafeating Cricketcatcher",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [DragonCard]. When the 3rd [Milk] is cached, also gain [Crystal][Crystal].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [DragonCard]. On_grow_up, gain [Crystal and Crystal].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -319,7 +319,7 @@
     {
         "number": 10,
         "name": "Melodious Firedragon",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [CaveCard]. When the 3rd [DragonCard] is tucked, also excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [CaveCard]. On_grow_up Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -350,7 +350,7 @@
     {
         "number": 11,
         "name": "Seedeating Drake",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, lay [Egg]. When the 3rd [Milk] is cached, also gain [Meat][Meat].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, lay [Egg]. On_grow_up, gain [Meat and Meat].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -387,7 +387,7 @@
     {
         "number": 12,
         "name": "Savanna Dragonette",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Crystal]. When the 3rd [Milk] is cached, also gain [DragonGuild][DragonGuild].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [Crystal]. On_grow_up, gain [DragonGuild and DragonGuild].",
         "VP": 5,
         "size": "Hatchling",
         "capacity": 0,
@@ -424,7 +424,7 @@
     {
         "number": 13,
         "name": "Mellifera Feydragon",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Milk]. When the 3rd [Meat] is cached, also gain [CaveCard][CaveCard].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [Milk]. On_grow_up, gain [CaveCard and CaveCard].",
         "VP": 4,
         "size": "Hatchling",
         "capacity": 0,
@@ -461,7 +461,7 @@
     {
         "number": 14,
         "name": "Scavenging Cricketcatcher",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Meat]. When the 3rd [Meat] is cached, also gain [Coin].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [Meat]. On_grow_up, gain [Coin].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -493,7 +493,7 @@
     {
         "number": 15,
         "name": "Redwood Lung Dragon",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Milk]. When the 3rd [Milk] is cached, also lay [Egg][Egg].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [Milk]. On_grow_up, lay [Egg and Egg].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -530,7 +530,7 @@
     {
         "number": 16,
         "name": "Peregrine Firedragon",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [CaveCard]. When the 3rd [Meat] is cached, also excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [CaveCard]. On_grow_up, Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -562,7 +562,7 @@
     {
         "number": 17,
         "name": "Common Grass Lindworm",
-        "ability_text": "Cache [Milk] from your supply here. Each [Milk] on this dragon is worth + [VP-1] at game end. When the 3rd [Milk] is cached, also gain [DragonCard][DragonCard].",
+        "ability_text": "Cache [Milk] from_your_supply here. Each [Milk] on this dragon is 1_more_VP_at_game_end. On_grow_up, gain [DragonCard and DragonCard].",
         "VP": 1,
         "size": "Hatchling",
         "capacity": 0,
@@ -598,7 +598,7 @@
     {
         "number": 18,
         "name": "Keening Amphiptere",
-        "ability_text": "Tuck [DragonCard] from your hand here. Each [DragonCard] tucked under this dragon is worth [VP-1] at game end. When the 3rd [DragonCard] is tucked, also gain [DragonGuild][DragonGuild].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. Each [DragonCard] tucked under this dragon is 1_more_VP_at_game_end. On_grow_up, gain [DragonGuild and DragonGuild].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -633,7 +633,7 @@
     {
         "number": 19,
         "name": "Chittering Dragonette",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [DragonCard]. When the 3rd [DragonCard] is tucked, also gain [AnyResource][AnyResource].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [DragonCard]. On_grow_up, gain [AnyResource and AnyResource].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -669,7 +669,7 @@
     {
         "number": 20,
         "name": "Miniature Rex",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Gold]. When the 3rd [Meat] is cached, also gain [DragonCard][DragonCard].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [Gold]. On_grow_up, gain [DragonCard and DragonCard].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -706,7 +706,7 @@
     {
         "number": 21,
         "name": "Fae Tamarin",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, lay [Egg]. When the 3rd [Milk] is cached, also excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, lay [Egg]. On_grow_up, Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -738,7 +738,7 @@
     {
         "number": 22,
         "name": "Cheshire Dragon",
-        "ability_text": "Tuck [DragonCard] from your supply here. Any time you tuck [DragonCard] here, gain [Meat]. When the 3rd [DragonCard] is tucked, also gain [DragonCard][DragonCard].",
+        "ability_text": "Tuck [DragonCard] from_your_supply here. On_feed, gain [Meat]. On_grow_up, gain [DragonCard and DragonCard].",
         "VP": 4,
         "size": "Hatchling",
         "capacity": 0,
@@ -774,7 +774,7 @@
     {
         "number": 23,
         "name": "Ravenous Granite Dragon",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, lay [Egg]. When the 3rd [Meat] is cached, also gain [Gold][Meat].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, lay [Egg]. On_grow_up, gain [Gold and Meat].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -811,7 +811,7 @@
     {
         "number": 24,
         "name": "Vampiric Horned Dragon",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Meat]. When the 3rd [Milk] is cached, also gain [Coin].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [Meat]. On_grow_up, gain [Coin].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -843,7 +843,7 @@
     {
         "number": 25,
         "name": "Spotted Licheneater",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [DragonGuild]. When the 3rd [Milk] is cached, also gain [Gold][Gold].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [DragonGuild]. On_grow_up, gain [Gold and Gold].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -880,7 +880,7 @@
     {
         "number": 26,
         "name": "Bargaining Grazer",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [DragonCard]. When the 3rd [Milk] is cached, also gain [Coin].",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [DragonCard]. On_grow_up, gain [Coin].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -912,7 +912,7 @@
     {
         "number": 27,
         "name": "Frilled Cobrette",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [Crystal]. When the 3rd [Meat] is cached, also gain [DragonCard][DragonGuild].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [Crystal]. On_grow_up, gain [DragonCard and DragonGuild].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -949,7 +949,7 @@
     {
         "number": 28,
         "name": "Silent Cobrette",
-        "ability_text": "Cache [Meat] from your supply here. Any time you cache [Meat] here, gain [AnyResource]. When the 3rd [Meat] is cached, also gain [DragonGuild][DragonGuild].",
+        "ability_text": "Cache [Meat] from_your_supply here. On_feed, gain [AnyResource]. On_grow_up, gain [DragonGuild and DragonGuild].",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -986,7 +986,7 @@
     {
         "number": 29,
         "name": "Singeing Remora",
-        "ability_text": "Cache [Meat] from your supply here. Each [Meat] on this dragon is worth + [VP-1] at game end. When the 3rd [Meat] is cached, also gain [Coin].",
+        "ability_text": "Cache [Meat] from_your_supply here. Each [Meat] on this dragon is 1_more_VP_at_game_end. On_grow_up, gain [Coin].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -1017,7 +1017,7 @@
     {
         "number": 30,
         "name": "Cackling Dragonette",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [DragonGuild]. When the 3rd [DragonCard] is tucked, also lay [Egg][Egg].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [DragonGuild]. On_grow_up, lay [Egg and Egg].",
         "VP": 2,
         "size": "Hatchling",
         "capacity": 0,
@@ -1053,7 +1053,7 @@
     {
         "number": 31,
         "name": "Guiding Feydragon",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [Crystal]. When the 3rd [DragonCard] is tucked, also gain [CaveCard][CaveCard].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [Crystal]. On_grow_up, gain [CaveCard and CaveCard].",
         "VP": 5,
         "size": "Hatchling",
         "capacity": 0,
@@ -1089,7 +1089,7 @@
     {
         "number": 32,
         "name": "Chameleon Dragonette",
-        "ability_text": "Cache [Milk] from your supply here. Any time you cache [Milk] here, gain [Meat]. When the 3rd [Milk] is cached, also excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Cache [Milk] from_your_supply here. On_feed, gain [Meat]. On_grow_up, Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 5,
         "size": "Hatchling",
         "capacity": 0,
@@ -1121,7 +1121,7 @@
     {
         "number": 33,
         "name": "\"Friendly\" Ruffed Red Dragon",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, lay [Egg]. When the 3rd [DragonCard] is tucked, also gain [Crystal][Meat].",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, lay [Egg]. On_grow_up, gain [Crystal and Meat].",
         "VP": 6,
         "size": "Hatchling",
         "capacity": 0,
@@ -1157,7 +1157,7 @@
     {
         "number": 34,
         "name": "Kindly Sea Serpent",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [Milk]. When the 3rd [DragonCard] is tucked, also excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [Milk]. On_grow_up, Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 3,
         "size": "Hatchling",
         "capacity": 0,
@@ -1188,7 +1188,7 @@
     {
         "number": 35,
         "name": "Lawndrake",
-        "ability_text": "Tuck [DragonCard] from your hand here. Any time you tuck [DragonCard] here, gain [Gold]. When the 3rd [DragonCard] is tucked, also excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. On_feed, gain [Gold]. On_grow_up, Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 4,
         "size": "Hatchling",
         "capacity": 0,
@@ -1245,7 +1245,7 @@
     {
         "number": 37,
         "name": "Subterranean Basilisk",
-        "ability_text": "Lay [Egg][Egg]. Each opponent lays [Egg].",
+        "ability_text": "Lay [Egg and Egg]. Each opponent lays [Egg].",
         "VP": 4,
         "size": "Large",
         "capacity": 3,
@@ -1274,7 +1274,7 @@
     {
         "number": 38,
         "name": "Swift Lung Dragon",
-        "ability_text": "Gain [Coin][Coin].",
+        "ability_text": "Gain [Coin and Coin].",
         "VP": 2,
         "size": "Medium",
         "capacity": 1,
@@ -1295,7 +1295,7 @@
     {
         "number": 39,
         "name": "Weary Gryphdragon",
-        "ability_text": "Gain [VP-2] if this dragon is between two other dragons in this cave.",
+        "ability_text": "Gain [VP-2] if this dragon is between two other dragons in_this_cave.",
         "VP": 6,
         "size": "Large",
         "capacity": 2,
@@ -1378,7 +1378,7 @@
     {
         "number": 42,
         "name": "Great Golden Lung Dragon",
-        "ability_text": "Gain [VP-3] for each other dragon in this cave.",
+        "ability_text": "Gain [VP-3] for each other dragon in_this_cave.",
         "VP": 2,
         "size": "Large",
         "capacity": 3,
@@ -1449,7 +1449,7 @@
     {
         "number": 45,
         "name": "Tranquil Wyrm",
-        "ability_text": "Pay [Coin] to lay [Egg][Egg][Egg].",
+        "ability_text": "Pay [Coin] to lay [Egg and Egg and Egg].",
         "VP": 4,
         "size": "Large",
         "capacity": 5,
@@ -1612,7 +1612,7 @@
     {
         "number": 51,
         "name": "Aloof Gryphdragon",
-        "ability_text": "Gain [VP-1] for each Shy dragon in an orthogonally adjacent space.",
+        "ability_text": "Gain [VP-1] for each Shy dragon in an orthogonally_adjacent space.",
         "VP": 5,
         "size": "Small",
         "capacity": 3,
@@ -1662,7 +1662,7 @@
     {
         "number": 53,
         "name": "Tawny Steppe Wyvern",
-        "ability_text": "Cache [AnyResource] from your supply here.",
+        "ability_text": "Cache [AnyResource] from_your_supply here.",
         "VP": 6,
         "size": "Medium",
         "capacity": 3,
@@ -1687,7 +1687,7 @@
     {
         "number": 54,
         "name": "Colorful Gryphdragon",
-        "ability_text": "Gain [VP-4] if there are no Aggressive dragons in this cave.",
+        "ability_text": "Gain [VP-4] if there are no Aggressive dragons in_this_cave.",
         "VP": 3,
         "size": "Small",
         "capacity": 4,
@@ -1717,7 +1717,7 @@
     {
         "number": 55,
         "name": "Calm Loch Serpent",
-        "ability_text": "Lay [Egg] anywhere in this cave.",
+        "ability_text": "Lay [Egg] anywhere in_this_cave.",
         "VP": 4,
         "size": "Large",
         "capacity": 4,
@@ -1763,7 +1763,7 @@
     {
         "number": 57,
         "name": "Eternal Feydragon",
-        "ability_text": "Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].",
+        "ability_text": "Gain [DragonGuild and DragonGuild]. Each opponent gains [DragonGuild].",
         "VP": 5,
         "size": "Medium",
         "capacity": 1,
@@ -1792,7 +1792,7 @@
     {
         "number": 58,
         "name": "Caustic Wyrm",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is a Hatchling, tuck it here. Otherwise, add it to your hand.",
+        "ability_text": "Reveal [DragonCard] from_the_deck. If it is a Hatchling, tuck it here. Otherwise, add it to your hand.",
         "VP": 5,
         "size": "Medium",
         "capacity": 2,
@@ -1818,7 +1818,7 @@
     {
         "number": 59,
         "name": "Haughty Wyvern",
-        "ability_text": "Gain [VP-2] for each other Shy dragon in this cave.",
+        "ability_text": "Gain [VP-2] for each other Shy dragon in_this_cave.",
         "VP": 5,
         "size": "Small",
         "capacity": 3,
@@ -1844,7 +1844,7 @@
     {
         "number": 60,
         "name": "Stealthy Rufftail",
-        "ability_text": "Gain [Milk][Milk].",
+        "ability_text": "Gain [Milk and Milk].",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -1870,7 +1870,7 @@
     {
         "number": 61,
         "name": "Primeval Wyrm",
-        "ability_text": "Pay [Egg][Egg] from any orthogonally adjacent dragon(s) to gain [DragonGuild][DragonGuild].",
+        "ability_text": "Pay [Egg and Egg] from any orthogonally_adjacent dragon(s) to gain [DragonGuild and DragonGuild].",
         "VP": 5,
         "size": "Large",
         "capacity": 2,
@@ -1925,7 +1925,7 @@
     {
         "number": 63,
         "name": "Guarding Horned Drake",
-        "ability_text": "Tuck [DragonCard] from your hand here. If you do, lay [Egg] here.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here. If you do, lay [Egg] here.",
         "VP": 6,
         "size": "Medium",
         "capacity": 4,
@@ -1956,7 +1956,7 @@
     {
         "number": 64,
         "name": "Scaly Rock Dragon",
-        "ability_text": "Excavate 1 space for free with [CaveCard] from the display.",
+        "ability_text": "Excavate_1_space for free with [CaveCard] from the display.",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -1979,7 +1979,7 @@
     {
         "number": 65,
         "name": "Perceptive Anteldragon",
-        "ability_text": "Pay [CaveCard][CaveCard] to play another dragon from your hand for free.",
+        "ability_text": "Pay [CaveCard and CaveCard] to play another dragon from_your_hand for free.",
         "VP": 3,
         "size": "Large",
         "capacity": 1,
@@ -2009,7 +2009,7 @@
     {
         "number": 66,
         "name": "Green Ghost",
-        "ability_text": "Pay [DragonCard] to lay [Egg] anywhere in this cave.",
+        "ability_text": "Pay [DragonCard] to lay [Egg] anywhere in_this_cave.",
         "VP": 6,
         "size": "Small",
         "capacity": 3,
@@ -2037,7 +2037,7 @@
     {
         "number": 67,
         "name": "Ancient One",
-        "ability_text": "Pay [Egg] from anywhere in this cave to gain 2 different benefits: [DragonCard] or [DragonGuild] or [CaveCard] or [AnyResource].",
+        "ability_text": "Pay [Egg] from anywhere in_this_cave to gain 2 different benefits: [DragonCard] or [DragonGuild] or [CaveCard] or [AnyResource].",
         "VP": 6,
         "size": "Medium",
         "capacity": 2,
@@ -2073,7 +2073,7 @@
     {
         "number": 68,
         "name": "Hostile Northern Fire Dragon",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is Large, tuck it here. Otherwise, discard it and gain [Meat].",
+        "ability_text": "Reveal [DragonCard] from_the_deck. If it is Large, tuck it here. Otherwise, discard it and gain [Meat].",
         "VP": 3,
         "size": "Large",
         "capacity": 1,
@@ -2099,7 +2099,7 @@
     {
         "number": 69,
         "name": "Prescient Gryphdragon",
-        "ability_text": "Draw [DragonCard] from the deck for each Shy dragon in this cave. You may tuck up to 2 of them here.",
+        "ability_text": "Draw [DragonCard] from_the_deck for each Shy dragon in_this_cave. You may tuck up to 2 of them here.",
         "VP": 3,
         "size": "Large",
         "capacity": 2,
@@ -2185,7 +2185,7 @@
     {
         "number": 72,
         "name": "Primordiasaur",
-        "ability_text": "Pay [Egg] from anywhere in this cave to gain [DragonGuild][DragonGuild].",
+        "ability_text": "Pay [Egg] from anywhere in_this_cave to gain [DragonGuild and DragonGuild].",
         "VP": 5,
         "size": "Medium",
         "capacity": 3,
@@ -2245,7 +2245,7 @@
     {
         "number": 74,
         "name": "Solitary Brown Drake",
-        "ability_text": "Gain [VP-3] if all spaces in this cave have been excavated.",
+        "ability_text": "Gain [VP-3] if all spaces in_this_cave have been excavated.",
         "VP": 6,
         "size": "Medium",
         "capacity": 2,
@@ -2383,7 +2383,7 @@
     {
         "number": 79,
         "name": "Common Blue Gryphdragon",
-        "ability_text": "If you have at least 3 dragons in this cave, lay [Egg] on each dragon in this cave.",
+        "ability_text": "If you have at least 3 dragons in_this_cave, lay [Egg] on each dragon in_this_cave.",
         "VP": 1,
         "size": "Medium",
         "capacity": 3,
@@ -2414,7 +2414,7 @@
     {
         "number": 80,
         "name": "Hawkish Firevern",
-        "ability_text": "Tuck [DragonCard] from your hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
         "VP": 2,
         "size": "Medium",
         "capacity": 3,
@@ -2503,7 +2503,7 @@
     {
         "number": 83,
         "name": "Spirited Firevern",
-        "ability_text": "Gain [Coin][DragonGuild].",
+        "ability_text": "Gain [Coin and DragonGuild].",
         "VP": 4,
         "size": "Medium",
         "capacity": 3,
@@ -2529,7 +2529,7 @@
     {
         "number": 84,
         "name": "Malcontent Venomous Wyrm",
-        "ability_text": "Tuck [DragonCard] from your hand here.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here.",
         "VP": 6,
         "size": "Small",
         "capacity": 1,
@@ -2553,7 +2553,7 @@
     {
         "number": 85,
         "name": "Wealthy Koiwyrm",
-        "ability_text": "Gain [Crystal][Crystal]. Each opponent gains [Crystal].",
+        "ability_text": "Gain [Crystal and Crystal]. Each opponent gains [Crystal].",
         "VP": 4,
         "size": "Small",
         "capacity": 2,
@@ -2582,7 +2582,7 @@
     {
         "number": 86,
         "name": "Northern Cavalier Wyvern",
-        "ability_text": "Pay [DragonCard] to gain [VP-1] or pay [DragonCard][DragonCard] to gain [VP-3].",
+        "ability_text": "Pay [DragonCard] to gain [VP-1] or pay [DragonCard and DragonCard] to gain [VP-3].",
         "VP": 8,
         "size": "Large",
         "capacity": 1,
@@ -2614,7 +2614,7 @@
     {
         "number": 87,
         "name": "Equatorial Cavalier Wyvern",
-        "ability_text": "Pay [CaveCard] to gain [VP-1] or pay [CaveCard][CaveCard] to gain [VP-3].",
+        "ability_text": "Pay [CaveCard] to gain [VP-1] or pay [CaveCard and CaveCard] to gain [VP-3].",
         "VP": 5,
         "size": "Medium",
         "capacity": 2,
@@ -2699,7 +2699,7 @@
     {
         "number": 90,
         "name": "Protective Amphiptere",
-        "ability_text": "Pay [Coin] to gain [Gold][Crystal][Meat].",
+        "ability_text": "Pay [Coin] to gain [Gold and Crystal and Meat].",
         "VP": 3,
         "size": "Large",
         "capacity": 2,
@@ -2729,7 +2729,7 @@
     {
         "number": 91,
         "name": "Ordinary Resplendent Coatl",
-        "ability_text": "Gain [VP-8] if you have a Hatchling, a Small dragon, and a Large dragon in this cave.",
+        "ability_text": "Gain [VP-8] if you have a Hatchling, a Small dragon, and a Large dragon in_this_cave.",
         "VP": 3,
         "size": "Medium",
         "capacity": 3,
@@ -2956,7 +2956,7 @@
     {
         "number": 99,
         "name": "Nimble Trilling Amphiptere",
-        "ability_text": "Gain [Coin][AnyResource][AnyResource].",
+        "ability_text": "Gain [Coin and AnyResource and AnyResource].",
         "VP": 2,
         "size": "Large",
         "capacity": 2,
@@ -2983,7 +2983,7 @@
     {
         "number": 100,
         "name": "Horned Venomous Wyrm",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is Small, tuck it here. Otherwise discard it and gain [Milk].",
+        "ability_text": "Reveal [DragonCard] from_the_deck. If it is Small, tuck it here. Otherwise discard it and gain [Milk].",
         "VP": 5,
         "size": "Small",
         "capacity": 2,
@@ -3034,7 +3034,7 @@
     {
         "number": 102,
         "name": "Pocket Amphiptere",
-        "ability_text": "Gain [VP-3] if there is at least 1 other Playful dragon in this cave.",
+        "ability_text": "Gain [VP-3] if there is at least 1 other Playful dragon in_this_cave.",
         "VP": 4,
         "size": "Small",
         "capacity": 3,
@@ -3099,7 +3099,7 @@
     {
         "number": 104,
         "name": "Gliding Taiga Drake",
-        "ability_text": "Up to 2x, tuck [DragonCard] from your hand here. Each time you do, gain [AnyResource].",
+        "ability_text": "Up to 2x, tuck [DragonCard] from_your_hand here. Each time you do, gain [AnyResource].",
         "VP": 0,
         "size": "Small",
         "capacity": 2,
@@ -3131,7 +3131,7 @@
     {
         "number": 105,
         "name": "Australopithecus Drakus",
-        "ability_text": "Up to 3x, pay [CaveCard] from your hand to lay [Egg] here.",
+        "ability_text": "Up to 3x, pay [CaveCard] from_your_hand to lay [Egg] here.",
         "VP": 4,
         "size": "Large",
         "capacity": 3,
@@ -3160,7 +3160,7 @@
     {
         "number": 106,
         "name": "Minor Sharpclaw",
-        "ability_text": "Lose [VP-2] for each other Aggressive dragon in this cave.",
+        "ability_text": "Lose [VP-2] for each other Aggressive dragon in_this_cave.",
         "VP": 7,
         "size": "Small",
         "capacity": 3,
@@ -3186,7 +3186,7 @@
     {
         "number": 107,
         "name": "Puck's Horned Drake",
-        "ability_text": "If you have at least 3 dragons in this cave, lay [Egg] on each dragon in this cave.",
+        "ability_text": "If you have at least 3 dragons in_this_cave, lay [Egg] on each dragon in_this_cave.",
         "VP": 1,
         "size": "Small",
         "capacity": 3,
@@ -3218,7 +3218,7 @@
     {
         "number": 108,
         "name": "Good Drake",
-        "ability_text": "Pay [Coin] to gain [DragonGuild][AnyResource][CaveCard][DragonCard].",
+        "ability_text": "Pay [Coin] to gain [DragonGuild and AnyResource and CaveCard and DragonCard].",
         "VP": 7,
         "size": "Medium",
         "capacity": 1,
@@ -3249,7 +3249,7 @@
     {
         "number": 109,
         "name": "Bellicose Firevern",
-        "ability_text": "Pay [AnyResource] to draw [DragonCard][DragonCard][DragonCard] from the deck. Keep 1, discard 1, and tuck 1 here.",
+        "ability_text": "Pay [AnyResource] to draw [DragonCard and DragonCard and DragonCard] from_the_deck. Keep 1, discard 1, and tuck 1 here.",
         "VP": 5,
         "size": "Small",
         "capacity": 1,
@@ -3284,7 +3284,7 @@
     {
         "number": 110,
         "name": "Stalking Drake",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is Medium or Large, tuck it here. Otherwise, add it to your hand.",
+        "ability_text": "Reveal [DragonCard] from_the_deck. If it is Medium or Large, tuck it here. Otherwise, add it to your hand.",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -3310,7 +3310,7 @@
     {
         "number": 111,
         "name": "Penurious Red Wyrm",
-        "ability_text": "Gain [AnyResource] for each Aggressive dragon in this cave. You may cache up to 2 of them here.",
+        "ability_text": "Gain [AnyResource] for each Aggressive dragon in_this_cave. You may cache up to 2 of them here.",
         "VP": 1,
         "size": "Medium",
         "capacity": 2,
@@ -3337,7 +3337,7 @@
     {
         "number": 112,
         "name": "Variegated Amphiptere",
-        "ability_text": "Gain [VP-2] for each dragon in an orthogonally adjacent space.",
+        "ability_text": "Gain [VP-2] for each dragon in an orthogonally_adjacent space.",
         "VP": 2,
         "size": "Medium",
         "capacity": 2,
@@ -3362,7 +3362,7 @@
     {
         "number": 113,
         "name": "Shaly Rockbreaker",
-        "ability_text": "Excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 8,
         "size": "Large",
         "capacity": 1,
@@ -3418,7 +3418,7 @@
     {
         "number": 115,
         "name": "Custodial Koiwyrm",
-        "ability_text": "Gain [AnyResource][AnyResource]. Keep 1 and cache 1 onto any dragon.",
+        "ability_text": "Gain [AnyResource and AnyResource]. Keep 1 and cache 1 onto any dragon.",
         "VP": 3,
         "size": "Medium",
         "capacity": 2,
@@ -3445,7 +3445,7 @@
     {
         "number": 116,
         "name": "Splitting Golden Hydra",
-        "ability_text": "Draw [DragonCard][DragonCard] from the deck. Keep 1 and tuck 1 under any dragon.",
+        "ability_text": "Draw [DragonCard and DragonCard] from_the_deck. Keep 1 and tuck 1 under any dragon.",
         "VP": 5,
         "size": "Large",
         "capacity": 2,
@@ -3474,7 +3474,7 @@
     {
         "number": 117,
         "name": "Antediluvian Basilisk",
-        "ability_text": "Tuck [DragonCard] from the deck here for each marker you have placed on the Dragon Guild.",
+        "ability_text": "Tuck [DragonCard] from_the_deck here for each marker you have placed on the Dragon Guild.",
         "VP": 2,
         "size": "Large",
         "capacity": 1,
@@ -3501,7 +3501,7 @@
     {
         "number": 118,
         "name": "Spirited Hydraptere",
-        "ability_text": "Gain [Coin][Coin].",
+        "ability_text": "Gain [Coin and Coin].",
         "VP": 2,
         "size": "Small",
         "capacity": 1,
@@ -3549,7 +3549,7 @@
     {
         "number": 120,
         "name": "Knowing Guardian",
-        "ability_text": "Cache [AnyResource] from your supply here. If you do, draw [DragonCard] from the deck.",
+        "ability_text": "Cache [AnyResource] from_your_supply here. If you do, draw [DragonCard] from_the_deck.",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -3581,7 +3581,7 @@
     {
         "number": 121,
         "name": "Archaic Whiskered Lung Dragon",
-        "ability_text": "Pay [Coin] to gain [DragonGuild][DragonGuild][DragonGuild].",
+        "ability_text": "Pay [Coin] to gain [DragonGuild and DragonGuild and DragonGuild].",
         "VP": 5,
         "size": "Large",
         "capacity": 3,
@@ -3611,7 +3611,7 @@
     {
         "number": 122,
         "name": "Yellow-Bellied Lung Dragon",
-        "ability_text": "Lose [VP-1] for each other Aggressive dragon in this cave.",
+        "ability_text": "Lose [VP-1] for each other Aggressive dragon in_this_cave.",
         "VP": 3,
         "size": "Medium",
         "capacity": 1,
@@ -3685,7 +3685,7 @@
     {
         "number": 125,
         "name": "Red Guardian",
-        "ability_text": "Cache [AnyResource] from your supply onto any dragon in this column.",
+        "ability_text": "Cache [AnyResource] from_your_supply onto any dragon in this column.",
         "VP": 6,
         "size": "Large",
         "capacity": 2,
@@ -3731,7 +3731,7 @@
     {
         "number": 127,
         "name": "Capricious Venomous Wyrm",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is Small or a Hatchling, tuck it here. Otherwise, add it to your hand.",
+        "ability_text": "Reveal [DragonCard] from_the_deck. If it is Small or a Hatchling, tuck it here. Otherwise, add it to your hand.",
         "VP": 5,
         "size": "Large",
         "capacity": 2,
@@ -3780,7 +3780,7 @@
     {
         "number": 129,
         "name": "Red-Crested Gryphdragon",
-        "ability_text": "Gain [VP-3] for each Playful dragon in an orthogonally adjacent space.",
+        "ability_text": "Gain [VP-3] for each Playful dragon in an orthogonally_adjacent space.",
         "VP": 6,
         "size": "Medium",
         "capacity": 2,
@@ -3805,7 +3805,7 @@
     {
         "number": 130,
         "name": "Smirking Ridgeback",
-        "ability_text": "Tuck [DragonCard] from the deck under each Playful dragon in this cave.",
+        "ability_text": "Tuck [DragonCard] from_the_deck under each Playful dragon in_this_cave.",
         "VP": 2,
         "size": "Small",
         "capacity": 1,
@@ -3830,7 +3830,7 @@
     {
         "number": 131,
         "name": "Titanic Coatl",
-        "ability_text": "Gain [VP-4] for each set of dragon sizes on your player mat (1 set = 1 of each: Hatchling, Small, Medium, Large).",
+        "ability_text": "Gain [VP-4] for each set of dragon sizes on your player mat.",
         "VP": 7,
         "size": "Large",
         "capacity": 1,
@@ -3925,7 +3925,7 @@
     {
         "number": 135,
         "name": "Churlish Firevern",
-        "ability_text": "If this dragon's column is full, draw [DragonCard][DragonCard] from the deck. You may tuck 1 or both here.",
+        "ability_text": "If this dragon's column is full, draw [DragonCard and DragonCard] from_the_deck. You may tuck 1 or both here.",
         "VP": 2,
         "size": "Small",
         "capacity": 2,
@@ -3989,7 +3989,7 @@
     {
         "number": 137,
         "name": "Starlit Shepherd",
-        "ability_text": "Pay [CaveCard] to lay [Egg][Egg] anywhere in this cave.",
+        "ability_text": "Pay [CaveCard] to lay [Egg and Egg] anywhere in_this_cave.",
         "VP": 4,
         "size": "Medium",
         "capacity": 3,
@@ -4018,7 +4018,7 @@
     {
         "number": 138,
         "name": "Kind Mistvern",
-        "ability_text": "Lay [Egg] on each dragon in this cave that is not Aggressive.",
+        "ability_text": "Lay [Egg] on each dragon in_this_cave that is not Aggressive.",
         "VP": 1,
         "size": "Large",
         "capacity": 4,
@@ -4063,7 +4063,7 @@
     {
         "number": 140,
         "name": "Rocky Rockbreaker",
-        "ability_text": "Excavate 1 space for free with [CaveCard] from your hand.",
+        "ability_text": "Excavate_1_space for free with [CaveCard] from_your_hand.",
         "VP": 5,
         "size": "Medium",
         "capacity": 2,
@@ -4084,7 +4084,7 @@
     {
         "number": 141,
         "name": "Sea Viper",
-        "ability_text": "Tuck [DragonCard] from the deck under any dragon.",
+        "ability_text": "Tuck [DragonCard] from_the_deck under any dragon.",
         "VP": 3,
         "size": "Small",
         "capacity": 2,
@@ -4105,7 +4105,7 @@
     {
         "number": 142,
         "name": "Royal Wyvern",
-        "ability_text": "Pay [CaveCard] to draw [DragonCard][DragonCard][DragonCard] from the deck. Keep 1, discard 1, and tuck 1 here.",
+        "ability_text": "Pay [CaveCard] to draw [DragonCard and DragonCard and DragonCard] from_the_deck. Keep 1, discard 1, and tuck 1 here.",
         "VP": 3,
         "size": "Medium",
         "capacity": 2,
@@ -4161,7 +4161,7 @@
     {
         "number": 144,
         "name": "Playful Hornwyrn",
-        "ability_text": "Pay [AnyResource] to gain [VP-1] or pay [AnyResource][AnyResource] to gain [VP-3].",
+        "ability_text": "Pay [AnyResource] to gain [VP-1] or pay [AnyResource and AnyResource] to gain [VP-3].",
         "VP": 9,
         "size": "Medium",
         "capacity": 4,
@@ -4222,7 +4222,7 @@
     {
         "number": 146,
         "name": "Crafty Moray",
-        "ability_text": "Pay [AnyResource] to play another dragon from your hand for free.",
+        "ability_text": "Pay [AnyResource] to play another dragon from_your_hand for free.",
         "VP": 1,
         "size": "Medium",
         "capacity": 2,
@@ -4282,7 +4282,7 @@
     {
         "number": 148,
         "name": "Great Horned Wyvern",
-        "ability_text": "Draw [DragonCard] from the deck. You may tuck it here.",
+        "ability_text": "Draw [DragonCard] from_the_deck. You may tuck it here.",
         "VP": 4,
         "size": "Large",
         "capacity": 3,
@@ -4311,7 +4311,7 @@
     {
         "number": 149,
         "name": "Ophidian Recluse",
-        "ability_text": "Pay [AnyResource][CaveCard][DragonCard] to gain [VP-5].",
+        "ability_text": "Pay [AnyResource and CaveCard and DragonCard] to gain [VP-5].",
         "VP": 6,
         "size": "Medium",
         "capacity": 1,
@@ -4368,7 +4368,7 @@
     {
         "number": 151,
         "name": "Fanged Broadwyrm",
-        "ability_text": "Tuck [DragonCard] from your hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
         "VP": 3,
         "size": "Large",
         "capacity": 3,
@@ -4393,7 +4393,7 @@
     {
         "number": 152,
         "name": "Shrieking Amphiptere",
-        "ability_text": "Tuck [DragonCard] from your hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
+        "ability_text": "Tuck [DragonCard] from_your_hand here to gain [AnyResource] of the cost printed on the tucked dragon.",
         "VP": 2,
         "size": "Large",
         "capacity": 2,
@@ -4418,7 +4418,7 @@
     {
         "number": 153,
         "name": "Blue Keeper",
-        "ability_text": "Cache [AnyResource] from your supply here. If you do, lay [Egg] here.",
+        "ability_text": "Cache [AnyResource] from_your_supply here. If you do, lay [Egg] here.",
         "VP": 2,
         "size": "Small",
         "capacity": 4,
@@ -4558,7 +4558,7 @@
     {
         "number": 158,
         "name": "Brushwood Dragonette",
-        "ability_text": "Lay [Egg] anywhere in this cave.",
+        "ability_text": "Lay [Egg] anywhere in_this_cave.",
         "VP": 3,
         "size": "Small",
         "capacity": 2,
@@ -4581,7 +4581,7 @@
     {
         "number": 159,
         "name": "Jaunty Dragonette",
-        "ability_text": "Pay [Egg] from anywhere in this cave to gain [AnyResource][AnyResource].",
+        "ability_text": "Pay [Egg] from anywhere in_this_cave to gain [AnyResource and AnyResource].",
         "VP": 1,
         "size": "Medium",
         "capacity": 3,
@@ -4613,7 +4613,7 @@
     {
         "number": 160,
         "name": "Brushtail Fae",
-        "ability_text": "Draw [DragonCard] from the deck. You may tuck it here.",
+        "ability_text": "Draw [DragonCard] from_the_deck. You may tuck it here.",
         "VP": 3,
         "size": "Small",
         "capacity": 3,
@@ -4672,7 +4672,7 @@
     {
         "number": 162,
         "name": "Cosmic Amphiptere",
-        "ability_text": "Excavate 1 space for free with [CaveCard] from the display",
+        "ability_text": "Excavate_1_space for free with [CaveCard] from the display",
         "VP": 5,
         "size": "Small",
         "capacity": 2,
@@ -4725,7 +4725,7 @@
     {
         "number": 164,
         "name": "Metamorphic Feydragon",
-        "ability_text": "If you have at least 3 dragons in this cave, lay [Egg] on each dragon in this cave.",
+        "ability_text": "If you have at least 3 dragons in_this_cave, lay [Egg] on each dragon in_this_cave.",
         "VP": 4,
         "size": "Small",
         "capacity": 4,
@@ -4757,7 +4757,7 @@
     {
         "number": 165,
         "name": "Clairvoyant Feydragon",
-        "ability_text": "Gain [DragonCard][DragonCard]. Each opponent draws [DragonCard] from the deck.",
+        "ability_text": "Gain [DragonCard and DragonCard]. Each opponent draws [DragonCard] from_the_deck.",
         "VP": 5,
         "size": "Medium",
         "capacity": 1,
@@ -4931,7 +4931,7 @@
     {
         "number": 171,
         "name": "Macabre Lindworm",
-        "ability_text": "Tuck [DragonCard] from your hand under any dragon in this column.",
+        "ability_text": "Tuck [DragonCard] from_your_hand under any dragon in this column.",
         "VP": 6,
         "size": "Large",
         "capacity": 1,
@@ -4981,7 +4981,7 @@
     {
         "number": 173,
         "name": "Solitary Remora",
-        "ability_text": "Lay [Egg] on any orthogonally adjacent dragon.",
+        "ability_text": "Lay [Egg] on any orthogonally_adjacent dragon.",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -5002,7 +5002,7 @@
     {
         "number": 174,
         "name": "Steadfast Southern Drake",
-        "ability_text": "Pay [Egg] to gain [AnyResource][CaveCard][DragonCard]. Each opponent may pay [Egg] to gain [AnyResource] or [CaveCard] or [DragonCard].",
+        "ability_text": "Pay [Egg] to gain [AnyResource and CaveCard and DragonCard]. Each opponent may pay [Egg] to gain [AnyResource] or [CaveCard] or [DragonCard].",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -5038,7 +5038,7 @@
     {
         "number": 175,
         "name": "Tendering Mothdragon",
-        "ability_text": "If you have at least 1 marker on the Dragon Guild, lay up to [Egg][Egg] here.",
+        "ability_text": "If you have at least 1 marker on the Dragon Guild, lay up to [Egg and Egg] here.",
         "VP": 4,
         "size": "Small",
         "capacity": 2,
@@ -5075,7 +5075,7 @@
     {
         "number": 176,
         "name": "Gnawing Seraph",
-        "ability_text": "Reveal [DragonCard] from the deck. If it is Medium, tuck it here. Otherwise, discard it and gain [Meat].",
+        "ability_text": "Reveal [DragonCard] from_the_deck. If it is Medium, tuck it here. Otherwise, discard it and gain [Meat].",
         "VP": 3,
         "size": "Small",
         "capacity": 1,
@@ -5124,7 +5124,7 @@
     {
         "number": 178,
         "name": "Watchful Wyvern",
-        "ability_text": "Gain [Gold][Gold]. Each opponent gains [Gold].",
+        "ability_text": "Gain [Gold and Gold]. Each opponent gains [Gold].",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -5220,7 +5220,7 @@
     {
         "number": 181,
         "name": "Gamboling Landragon",
-        "ability_text": "Gain [Meat][Meat]. Each opponent gains [Meat].",
+        "ability_text": "Gain [Meat and Meat]. Each opponent gains [Meat].",
         "VP": 3,
         "size": "Large",
         "capacity": 1,
