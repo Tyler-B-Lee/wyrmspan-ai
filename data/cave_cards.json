@@ -20,7 +20,7 @@
     },
     {
         "number": 3,
-        "text": "Cache [AnyResource][AnyResource] from the general supply onto any dragon(s).",
+        "text": "Cache [AnyResource and AnyResource] from_the_general_supply onto any dragons.",
         "when_played": {
             "max_uses": 2,
             "adv_effects": {
@@ -34,7 +34,7 @@
     },
     {
         "number": 4,
-        "text": "Cache [AnyResource][AnyResource] from the general supply onto any dragon(s).",
+        "text": "Cache [AnyResource and AnyResource] from_the_general_supply onto any dragons.",
         "when_played": {
             "max_uses": 2,
             "adv_effects": {
@@ -88,7 +88,7 @@
     },
     {
         "number": 7,
-        "text": "Gain [CaveCard][AnyResource].",
+        "text": "Gain [CaveCard and AnyResource].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -108,7 +108,7 @@
     },
     {
         "number": 8,
-        "text": "Gain [CaveCard][DragonGuild].",
+        "text": "Gain [CaveCard and DragonGuild].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -126,7 +126,7 @@
     },
     {
         "number": 9,
-        "text": "Gain [CaveCard][DragonGuild].",
+        "text": "Gain [CaveCard and DragonGuild].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -144,7 +144,7 @@
     },
     {
         "number": 10,
-        "text": "Gain [CaveCard]. Lay [Egg][Egg].",
+        "text": "Gain [CaveCard]. Lay [Egg and Egg].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -169,7 +169,7 @@
     },
     {
         "number": 11,
-        "text": "Gain [CaveCard]. Lay [Egg][Egg].",
+        "text": "Gain [CaveCard]. Lay [Egg and Egg].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -221,7 +221,7 @@
     },
     {
         "number": 15,
-        "text": "Gain [Crystal][DragonCard].",
+        "text": "Gain [Crystal and DragonCard].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -241,7 +241,7 @@
     },
     {
         "number": 16,
-        "text": "Gain [Crystal][Crystal].",
+        "text": "Gain [Crystal and Crystal].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -261,7 +261,7 @@
     },
     {
         "number": 17,
-        "text": "Gain [Crystal][Milk].",
+        "text": "Gain [Crystal and Milk].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -321,7 +321,7 @@
     },
     {
         "number": 20,
-        "text": "Gain [DragonCard][DragonCard].",
+        "text": "Gain [DragonCard and DragonCard].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -341,7 +341,7 @@
     },
     {
         "number": 21,
-        "text": "Gain [DragonCard][DragonCard].",
+        "text": "Gain [DragonCard and DragonCard].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -361,7 +361,7 @@
     },
     {
         "number": 22,
-        "text": "Gain [DragonCard][DragonGuild].",
+        "text": "Gain [DragonCard and DragonGuild].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -379,7 +379,7 @@
     },
     {
         "number": 23,
-        "text": "Gain [DragonCard][DragonGuild].",
+        "text": "Gain [DragonCard and DragonGuild].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -397,7 +397,7 @@
     },
     {
         "number": 24,
-        "text": "Gain [DragonCard][DragonGuild].",
+        "text": "Gain [DragonCard and DragonGuild].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -455,7 +455,7 @@
     },
     {
         "number": 27,
-        "text": "Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].",
+        "text": "Gain [DragonGuild and DragonGuild]. each_opponent gains [DragonGuild].",
         "when_played": {
             "max_uses": 2,
             "adv_effects": {
@@ -468,7 +468,7 @@
     },
     {
         "number": 28,
-        "text": "Gain [DragonGuild][DragonGuild]. Each opponent gains [DragonGuild].",
+        "text": "Gain [DragonGuild and DragonGuild]. each_opponent gains [DragonGuild].",
         "when_played": {
             "max_uses": 2,
             "adv_effects": {
@@ -517,7 +517,7 @@
     },
     {
         "number": 32,
-        "text": "Gain [Gold][DragonCard].",
+        "text": "Gain [Gold and DragonCard].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -537,7 +537,7 @@
     },
     {
         "number": 33,
-        "text": "Gain [Gold][Crystal].",
+        "text": "Gain [Gold and Crystal].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -557,7 +557,7 @@
     },
     {
         "number": 34,
-        "text": "Gain [Gold][Gold].",
+        "text": "Gain [Gold and Gold].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -577,7 +577,7 @@
     },
     {
         "number": 35,
-        "text": "Gain [Gold][Milk].",
+        "text": "Gain [Gold and Milk].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -637,7 +637,7 @@
     },
     {
         "number": 38,
-        "text": "Gain [Meat][DragonCard].",
+        "text": "Gain [Meat and DragonCard].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -657,7 +657,7 @@
     },
     {
         "number": 39,
-        "text": "Gain [Meat][DragonCard].",
+        "text": "Gain [Meat and DragonCard].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -677,7 +677,7 @@
     },
     {
         "number": 40,
-        "text": "Gain [Meat][Crystal].",
+        "text": "Gain [Meat and Crystal].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -697,7 +697,7 @@
     },
     {
         "number": 41,
-        "text": "Gain [Meat][Crystal].",
+        "text": "Gain [Meat and Crystal].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -717,7 +717,7 @@
     },
     {
         "number": 42,
-        "text": "Gain [Meat][Gold].",
+        "text": "Gain [Meat and Gold].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -737,7 +737,7 @@
     },
     {
         "number": 43,
-        "text": "Gain [Meat][Gold].",
+        "text": "Gain [Meat and Gold].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -757,7 +757,7 @@
     },
     {
         "number": 44,
-        "text": "Gain [Meat][Meat].",
+        "text": "Gain [Meat and Meat].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -777,7 +777,7 @@
     },
     {
         "number": 45,
-        "text": "Gain [Meat][Meat].",
+        "text": "Gain [Meat and Meat].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -797,7 +797,7 @@
     },
     {
         "number": 46,
-        "text": "Gain [Meat][Milk].",
+        "text": "Gain [Meat and Milk].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -857,7 +857,7 @@
     },
     {
         "number": 49,
-        "text": "Gain [Milk][Milk].",
+        "text": "Gain [Milk and Milk].",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -877,7 +877,7 @@
     },
     {
         "number": 50,
-        "text": "Gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource]. Each opponent gains 1 benefit of their choice.",
+        "text": "Gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource]. each_opponent gains 1 benefit of their choice.",
         "when_played": {
             "adv_effects": {
                 "choice": [
@@ -896,7 +896,7 @@
     },
     {
         "number": 51,
-        "text": "Gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource]. Each opponent gains 1 benefit of their choice.",
+        "text": "Gain 2 different benefits: [DragonCard]/[DragonGuild]/[CaveCard]/[AnyResource]. each_opponent gains 1 benefit of their choice.",
         "when_played": {
             "adv_effects": {
                 "choice": [
@@ -948,7 +948,7 @@
     },
     {
         "number": 55,
-        "text": "Lay [Egg][Egg][Egg].",
+        "text": "Lay [Egg and Egg and Egg].",
         "when_played": {
             "max_uses": 3,
             "adv_effects": {
@@ -960,7 +960,7 @@
     },
     {
         "number": 56,
-        "text": "Lay [Egg][Egg][Egg].",
+        "text": "Lay [Egg and Egg and Egg].",
         "when_played": {
             "max_uses": 3,
             "adv_effects": {
@@ -972,7 +972,7 @@
     },
     {
         "number": 57,
-        "text": "Lay [Egg][Egg][Egg].",
+        "text": "Lay [Egg and Egg and Egg].",
         "when_played": {
             "max_uses": 3,
             "adv_effects": {
@@ -984,7 +984,7 @@
     },
     {
         "number": 58,
-        "text": "Pay [AnyResource][AnyResource], then draw [CaveCard] from the deck and immediately play it for free.",
+        "text": "Pay [AnyResource and AnyResource], then draw [CaveCard] from_the_deck and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -998,7 +998,7 @@
     },
     {
         "number": 59,
-        "text": "Pay [AnyResource][AnyResource], then gain [CaveCard] from the display and immediately play it for free.",
+        "text": "Pay [AnyResource and AnyResource], then gain [CaveCard] from_the_display and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1012,7 +1012,7 @@
     },
     {
         "number": 60,
-        "text": "Pay [CaveCard][CaveCard], then draw [CaveCard] from the deck and immediately play it for free.",
+        "text": "Pay [CaveCard and CaveCard], then draw [CaveCard] from_the_deck and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1026,7 +1026,7 @@
     },
     {
         "number": 61,
-        "text": "Pay [CaveCard][CaveCard], then gain [CaveCard] from the display and immediately play it for free.",
+        "text": "Pay [CaveCard and CaveCard], then gain [CaveCard] from_the_display and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1040,7 +1040,7 @@
     },
     {
         "number": 62,
-        "text": "Pay [DragonCard][DragonCard], then draw [CaveCard] from the deck and immediately play it for free.",
+        "text": "Pay [DragonCard and DragonCard], then draw [CaveCard] from_the_deck and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1054,7 +1054,7 @@
     },
     {
         "number": 63,
-        "text": "Pay [DragonCard][DragonCard], then gain [CaveCard] from the display and immediately play it for free.",
+        "text": "Pay [DragonCard and DragonCard], then gain [CaveCard] from_the_display and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1068,7 +1068,7 @@
     },
     {
         "number": 64,
-        "text": "Pay [Egg][Egg], then draw [CaveCard] from the deck and immediately play it for free.",
+        "text": "Pay [Egg and Egg], then draw [CaveCard] from_the_deck and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1085,7 +1085,7 @@
     },
     {
         "number": 65,
-        "text": "Pay [Egg][Egg], then gain [CaveCard] from the display and immediately play it for free.",
+        "text": "Pay [Egg and Egg], then gain [CaveCard] from_the_display and immediately play it for free.",
         "when_played": {
             "adv_effects": {
                 "play_cave": {
@@ -1102,7 +1102,7 @@
     },
     {
         "number": 66,
-        "text": "Swap the location of any 2 dragons on your player mat. Ignore normal cave preferences.",
+        "text": "Swap the location of any 2 dragons on your player mat. ignore_normal_cave_pref.",
         "when_played": {
             "swap_dragons": {
                 "L1": "any",
@@ -1112,7 +1112,7 @@
     },
     {
         "number": 67,
-        "text": "Tuck [DragonCard][DragonCard] from the deck behind any dragon(s).",
+        "text": "Tuck [DragonCard and DragonCard] from_the_deck behind any dragons.",
         "when_played": {
             "max_uses": 2,
             "adv_effects": {
@@ -1125,7 +1125,7 @@
     },
     {
         "number": 68,
-        "text": "Tuck [DragonCard][DragonCard] from the deck behind any dragon(s).",
+        "text": "Tuck [DragonCard and DragonCard] from_the_deck behind any dragons.",
         "when_played": {
             "max_uses": 2,
             "adv_effects": {
@@ -1138,7 +1138,7 @@
     },
     {
         "number": 69,
-        "text": "Up to 3x, pay [AnyResource] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [AnyResource] to gain [DragonGuild]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "gain_guild": true
@@ -1154,7 +1154,7 @@
     },
     {
         "number": 70,
-        "text": "Up to 3x, pay [AnyResource] to lay [Egg][Egg]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [AnyResource] to lay [Egg and Egg]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -1181,7 +1181,7 @@
     },
     {
         "number": 71,
-        "text": "Up to 3x, pay [CaveCard] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [CaveCard] to gain [DragonGuild]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "gain_guild": true
@@ -1197,7 +1197,7 @@
     },
     {
         "number": 72,
-        "text": "Up to 3x, pay [DragonCard] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [DragonCard] to gain [DragonGuild]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "gain_guild": true
@@ -1213,7 +1213,7 @@
     },
     {
         "number": 73,
-        "text": "Up to 3x, pay [DragonCard] to lay [Egg][Egg]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [DragonCard] to lay [Egg and Egg]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -1240,7 +1240,7 @@
     },
     {
         "number": 74,
-        "text": "Up to 3x, pay [Egg] to gain [AnyResource][AnyResource]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [Egg] to gain [AnyResource and AnyResource]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "sequence": [
@@ -1270,7 +1270,7 @@
     },
     {
         "number": 75,
-        "text": "Up to 3x, pay [Egg] to gain [DragonGuild]. Each opponent may do this 1x.",
+        "text": "Up to 3x, pay [Egg] to gain [DragonGuild]. each_opponent may do this 1x.",
         "when_played": {
             "adv_effects": {
                 "gain_guild": true

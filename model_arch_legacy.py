@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import math
-from card_tokenizer import SemanticCardSequenceEncoder
 
 class WyrmspanActionScorer(nn.Module):
     def __init__(self, state_dim, action_dim, fusion_dim=256, use_attention=False):
@@ -196,8 +195,6 @@ class WyrmspanAgent(nn.Module):
         max_action_tokens=64,
         max_queue_size=5,
         max_hand_size=15,
-        card_vocab_size=256,
-        max_card_tokens=50,
         dropout: float = 0.0,
     ):
         super().__init__()
@@ -223,7 +220,6 @@ class WyrmspanAgent(nn.Module):
         # global, guild, objective round 1-4, event queue, hand, display 1-3, or board space 1-12
         # hand cards have no order, so they will share one position embedding
         self.max_hand_size = max_hand_size
-        self.max_card_tokens = max_card_tokens
         self.input_position_embed = nn.Embedding(
             1 # thinking token
             + 6 # global + guild + deck + player res + automa + guild embedding
@@ -238,11 +234,6 @@ class WyrmspanAgent(nn.Module):
         # other items
         self.guild_embed = nn.Embedding(4, main_emb_dim)  # 4 guilds
         self.objective_embed = nn.Embedding(20, main_emb_dim)  # 20 objectives
-        self.semantic_card_encoder = SemanticCardSequenceEncoder(
-            vocab_size=card_vocab_size,
-            embedding_dim=main_emb_dim,
-            max_tokens=max_card_tokens,
-        )
 
         # The first token is a learned thinking token that becomes the state summary.
         self.state_encoder = nn.TransformerEncoder(
@@ -380,28 +371,13 @@ class WyrmspanAgent(nn.Module):
         display_dragons = observations["card_display_dragons"]  # [batch, 3]
         display_caves = observations["card_display_caves"]  # [batch, 3]
 
-        # Preserve the legacy ID embeddings and add semantic sequence summaries when available.
-        hand_card_embeddings = self.action_sequence_encoder.action_token_embed(hand_card_ids)
-        display_dragon_embeddings = self.action_sequence_encoder.action_token_embed(display_dragons)
-        display_cave_embeddings = self.action_sequence_encoder.action_token_embed(display_caves)
-
-        if "hand_card_tokens" in observations:
-            hand_card_embeddings = hand_card_embeddings + self._encode_card_batch(
-                observations["hand_card_tokens"], observations["hand_card_token_mask"]
-            )
-            display_dragon_embeddings = display_dragon_embeddings + self._encode_card_batch(
-                observations["card_display_dragon_tokens"], observations["card_display_dragon_token_mask"]
-            )
-            display_cave_embeddings = display_cave_embeddings + self._encode_card_batch(
-                observations["card_display_cave_tokens"], observations["card_display_cave_token_mask"]
-            )
+        # Embed hand cards using the same token embedding as actions (since they share the same token space)
+        hand_card_embeddings = self.action_sequence_encoder.action_token_embed(hand_card_ids)  # [batch, max_hand_size, main_emb_dim]
+        display_dragon_embeddings = self.action_sequence_encoder.action_token_embed(display_dragons)  # [batch, 3, main_emb_dim]
+        display_cave_embeddings = self.action_sequence_encoder.action_token_embed(display_caves)  # [batch, 3, main_emb_dim]
 
         # Embed slot types and details for each of the 12 board spaces
         slot_dragon_embeddings = self.action_sequence_encoder.action_token_embed(slot_dragons)  # [batch, 12, main_emb_dim]
-        if "slot_card_tokens" in observations:
-            slot_dragon_embeddings = slot_dragon_embeddings + self._encode_card_batch(
-                observations["slot_card_tokens"], observations["slot_card_token_mask"]
-            )
         slot_type_embeddings = self.slot_type_embed(slot_types)  # [batch, 12, main_emb_dim]
         slot_details_embeddings = self.slot_details_encoder(slot_details)  # [batch, 12, main_emb_dim]
         if debug:
@@ -470,16 +446,6 @@ class WyrmspanAgent(nn.Module):
         state_value = self.critic(state_embedding)  # [batch, 1]
 
         return state_embedding, state_value
-
-    def _encode_card_batch(self, token_ids: torch.Tensor, token_mask: torch.Tensor) -> torch.Tensor:
-        token_ids = token_ids.long()
-        token_mask = token_mask.bool()
-        batch_size, card_count, token_count = token_ids.shape
-        flat_embeddings = self.semantic_card_encoder(
-            token_ids.reshape(batch_size * card_count, token_count),
-            token_mask.reshape(batch_size * card_count, token_count),
-        )
-        return flat_embeddings.reshape(batch_size, card_count, -1)
     
     def score_actions(self, state_embedding, action_token_ids, action_token_mask, action_mask=None):
         """
@@ -535,9 +501,7 @@ if __name__ == "__main__":
         action_pad_id=env.pad_token_id,
         max_action_tokens=env.max_action_tokens,
         max_queue_size=env.max_queue_size,
-        max_hand_size=env.max_hand_size,
-        card_vocab_size=env.card_token_vocab_size,
-        max_card_tokens=env.max_card_tokens,
+        max_hand_size=env.max_hand_size
     )
 
     # Test: Run a random action through the environment to verify it steps without errors,

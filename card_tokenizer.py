@@ -162,9 +162,18 @@ def serialize_cave_card(card: Mapping) -> list[str]:
 
 
 class SemanticCardSequenceEncoder(nn.Module):
-    """Pool a semantic token sequence into a single card embedding."""
+    """Encode a semantic token sequence into a single card embedding."""
 
-    def __init__(self, vocab_size: int = 512, embedding_dim: int = 64, max_tokens: int = 32, pad_id: int = 0):
+    def __init__(
+        self,
+        vocab_size: int = 512,
+        embedding_dim: int = 64,
+        max_tokens: int = 32,
+        pad_id: int = 0,
+        num_layers: int = 2,
+        num_heads: int = 4,
+        dropout: float = 0.0,
+    ):
         super().__init__()
         self.vocab_size = vocab_size
         self.embedding_dim = embedding_dim
@@ -173,6 +182,14 @@ class SemanticCardSequenceEncoder(nn.Module):
 
         self.token_embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=pad_id)
         self.position_embedding = nn.Embedding(max_tokens, embedding_dim)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=embedding_dim,
+            nhead=num_heads,
+            dim_feedforward=embedding_dim * 4,
+            batch_first=True,
+            dropout=dropout,
+        )
+        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
         self.output_proj = nn.Linear(embedding_dim, embedding_dim)
 
     def forward(self, token_ids: torch.Tensor, token_mask: torch.Tensor | None = None) -> torch.Tensor:
@@ -193,22 +210,17 @@ class SemanticCardSequenceEncoder(nn.Module):
         embeddings = self.token_embedding(token_ids) + self.position_embedding(positions)
 
         valid_mask = token_mask & (token_ids != self.pad_id)
-        pooled_rows = []
+        has_valid_tokens = valid_mask.any(dim=1)
 
-        for i in range(batch_size):
-            row_mask = valid_mask[i]
-            if not row_mask.any():
-                pooled_rows.append(torch.zeros(self.embedding_dim, device=token_ids.device, dtype=embeddings.dtype))
-                continue
+        # TransformerEncoder does not accept rows where every position is masked.
+        safe_mask = valid_mask.clone()
+        safe_mask[~has_valid_tokens, 0] = True
+        encoded = self.transformer(embeddings, src_key_padding_mask=~safe_mask)
 
-            row_emb = embeddings[i, row_mask]
-            row_weights = row_mask[row_mask].to(dtype=row_emb.dtype).unsqueeze(-1)
-            pooled_row = (row_emb * row_weights).sum(dim=0) / row_weights.sum(dim=0).clamp_min(1.0)
-            pooled_rows.append(pooled_row)
-
-        pooled = torch.stack(pooled_rows, dim=0)
-        output = self.output_proj(pooled)
-        return output
+        weights = valid_mask.unsqueeze(-1).to(dtype=encoded.dtype)
+        pooled = (encoded * weights).sum(dim=1) / weights.sum(dim=1).clamp_min(1.0)
+        pooled = pooled.masked_fill(~has_valid_tokens.unsqueeze(-1), 0.0)
+        return self.output_proj(pooled)
 
 
 def _token_to_id_map() -> dict[str, int]:
@@ -257,3 +269,59 @@ def card_tokens_to_ids(token_sequence: Iterable[str], token_map: dict[str, int] 
     for token in token_sequence:
         ids.append(token_map.get(token, token_map.get("<pad>", 0)))
     return ids
+
+
+def encode_card_sequences(
+    cards: Iterable[Mapping | None],
+    token_map: dict[str, int],
+    max_tokens: int,
+) -> tuple[list[list[int]], list[list[int]]]:
+    """Encode cards into padded token IDs and valid-token masks."""
+    encoded_ids: list[list[int]] = []
+    encoded_masks: list[list[int]] = []
+    for card in cards:
+        tokens = [] if card is None else (
+            serialize_dragon_card(card) if "ability_text" in card else serialize_cave_card(card)
+        )
+        token_ids = card_tokens_to_ids(tokens, token_map)[:max_tokens]
+        padding = max_tokens - len(token_ids)
+        encoded_ids.append(token_ids + [0] * padding)
+        encoded_masks.append([1] * len(token_ids) + [0] * padding)
+    return encoded_ids, encoded_masks
+
+
+if __name__ == "__main__":
+    import json
+    from pathlib import Path
+
+    DATA_DIR = Path(__file__).resolve().parent / 'data'
+
+    with open(DATA_DIR / 'dragon_cards.json', 'r') as f:
+        DRAGON_CARDS:list[dict] = json.load(f)
+    with open(DATA_DIR / 'cave_cards.json', 'r') as f:
+        CAVE_CARDS:list[dict] = json.load(f)
+
+    # Run tokenizer on all cards and print the results
+    dragon_vocab = set()
+    cave_vocab = set()
+    longest_embedding = 0
+    for card in DRAGON_CARDS[1:]:
+        tokens = serialize_dragon_card(card)
+        dragon_vocab.update(tokens)
+        longest_embedding = max(longest_embedding, len(tokens))
+        print(f"Dragon Card: {card['name']}")
+        print(tokens)
+        print()
+    print(f">>>> Dragon Vocab size: {len(dragon_vocab)}")
+
+    for card in CAVE_CARDS[1:]:
+        tokens = serialize_cave_card(card)
+        cave_vocab.update(tokens)
+        longest_embedding = max(longest_embedding, len(tokens))
+        print(f"Cave Card: {card['number']}")
+        print(tokens)
+        print()
+    print(f">>>> Cave Vocab size: {len(cave_vocab)}")
+
+    print(f">>>> Total Vocab size: {len(dragon_vocab.union(cave_vocab))}")
+    print(f">>>> Longest embedding length: {longest_embedding}")

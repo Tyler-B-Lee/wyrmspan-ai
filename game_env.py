@@ -1,5 +1,6 @@
 from game_states import *
 from game_logic import get_next_state, get_random_outcome
+from card_tokenizer import build_token_map, encode_card_sequences, serialize_cave_card, serialize_dragon_card
 
 import time
 import random
@@ -251,8 +252,29 @@ class WyrmspanEnv(gym.Env):
         # We assume a max number of legal actions the env will ever return
         self.max_legal_actions = 180
         self.max_action_tokens = 100
+        self.max_card_tokens = 50
         self.max_hand_size = 15
         self.max_queue_size = 5
+
+        all_card_tokens = [
+            serialize_dragon_card(card) for card in DRAGON_CARDS[1:]
+        ] + [
+            serialize_cave_card(card) for card in CAVE_CARDS[1:]
+        ]
+        self.card_token_map = build_token_map(all_card_tokens)
+        self.card_pad_token_id = 0
+        self.card_token_vocab_size = len(self.card_token_map)
+
+        dragon_sequences, dragon_sequence_masks = encode_card_sequences(
+            [None, *DRAGON_CARDS[1:]], self.card_token_map, self.max_card_tokens
+        )
+        cave_sequences, cave_sequence_masks = encode_card_sequences(
+            [None, *CAVE_CARDS[1:]], self.card_token_map, self.max_card_tokens
+        )
+        self.dragon_card_token_ids = np.asarray(dragon_sequences, dtype=np.int64)
+        self.dragon_card_token_masks = np.asarray(dragon_sequence_masks, dtype=np.int8)
+        self.cave_card_token_ids = np.asarray(cave_sequences, dtype=np.int64)
+        self.cave_card_token_masks = np.asarray(cave_sequence_masks, dtype=np.int8)
 
         self.token_strings = [
             "<pad>",
@@ -497,14 +519,42 @@ class WyrmspanEnv(gym.Env):
             # 2. Card display (dragon and cave cards on display)
             "card_display_dragons": spaces.Box(low=0, high=500, shape=(3,), dtype=np.int64),
             "card_display_caves": spaces.Box(low=0, high=600, shape=(3,), dtype=np.int64),
+            "card_display_dragon_tokens": spaces.Box(
+                low=0, high=self.card_token_vocab_size - 1,
+                shape=(3, self.max_card_tokens), dtype=np.int64
+            ),
+            "card_display_dragon_token_mask": spaces.Box(
+                low=0, high=1, shape=(3, self.max_card_tokens), dtype=np.int8
+            ),
+            "card_display_cave_tokens": spaces.Box(
+                low=0, high=self.card_token_vocab_size - 1,
+                shape=(3, self.max_card_tokens), dtype=np.int64
+            ),
+            "card_display_cave_token_mask": spaces.Box(
+                low=0, high=1, shape=(3, self.max_card_tokens), dtype=np.int8
+            ),
 
             # 3. Card IDs for hand and board (model will handle embeddings)
             "hand_card_ids": spaces.Box(low=0, high=500, shape=(self.max_hand_size,), dtype=np.int64),
             "hand_card_mask": spaces.Box(low=0, high=1, shape=(self.max_hand_size,), dtype=np.int8),  # mask to indicate real cards in hand
+            "hand_card_tokens": spaces.Box(
+                low=0, high=self.card_token_vocab_size - 1,
+                shape=(self.max_hand_size, self.max_card_tokens), dtype=np.int64
+            ),
+            "hand_card_token_mask": spaces.Box(
+                low=0, high=1, shape=(self.max_hand_size, self.max_card_tokens), dtype=np.int8
+            ),
 
             "slot_types": spaces.Box(low=0, high=3, shape=(12,), dtype=np.int64),
             "dragons_on_slots": spaces.Box(low=0, high=200, shape=(12,), dtype=np.int64),
             "slot_details": spaces.Box(low=0, high=3, shape=(12, 18), dtype=np.float32),
+            "slot_card_tokens": spaces.Box(
+                low=0, high=self.card_token_vocab_size - 1,
+                shape=(12, self.max_card_tokens), dtype=np.int64
+            ),
+            "slot_card_token_mask": spaces.Box(
+                low=0, high=1, shape=(12, self.max_card_tokens), dtype=np.int8
+            ),
             
             # 4. Other items to be tokenized - Guild, Objectives
             "other_indices": spaces.Box(low=0, high=20, shape=(5,), dtype=np.int64),
@@ -941,6 +991,21 @@ class WyrmspanEnv(gym.Env):
             json.dump(action, f, indent=2)
         print(f"Saved state and action info to {filename}")
 
+    def _cached_card_sequences(self, card_ids, card_type: str) -> tuple[np.ndarray, np.ndarray]:
+        if card_type == "dragon":
+            token_table = self.dragon_card_token_ids
+            mask_table = self.dragon_card_token_masks
+        elif card_type == "cave":
+            token_table = self.cave_card_token_ids
+            mask_table = self.cave_card_token_masks
+        else:
+            raise ValueError(f"Unsupported card type: {card_type}")
+
+        safe_ids = np.asarray([card_id or 0 for card_id in card_ids], dtype=np.int64)
+        if np.any(safe_ids < 0) or np.any(safe_ids >= len(token_table)):
+            raise IndexError(f"Card ID outside {card_type} cache: {safe_ids.tolist()}")
+        return token_table[safe_ids], mask_table[safe_ids]
+
     def _get_obs(self):
         """Get observation from game state and legal actions."""
         # 1. Global context tensors
@@ -959,6 +1024,17 @@ class WyrmspanEnv(gym.Env):
         final_obs["card_display_dragons"] = np.array(display_dragon_ids, dtype=np.int64)
         final_obs["card_display_caves"] = np.array(display_cave_ids, dtype=np.int64)
 
+        display_dragon_sequences, display_dragon_sequence_masks = self._cached_card_sequences(
+            card_display["dragon_cards"], "dragon"
+        )
+        display_cave_sequences, display_cave_sequence_masks = self._cached_card_sequences(
+            card_display["cave_cards"], "cave"
+        )
+        final_obs["card_display_dragon_tokens"] = display_dragon_sequences
+        final_obs["card_display_dragon_token_mask"] = display_dragon_sequence_masks
+        final_obs["card_display_cave_tokens"] = display_cave_sequences
+        final_obs["card_display_cave_token_mask"] = display_cave_sequence_masks
+
         # 3. Card IDs for hand and board
         hand_card_strings = [f"dragon_{card_id}" for card_id in self.game_state.player.dragon_hand] + [f"cave_{card_id}" for card_id in self.game_state.player.cave_hand]
         hand_card_ids = [self.token_index.get(card_str, self.unk_token_id) for card_str in hand_card_strings]
@@ -968,8 +1044,33 @@ class WyrmspanEnv(gym.Env):
         hand_card_mask = [1 if card_id != self.unk_token_id else 0 for card_id in hand_card_ids]
         final_obs["hand_card_mask"] = np.array(hand_card_mask, dtype=np.int8)
 
+        dragon_hand_count = len(self.game_state.player.dragon_hand)
+        hand_dragon_ids = self.game_state.player.dragon_hand
+        hand_cave_ids = self.game_state.player.cave_hand
+        hand_dragon_sequences, hand_dragon_masks = self._cached_card_sequences(hand_dragon_ids, "dragon")
+        hand_cave_sequences, hand_cave_masks = self._cached_card_sequences(hand_cave_ids, "cave")
+        hand_sequences = np.concatenate((hand_dragon_sequences, hand_cave_sequences), axis=0)
+        hand_sequence_masks = np.concatenate((hand_dragon_masks, hand_cave_masks), axis=0)
+        hand_padding = self.max_hand_size - dragon_hand_count - len(hand_cave_ids)
+        if hand_padding > 0:
+            hand_sequences = np.concatenate((hand_sequences, self.dragon_card_token_ids[[0] * hand_padding]), axis=0)
+            hand_sequence_masks = np.concatenate((hand_sequence_masks, self.dragon_card_token_masks[[0] * hand_padding]), axis=0)
+        final_obs["hand_card_tokens"] = hand_sequences[:self.max_hand_size]
+        final_obs["hand_card_token_mask"] = hand_sequence_masks[:self.max_hand_size]
+
         player_board_info = get_player_board_info(self.game_state)
         final_obs.update(player_board_info)
+
+        slot_sequences, slot_sequence_masks = self._cached_card_sequences(
+            [card_id or 0 for card_id in [
+                self.game_state.player.dragons_played[cave_name][col]
+                for cave_name in CAVE_NAMES
+                for col in range(4)
+            ]],
+            "dragon",
+        )
+        final_obs["slot_card_tokens"] = slot_sequences
+        final_obs["slot_card_token_mask"] = slot_sequence_masks
 
         # 4. Other items to be tokenized - Guild, Objectives
         other_indices = np.zeros(5, dtype=np.int64)

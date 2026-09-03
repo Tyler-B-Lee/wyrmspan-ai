@@ -1245,7 +1245,7 @@
     {
         "number": 37,
         "name": "Subterranean Basilisk",
-        "ability_text": "Lay [Egg and Egg]. Each opponent lays [Egg].",
+        "ability_text": "Lay [Egg and Egg]. each_opponent lays [Egg].",
         "VP": 4,
         "size": "Large",
         "capacity": 3,
@@ -1565,7 +1565,7 @@
     {
         "number": 49,
         "name": "Standard Horned Lung Dragon",
-        "ability_text": "Gain [VP-4] for each set of dragon traits on your player mat (1 set = 1 of each: Aggressive, Playful, Helpful, Shy).",
+        "ability_text": "Gain [VP-4] for each set of dragon traits on your player mat.",
         "VP": 6,
         "size": "Medium",
         "capacity": 3,
@@ -1763,7 +1763,7 @@
     {
         "number": 57,
         "name": "Eternal Feydragon",
-        "ability_text": "Gain [DragonGuild and DragonGuild]. Each opponent gains [DragonGuild].",
+        "ability_text": "Gain [DragonGuild and DragonGuild]. each_opponent gains [DragonGuild].",
         "VP": 5,
         "size": "Medium",
         "capacity": 1,
@@ -1870,7 +1870,7 @@
     {
         "number": 61,
         "name": "Primeval Wyrm",
-        "ability_text": "Pay [Egg and Egg] from any orthogonally_adjacent dragon(s) to gain [DragonGuild and DragonGuild].",
+        "ability_text": "Pay [Egg and Egg] from any orthogonally_adjacent dragons to gain [DragonGuild and DragonGuild].",
         "VP": 5,
         "size": "Large",
         "capacity": 2,
@@ -1956,7 +1956,7 @@
     {
         "number": 64,
         "name": "Scaly Rock Dragon",
-        "ability_text": "Excavate_1_space for free with [CaveCard] from the display.",
+        "ability_text": "Excavate_1_space for free with [CaveCard] from_the_display.",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -2128,7 +2128,7 @@
     {
         "number": 70,
         "name": "Patient Redwyrm",
-        "ability_text": "Up to 2x, pay [AnyResource] to lay [Egg]. Each opponent may do this 1x.",
+        "ability_text": "Up to 2x, pay [AnyResource] to lay [Egg]. each_opponent may do this 1x.",
         "VP": 5,
         "size": "Small",
         "capacity": 5,
@@ -2553,7 +2553,7 @@
     {
         "number": 85,
         "name": "Wealthy Koiwyrm",
-        "ability_text": "Gain [Crystal and Crystal]. Each opponent gains [Crystal].",
+        "ability_text": "Gain [Crystal and Crystal]. each_opponent gains [Crystal].",
         "VP": 4,
         "size": "Small",
         "capacity": 2,
@@ -2669,7 +2669,7 @@
     {
         "number": 89,
         "name": "Erudite Lung Dragon",
-        "ability_text": "Pay [AnyResource] to play a dragon from the display for free.",
+        "ability_text": "Pay [AnyResource] to play a dragon from_the_display for free.",
         "VP": 3,
         "size": "Small",
         "capacity": 3,
@@ -4252,7 +4252,7 @@
     {
         "number": 147,
         "name": "Steely Fae",
-        "ability_text": "Pay [DragonCard] to play a dragon from the display for free.",
+        "ability_text": "Pay [DragonCard] to play a dragon from_the_display for free.",
         "VP": 1,
         "size": "Medium",
         "capacity": 1,
@@ -4503,7 +4503,7 @@
     {
         "number": 156,
         "name": "Brindled Frogmouth",
-        "ability_text": "Choose [AnyResource] and gain 2 of that resource. Each opponent gains 1 of the same resource.",
+        "ability_text": "Choose [AnyResource] and gain 2 of that resource. each_opponent gains 1 of the same resource.",
         "VP": 4,
         "size": "Small",
         "capacity": 1,
@@ -4534,7 +4534,7 @@
     {
         "number": 157,
         "name": "Wily Lindworm",
-        "ability_text": "Swap the location of any 2 dragons on your player mat (ignore normal cave preferences).",
+        "ability_text": "Swap the location of any 2 dragons on your player mat (ignore_normal_cave_pref).",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -4672,7 +4672,7 @@
     {
         "number": 162,
         "name": "Cosmic Amphiptere",
-        "ability_text": "Excavate_1_space for free with [CaveCard] from the display",
+        "ability_text": "Excavate_1_space for free with [CaveCard] from_the_display",
         "VP": 5,
         "size": "Small",
         "capacity": 2,
@@ -4757,7 +4757,7 @@
     {
         "number": 165,
         "name": "Clairvoyant Feydragon",
-        "ability_text": "Gain [DragonCard and DragonCard]. Each opponent draws [DragonCard] from_the_deck.",
+        "ability_text": "Gain [DragonCard and DragonCard]. each_opponent draws [DragonCard] from_the_deck.",
         "VP": 5,
         "size": "Medium",
         "capacity": 1,
@@ -5002,7 +5002,7 @@
     {
         "number": 174,
         "name": "Steadfast Southern Drake",
-        "ability_text": "Pay [Egg] to gain [AnyResource and CaveCard and DragonCard]. Each opponent may pay [Egg] to gain [AnyResource] or [CaveCard] or [DragonCard].",
+        "ability_text": "Pay [Egg] to gain [AnyResource and CaveCard and DragonCard]. each_opponent may pay [Egg] to gain [AnyResource] or [CaveCard] or [DragonCard].",
         "VP": 4,
         "size": "Medium",
         "capacity": 1,
@@ -5124,7 +5124,7 @@
     {
         "number": 178,
         "name": "Watchful Wyvern",
-        "ability_text": "Gain [Gold and Gold]. Each opponent gains [Gold].",
+        "ability_text": "Gain [Gold and Gold]. each_opponent gains [Gold].",
         "VP": 4,
         "size": "Large",
         "capacity": 2,
@@ -5220,7 +5220,7 @@
     {
         "number": 181,
         "name": "Gamboling Landragon",
-        "ability_text": "Gain [Meat and Meat]. Each opponent gains [Meat].",
+        "ability_text": "Gain [Meat and Meat]. each_opponent gains [Meat].",
         "VP": 3,
         "size": "Large",
         "capacity": 1,

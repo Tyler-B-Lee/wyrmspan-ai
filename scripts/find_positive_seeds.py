@@ -28,6 +28,7 @@ if str(ROOT) not in sys.path:
 
 from game_env import WyrmspanEnv
 from model_arch import WyrmspanAgent
+from model_arch_legacy import WyrmspanAgent as LegacyWyrmspanAgent
 from test_models import OBS_BOOL_KEYS, OBS_LONG_KEYS
 
 
@@ -63,21 +64,36 @@ def obs_to_torch(obs, device):
     return out
 
 
-def load_agent(model_path: str, env: WyrmspanEnv, device: torch.device) -> WyrmspanAgent:
-    agent = WyrmspanAgent(
-        main_emb_dim=256,
-        fusion_dim=256,
-        action_vocab_size=env.action_token_vocab_size,
-        action_pad_id=env.pad_token_id,
-        max_action_tokens=env.max_action_tokens,
-        max_queue_size=env.max_queue_size,
-        max_hand_size=env.max_hand_size,
-        dropout=0.0,
-    ).to(device)
+def load_agent(model_path: str, env: WyrmspanEnv, device: torch.device, architecture: str = "semantic") -> WyrmspanAgent:
+    if architecture not in {"semantic", "legacy"}:
+        raise ValueError(f"Unknown architecture: {architecture}")
+
+    agent_class = WyrmspanAgent if architecture == "semantic" else LegacyWyrmspanAgent
+    model_kwargs = {
+        "main_emb_dim": 256,
+        "fusion_dim": 256,
+        "action_vocab_size": env.action_token_vocab_size,
+        "action_pad_id": env.pad_token_id,
+        "max_action_tokens": env.max_action_tokens,
+        "max_queue_size": env.max_queue_size,
+        "max_hand_size": env.max_hand_size,
+        "dropout": 0.0,
+    }
+    if architecture == "semantic":
+        model_kwargs.update(
+            card_vocab_size=env.card_token_vocab_size,
+            max_card_tokens=env.max_card_tokens,
+        )
+    agent = agent_class(**model_kwargs).to(device)
 
     ckpt = torch.load(model_path, map_location=device)
     state_dict = ckpt.get("model", ckpt) if isinstance(ckpt, dict) else ckpt
-    agent.load_state_dict(state_dict)
+    checkpoint_architecture = ckpt.get("architecture") if isinstance(ckpt, dict) else None
+    if checkpoint_architecture and checkpoint_architecture != architecture:
+        raise ValueError(
+            f"Checkpoint architecture is {checkpoint_architecture!r}, but {architecture!r} was requested"
+        )
+    agent.load_state_dict(state_dict, strict=True)
     agent.eval()
     return agent
 
@@ -156,6 +172,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed-list", type=str, default=None, help="Optional comma-separated explicit seed list")
     parser.add_argument("--device", type=str, default="auto", help="auto, cpu, or cuda")
     parser.add_argument("--max-steps", type=int, default=500, help="Maximum environment steps per seed")
+    parser.add_argument("--architecture", choices=("semantic", "legacy"), default="semantic", help="Checkpoint architecture to load")
     parser.add_argument(
         "--metric",
         choices=("reward", "margin"),
@@ -187,9 +204,10 @@ def main() -> int:
 
     seeds = build_seeds(args.seed_start, args.num_seeds, args.seed_list)
     env = WyrmspanEnv()
-    agent = load_agent(args.model_path, env, device)
+    agent = load_agent(args.model_path, env, device, architecture=args.architecture)
 
     print(f"Evaluating model: {args.model_path}")
+    print(f"Architecture: {args.architecture}")
     print(f"Device: {device}")
     print(f"Metric: {args.metric} threshold>={args.threshold}")
     print(f"Seeds: {seeds[0]}..{seeds[-1]} ({len(seeds)} total)" if len(seeds) > 1 else f"Seeds: {seeds}")
@@ -234,6 +252,7 @@ def main() -> int:
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     payload = {
         "model_path": args.model_path,
+        "architecture": args.architecture,
         "device": str(device),
         "metric": args.metric,
         "threshold": args.threshold,

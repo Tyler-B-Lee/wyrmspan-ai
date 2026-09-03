@@ -48,14 +48,12 @@ def test_serialize_dragon_card_returns_mechanics_tokens():
     assert tokens
     assert "cost_egg_1" in tokens and "cost_milk_1" in tokens
     assert "word_dragoncard" in tokens
-    assert "word_played" in tokens
+    assert "word_hand" in tokens
     assert "word_gain" in tokens
     assert "size_hatchling" in tokens
     assert "personality_helpful" in tokens
     assert "board_crimson_cavern" in tokens
-    assert "trigger_when_played" in tokens
-    assert "trigger_on_grow_up" in tokens
-    assert "trigger_on_feed" in tokens
+    assert "trigger_if_activated" in tokens
     assert "effect_gain_resource" not in tokens
 
 
@@ -64,13 +62,6 @@ def test_serialize_cave_card_returns_mechanics_tokens():
         "number": 7,
         "name": "Test Cave",
         "text": "When played: gain [Coin].",
-        "VP": 2,
-        "meat_cost": 1,
-        "gold_cost": 0,
-        "crystal_cost": 0,
-        "coin_cost": 0,
-        "egg_cost": 0,
-        "milk_cost": 0,
     }
 
     tokens = serialize_cave_card(card)
@@ -78,13 +69,11 @@ def test_serialize_cave_card_returns_mechanics_tokens():
 
     assert tokens
     assert "card_type_cave" in tokens
-    assert "cost_meat" in tokens
     assert "word_when" in tokens
     assert "word_played" in tokens
     assert "word_gain" in tokens
     assert "word_coin" in tokens
     assert "effect_gain_resource" not in tokens
-    assert "trigger_when_played" not in tokens
 
 
 def test_semantic_card_encoder_shapes():

@@ -10,12 +10,17 @@ import torch
 
 from game_env import WyrmspanEnv
 from model_arch import WyrmspanAgent
+from model_arch_legacy import WyrmspanAgent as LegacyWyrmspanAgent
 from game_states import OBJECTIVE_TILES
 
 OBS_LONG_KEYS = {
     "card_display_dragons",
     "card_display_caves",
     "hand_card_ids",
+    "card_display_dragon_tokens",
+    "card_display_cave_tokens",
+    "hand_card_tokens",
+    "slot_card_tokens",
     "slot_types",
     "dragons_on_slots",
     "other_indices",
@@ -25,6 +30,10 @@ OBS_LONG_KEYS = {
 
 OBS_BOOL_KEYS = {
     "hand_card_mask",
+    "card_display_dragon_token_mask",
+    "card_display_cave_token_mask",
+    "hand_card_token_mask",
+    "slot_card_token_mask",
     "queue_pad_mask",
     "queue_slot_mask",
     "action_token_mask",
@@ -53,8 +62,45 @@ def obs_to_torch(obs, device):
     return out
 
 
-def load_agent(model_path: str, env: WyrmspanEnv, device: torch.device) -> WyrmspanAgent:
-    agent = WyrmspanAgent(
+def load_agent(model_path: str, env: WyrmspanEnv, device: torch.device, architecture: str = "semantic") -> WyrmspanAgent:
+    if architecture not in {"semantic", "legacy"}:
+        raise ValueError(f"Unknown architecture: {architecture}")
+
+    agent_class = WyrmspanAgent if architecture == "semantic" else LegacyWyrmspanAgent
+    model_kwargs = {
+        "main_emb_dim": 256,
+        "fusion_dim": 256,
+        "action_vocab_size": env.action_token_vocab_size,
+        "action_pad_id": env.pad_token_id,
+        "max_action_tokens": env.max_action_tokens,
+        "max_queue_size": env.max_queue_size,
+        "max_hand_size": env.max_hand_size,
+        "dropout": 0.0,
+    }
+    if architecture == "semantic":
+        model_kwargs.update(
+            card_vocab_size=env.card_token_vocab_size,
+            max_card_tokens=env.max_card_tokens,
+        )
+    agent = agent_class(**model_kwargs).to(device)
+
+    ckpt = torch.load(model_path, map_location=device)
+    state_dict = ckpt.get("model", ckpt)
+    checkpoint_architecture = ckpt.get("architecture") if isinstance(ckpt, dict) else None
+    if checkpoint_architecture and checkpoint_architecture != architecture:
+        raise ValueError(
+            f"Checkpoint architecture is {checkpoint_architecture!r}, but {architecture!r} was requested"
+        )
+    agent.load_state_dict(state_dict, strict=True)
+    agent.eval()
+    return agent
+
+
+def test_load_agent_architecture_selection(tmp_path):
+    env = WyrmspanEnv()
+    device = torch.device("cpu")
+
+    legacy_source = LegacyWyrmspanAgent(
         main_emb_dim=256,
         fusion_dim=256,
         action_vocab_size=env.action_token_vocab_size,
@@ -63,13 +109,13 @@ def load_agent(model_path: str, env: WyrmspanEnv, device: torch.device) -> Wyrms
         max_queue_size=env.max_queue_size,
         max_hand_size=env.max_hand_size,
         dropout=0.0,
-    ).to(device)
+    )
+    checkpoint_path = tmp_path / "legacy.pt"
+    torch.save({"model": legacy_source.state_dict(), "architecture": "legacy"}, checkpoint_path)
 
-    ckpt = torch.load(model_path, map_location=device)
-    state_dict = ckpt.get("model", ckpt)
-    agent.load_state_dict(state_dict)
-    agent.eval()
-    return agent
+    loaded = load_agent(str(checkpoint_path), env, device, architecture="legacy")
+
+    assert isinstance(loaded, LegacyWyrmspanAgent)
 
 
 def decode_tokens(env: WyrmspanEnv, token_ids):
@@ -106,7 +152,7 @@ def score_logger(logger, obs, env: WyrmspanEnv, scores=None, probs=None, top_k: 
     logger.warning(">>>\n")
 
 
-def run(model_path: str, seed: int, output_name: str, device: str = "auto", max_steps: int = 500):
+def run(model_path: str, seed: int, output_name: str, device: str = "auto", max_steps: int = 500, architecture: str = "semantic"):
     if device == "auto":
         device_t = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     else:
@@ -125,7 +171,7 @@ def run(model_path: str, seed: int, output_name: str, device: str = "auto", max_
         
     set_seed(seed)
     env = WyrmspanEnv()
-    agent = load_agent(model_path, env, device_t)
+    agent = load_agent(model_path, env, device_t, architecture=architecture)
 
     obs, _ = env.reset(seed=seed)
     done = False
@@ -133,8 +179,8 @@ def run(model_path: str, seed: int, output_name: str, device: str = "auto", max_
     total_reward = 0.0
     logs = []
 
-    print(f"Running model test with model_path={model_path}, seed={seed}, output_name={output_name}, device={device_t}, max_steps={max_steps}")
-    logger.warning(f"Running model test with model_path={model_path}, seed={seed}, output_name={output_name}, device={device_t}, max_steps={max_steps}")
+    print(f"Running model test with model_path={model_path}, architecture={architecture}, seed={seed}, output_name={output_name}, device={device_t}, max_steps={max_steps}")
+    logger.warning(f"Running model test with model_path={model_path}, architecture={architecture}, seed={seed}, output_name={output_name}, device={device_t}, max_steps={max_steps}")
     
     objectives = env.game_state.board["round_tracker"]["objectives"]
     logger.warning("> Objectives Drawn:")
@@ -197,6 +243,7 @@ def run(model_path: str, seed: int, output_name: str, device: str = "auto", max_
 
     result = {
         "model_path": model_path,
+        "architecture": architecture,
         "seed": seed,
         "steps": step_idx,
         "total_reward": total_reward,
@@ -222,6 +269,7 @@ def parse_args():
     parser.add_argument("--output", type=str, default=None, help="Output JSON file for run results")
     parser.add_argument("--device", type=str, default="auto", help="auto, cpu, or cuda")
     parser.add_argument("--max-steps", type=int, default=500, help="Maximum number of env steps")
+    parser.add_argument("--architecture", choices=("semantic", "legacy"), default="semantic", help="Checkpoint architecture to load")
     return parser.parse_args()
 
 
@@ -231,4 +279,4 @@ if __name__ == "__main__":
     if output is None:
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output = os.path.join("logs", f"model_test_{stamp}_seed{args.seed}")
-    run(args.model_path, args.seed, output, device=args.device, max_steps=args.max_steps)
+    run(args.model_path, args.seed, output, device=args.device, max_steps=args.max_steps, architecture=args.architecture)

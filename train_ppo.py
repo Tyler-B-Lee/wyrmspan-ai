@@ -10,6 +10,12 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
+try:
+    import wandb
+    WANDB_AVAILABLE = True
+except ImportError:
+    WANDB_AVAILABLE = False
+
 from game_env import WyrmspanEnv
 from model_arch import WyrmspanAgent
 from playout_compare import RolloutCache, get_sim_algo
@@ -19,6 +25,10 @@ OBS_LONG_KEYS = {
     "card_display_dragons",
     "card_display_caves",
     "hand_card_ids",
+    "card_display_dragon_tokens",
+    "card_display_cave_tokens",
+    "hand_card_tokens",
+    "slot_card_tokens",
     "slot_types",
     "dragons_on_slots",
     "other_indices",
@@ -28,6 +38,10 @@ OBS_LONG_KEYS = {
 
 OBS_BOOL_KEYS = {
     "hand_card_mask",
+    "card_display_dragon_token_mask",
+    "card_display_cave_token_mask",
+    "hand_card_token_mask",
+    "slot_card_token_mask",
     "queue_pad_mask",
     "queue_slot_mask",
     "action_token_mask",
@@ -300,6 +314,10 @@ class PPOConfig:
     device: str = "auto"
     resume: bool = False
     resume_path: Optional[str] = None
+    use_wandb: bool = False
+    wandb_project: Optional[str] = "wyrmspan-ai"
+    wandb_entity: Optional[str] = None
+    wandb_run_name: Optional[str] = None
 
 
 def train(cfg: PPOConfig) -> None:
@@ -311,6 +329,19 @@ def train(cfg: PPOConfig) -> None:
     amp_enabled = bool(cfg.use_amp and device.type == "cuda")
 
     set_seed(cfg.seed)
+
+    # Initialize W&B if enabled
+    if cfg.use_wandb and WANDB_AVAILABLE:
+        wandb.init(
+            project=cfg.wandb_project,
+            entity=cfg.wandb_entity,
+            name=cfg.wandb_run_name,
+            config=cfg.__dict__,
+            reinit=True,
+        )
+        print(f"W&B initialized: {wandb.run.url}")
+    elif cfg.use_wandb and not WANDB_AVAILABLE:
+        print("Warning: use_wandb=True but wandb is not installed. Install with: pip install wandb")
 
     envs = VectorEnv(cfg.num_envs, seed=cfg.seed)
     obs = envs.reset()
@@ -324,6 +355,8 @@ def train(cfg: PPOConfig) -> None:
         max_action_tokens=env_spec.max_action_tokens,
         max_queue_size=env_spec.max_queue_size,
         max_hand_size=env_spec.max_hand_size,
+        card_vocab_size=env_spec.card_token_vocab_size,
+        max_card_tokens=env_spec.max_card_tokens,
         dropout=cfg.dropout,
     ).to(device)
 
@@ -559,6 +592,28 @@ def train(cfg: PPOConfig) -> None:
             f"illegal_rollout={rollout_illegal_samples} illegal_update={update_illegal_actions}"
         )
 
+        # Log training metrics to W&B
+        if cfg.use_wandb and WANDB_AVAILABLE:
+            wandb.log(
+                {
+                    "train/update": update,
+                    "train/global_step": global_step,
+                    "train/avg_return": avg_return,
+                    "train/avg_episode_length": avg_length,
+                    "train/policy_loss": float(np.mean(policy_losses)),
+                    "train/value_loss": float(np.mean(value_losses)),
+                    "train/entropy": float(np.mean(entropies)),
+                    "train/grad_norm": float(np.mean(grad_norms)),
+                    "train/clip_fraction": float(np.mean(clip_fracs)),
+                    "train/approx_kl": float(np.mean(approx_kls)),
+                    "train/logit_min": float(np.min(logits_min)),
+                    "train/logit_max": float(np.max(logits_max)),
+                    "train/illegal_rollout_samples": rollout_illegal_samples,
+                    "train/illegal_update_samples": update_illegal_actions,
+                },
+                step=update,
+            )
+
         if cfg.eval_interval and update % cfg.eval_interval == 0:
             print(f"Evaluating agent at update {update}...")
             model.eval()
@@ -586,6 +641,26 @@ def train(cfg: PPOConfig) -> None:
                 "eval_greedy "
                 f"win={heuristic_metrics['win_rate']:.2f} diff={heuristic_metrics['score_diff']:.2f} ret={heuristic_metrics['return']:.3f}"
             )
+
+            # Log evaluation metrics to W&B
+            if cfg.use_wandb and WANDB_AVAILABLE:
+                wandb.log(
+                    {
+                        "eval/agent_win_rate": agent_metrics["win_rate"],
+                        "eval/agent_score_diff": agent_metrics["score_diff"],
+                        "eval/agent_return": agent_metrics["return"],
+                        "eval/random_win_rate": random_metrics["win_rate"],
+                        "eval/random_score_diff": random_metrics["score_diff"],
+                        "eval/random_return": random_metrics["return"],
+                        "eval/greedy_win_rate": heuristic_metrics["win_rate"],
+                        "eval/greedy_score_diff": heuristic_metrics["score_diff"],
+                        "eval/greedy_return": heuristic_metrics["return"],
+                        "eval/agent_vs_random_return_diff": agent_metrics["return"] - random_metrics["return"],
+                        "eval/agent_vs_greedy_return_diff": agent_metrics["return"] - heuristic_metrics["return"],
+                    },
+                    step=update,
+                )
+
             model.train()
 
         if cfg.save_interval and update % cfg.save_interval == 0:
@@ -599,6 +674,9 @@ def train(cfg: PPOConfig) -> None:
             torch.save(
                 {
                     "model": model.state_dict(),
+                    "architecture": "semantic",
+                    "card_vocab_size": env_spec.card_token_vocab_size,
+                    "max_card_tokens": env_spec.max_card_tokens,
                     "optimizer": optimizer.state_dict(),
                     "update": update,
                     "global_step": global_step,
@@ -606,6 +684,17 @@ def train(cfg: PPOConfig) -> None:
                 },
                 checkpoint_path,
             )
+
+            # Log checkpoint to W&B
+            if cfg.use_wandb and WANDB_AVAILABLE:
+                artifact = wandb.Artifact(
+                    name=f"ppo-checkpoint-update-{update}",
+                    type="model",
+                    description=f"PPO checkpoint at update {update} with score {checkpoint_score:.3f}",
+                )
+                artifact.add_file(checkpoint_path)
+                wandb.log_artifact(artifact)
+                wandb.log({"checkpoint/saved": update}, step=update)
 
 
 def parse_args() -> PPOConfig:
@@ -633,6 +722,10 @@ def parse_args() -> PPOConfig:
     parser.add_argument("--resume", action="store_true", help="Resume from latest checkpoint in save-dir if available")
     parser.add_argument("--resume-path", type=str, default=None, help="Explicit checkpoint path to resume from")
     parser.add_argument("--dropout", type=float, default=0.1)
+    parser.add_argument("--use-wandb", action="store_true", help="Enable Weights & Biases logging")
+    parser.add_argument("--wandb-project", type=str, default="wyrmspan-ai", help="W&B project name")
+    parser.add_argument("--wandb-entity", type=str, default=None, help="W&B entity (team/user) name")
+    parser.add_argument("--wandb-run-name", type=str, default=None, help="W&B run name (auto-generated if not specified)")
 
     args = parser.parse_args()
     return PPOConfig(
@@ -659,9 +752,18 @@ def parse_args() -> PPOConfig:
         resume=args.resume,
         resume_path=args.resume_path,
         device=args.device,
+        use_wandb=args.use_wandb,
+        wandb_project=args.wandb_project,
+        wandb_entity=args.wandb_entity,
+        wandb_run_name=args.wandb_run_name,
     )
 
 
 if __name__ == "__main__":
     config = parse_args()
-    train(config)
+    try:
+        train(config)
+    finally:
+        # Finish W&B run if it was started
+        if config.use_wandb and WANDB_AVAILABLE:
+            wandb.finish()

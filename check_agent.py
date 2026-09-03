@@ -28,7 +28,15 @@ for k, v in obs.items():
     else:
         print(f"Key: {k}, Value: {v}, Type: {type(v)}")
 
-agent = WyrmspanAgent(action_vocab_size=env.action_token_vocab_size)
+agent = WyrmspanAgent(
+    action_vocab_size=env.action_token_vocab_size,
+    action_pad_id=env.pad_token_id,
+    max_action_tokens=env.max_action_tokens,
+    max_queue_size=env.max_queue_size,
+    max_hand_size=env.max_hand_size,
+    card_vocab_size=env.card_token_vocab_size,
+    max_card_tokens=env.max_card_tokens,
+)
 agent.eval()
 
 obs_t = {}
