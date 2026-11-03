@@ -1,0 +1,30 @@
+{
+  "checkpoint": "checkpoints\\compact_rollout\\strategic_baseline.pt",
+  "dataset": "data\\compact_rollout\\strategic_seed_33_64.json",
+  "teacher": "strategic_objective_aware",
+  "validation": {
+    "records": 651,
+    "top1_accuracy": 0.7327188940092166,
+    "topk_accuracy": 0.9585253456221198
+  },
+  "games": {
+    "greedy": {
+      "mean_score": 0.051116666666666664,
+      "mean_seconds": 0.12292676666675106,
+      "games_per_second": 8.134924777700816,
+      "reported_mean_seconds": 0.12292676666675106
+    },
+    "strategic": {
+      "mean_score": 0.03403333333333333,
+      "mean_seconds": 0.1839497000000847,
+      "games_per_second": 5.4362687191092975,
+      "reported_mean_seconds": 0.1839497000000847
+    },
+    "compact": {
+      "mean_score": 0.024425000000000002,
+      "mean_seconds": 0.4899455999999797,
+      "games_per_second": 2.0410429239491923,
+      "reported_mean_seconds": 0.4899455999999797
+    }
+  }
+}

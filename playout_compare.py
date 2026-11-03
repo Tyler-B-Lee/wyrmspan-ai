@@ -15,6 +15,7 @@ from game_states import (
     EXPLORE_CAVE_EFFECTS,
 )
 import game_logic as logic
+from compact_rollout_model import CompactRolloutPolicy
 
 # File for comparing different algorithms for simulating game playouts in Wyrmspan.
 
@@ -982,8 +983,9 @@ def alg_strategic_objective_aware(
 
         # Encourage branches that improve the most urgent objective gap.
         if cache._summary["objective_counts"]:
-            round_num = cache._summary["round"]
-            current_gap = cache._summary["objective_counts"][round_num]["gap"]
+            objective_counts = cache._summary["objective_counts"]
+            round_num = max(0, min(cache._summary["round"], len(objective_counts) - 1))
+            current_gap = objective_counts[round_num]["gap"]
             if "play_dragon" in effect or "play_cave" in effect:
                 score += 0.15 * max(0, current_gap)
             elif "explore" in effect and current_gap < 0:
@@ -1019,6 +1021,11 @@ def get_sim_algo(algo_name, algo_kwargs):
         def algo(gs, rollout_cache=None):
             return alg_strategic_objective_aware(gs, rollout_cache=rollout_cache, **algo_kwargs)
         return algo
+    elif algo_name == "compact_rollout":
+        policy = algo_kwargs.get("policy")
+        if not isinstance(policy, CompactRolloutPolicy):
+            raise ValueError("compact_rollout requires an initialized CompactRolloutPolicy in algo_kwargs['policy']")
+        return lambda gs, rollout_cache=None: policy(gs, rollout_cache=rollout_cache)
     else:
         raise ValueError(f"Unknown algorithm: {algo_name}")
 
@@ -1099,12 +1106,16 @@ def simulate_multiple_games(game_state: GameState, algo_name, algo_kwargs, displ
     end_time = time.time()
     return total_score, display_name, end_time - start_time
 
-def simulate_game_given_rng(game_state: GameState, algo_name, algo_kwargs, display_name, rng: RNGOrder=None) -> tuple:
+def simulate_game_given_rng(game_state: GameState, algo_name, algo_kwargs, display_name, rng: RNGOrder=None, random_state=None) -> tuple:
     """
     Simulate a game following the given RNG order.
     Returns a score for the simulation, the name of the algorithm used, and the time taken to simulate.
     """
     sim_algo = get_sim_algo(algo_name, algo_kwargs)
+    caller_random_state = None
+    if random_state is not None:
+        caller_random_state = random.getstate()
+        random.setstate(random_state)
     rollout_cache = RolloutCache() if algo_name == "strategic_objective_aware" else None
     start_time = time.time()
     this_rng = rng.get_copy()
@@ -1130,10 +1141,14 @@ def simulate_game_given_rng(game_state: GameState, algo_name, algo_kwargs, displ
     # else:
     #     return (5000 - (game_state.automa.score - game_state.player.score) ** 2) / 10000, display_name, end_time - start_time
     score_based_reward = (game_state.player.score ** 2) / 40000
-    if game_state.player.score >= game_state.automa.score:
-        return score_based_reward + 0.75, display_name, end_time - start_time
-    else:
-        return score_based_reward, display_name, end_time - start_time
+    result = (
+        score_based_reward + 0.75 if game_state.player.score >= game_state.automa.score else score_based_reward,
+        display_name,
+        end_time - start_time,
+    )
+    if caller_random_state is not None:
+        random.setstate(caller_random_state)
+    return result
 
 def compare_algorithms(game_state: GameState = None, num_simulations: int = 500, algos=None, batch_size: int = DEFAULT_BATCH_SIZE):
     """

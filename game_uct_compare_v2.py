@@ -10,16 +10,25 @@ MAX_DEPTH = 35
 SIMS_PER_MOVE = 125
 MIN_BUDGET = SIMS_PER_MOVE * 10
 MAX_BUDGET = 40 * SIMS_PER_MOVE
-AUTOMA_DIFFICULTY = 1
+AUTOMA_DIFFICULTY = 0
 ENDING_ROUND = 4
 UCT_CONSTANT = 1
 BASE_RANDOM_CHILDREN = 15
 MAX_RANDOM_CHILDREN = 30
-RANDOM_CHILD_GROWTH_INTERVAL = 150
+RANDOM_CHILD_GROWTH_INTERVAL = 50
 MCTS_DEBUG_INTERVAL = 300
 
 ROLLOUT_ALGO_NAME = "strategic_objective_aware"
 ROLLOUT_ALGO_KWARGS = {'dragon_weight': 12.441, 'cave_weight': 7.055, 'explore_weight': 4.927, 'pass_penalty': 1.541, 'tie_threshold': 1.535}
+HYBRID_COMPACT_POLICY = None
+HYBRID_LEAF_VALUE_EVALUATOR = None
+
+
+def configure_hybrid_rollout(compact_policy=None, leaf_value_evaluator=None) -> None:
+    """Configure optional compact-rollout and large-critic MCTS components."""
+    global HYBRID_COMPACT_POLICY, HYBRID_LEAF_VALUE_EVALUATOR
+    HYBRID_COMPACT_POLICY = compact_policy
+    HYBRID_LEAF_VALUE_EVALUATOR = leaf_value_evaluator
 
 def set_simulation_budget(sims_per_move: int) -> None:
     """
@@ -287,13 +296,18 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int, debug_interval: 
             if expanded is not None:
                 node = expanded
 
-        # Simulation
-        result, _, _ = simulate_game(
-            game_state=node.game_state,
-            algo_name=ROLLOUT_ALGO_NAME,
-            algo_kwargs=ROLLOUT_ALGO_KWARGS,
-            display_name="mcts_rollout"
-        )
+        # Simulation or critic bootstrap at the configured depth cutoff.
+        if HYBRID_LEAF_VALUE_EVALUATOR is not None and depth >= max_depth:
+            result = HYBRID_LEAF_VALUE_EVALUATOR(node.game_state.make_copy())
+        else:
+            rollout_algo_name = "compact_rollout" if HYBRID_COMPACT_POLICY is not None else ROLLOUT_ALGO_NAME
+            rollout_kwargs = {"policy": HYBRID_COMPACT_POLICY} if HYBRID_COMPACT_POLICY is not None else ROLLOUT_ALGO_KWARGS
+            result, _, _ = simulate_game(
+                game_state=node.game_state.make_copy(),
+                algo_name=rollout_algo_name,
+                algo_kwargs=rollout_kwargs,
+                display_name="mcts_rollout"
+            )
         # result, _, _ = simulate_game(
         #     game_state=node.game_state,
         #     algo_name="play_dragon_cave",

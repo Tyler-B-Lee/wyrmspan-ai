@@ -1,0 +1,30 @@
+{
+  "checkpoint": "checkpoints\\compact_rollout\\greedy_baseline.pt",
+  "dataset": "data\\compact_rollout\\greedy_seed_1_32.json",
+  "teacher": "greedy_action_priority",
+  "validation": {
+    "records": 457,
+    "top1_accuracy": 0.862144420131291,
+    "topk_accuracy": 0.9978118161925602
+  },
+  "games": {
+    "greedy": {
+      "mean_score": 0.051116666666666664,
+      "mean_seconds": 0.06591536666671043,
+      "games_per_second": 15.170969237815607,
+      "reported_mean_seconds": 0.06591536666671043
+    },
+    "strategic": {
+      "mean_score": 0.03403333333333333,
+      "mean_seconds": 0.07921799999985524,
+      "games_per_second": 12.623393673178159,
+      "reported_mean_seconds": 0.07921799999985524
+    },
+    "compact": {
+      "mean_score": 0.05126666666666666,
+      "mean_seconds": 0.3482869333332322,
+      "games_per_second": 2.871195856903495,
+      "reported_mean_seconds": 0.3482869333332322
+    }
+  }
+}
