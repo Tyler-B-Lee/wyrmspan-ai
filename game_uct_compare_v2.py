@@ -13,15 +13,16 @@ MAX_BUDGET = 40 * SIMS_PER_MOVE
 AUTOMA_DIFFICULTY = 0
 ENDING_ROUND = 4
 UCT_CONSTANT = 1
-BASE_RANDOM_CHILDREN = 15
-MAX_RANDOM_CHILDREN = 30
-RANDOM_CHILD_GROWTH_INTERVAL = 50
+BASE_RANDOM_CHILDREN = 30
+MAX_RANDOM_CHILDREN = 100
+RANDOM_CHILD_GROWTH_INTERVAL = 20
 MCTS_DEBUG_INTERVAL = 300
 
 ROLLOUT_ALGO_NAME = "strategic_objective_aware"
 ROLLOUT_ALGO_KWARGS = {'dragon_weight': 12.441, 'cave_weight': 7.055, 'explore_weight': 4.927, 'pass_penalty': 1.541, 'tie_threshold': 1.535}
 HYBRID_COMPACT_POLICY = None
 HYBRID_LEAF_VALUE_EVALUATOR = None
+HYBRID_MODEL_RATIO = 0.3
 
 
 def configure_hybrid_rollout(compact_policy=None, leaf_value_evaluator=None) -> None:
@@ -296,18 +297,19 @@ def MCTS(root_node: Node, max_depth: int, num_simulations: int, debug_interval: 
             if expanded is not None:
                 node = expanded
 
-        # Simulation or critic bootstrap at the configured depth cutoff.
-        if HYBRID_LEAF_VALUE_EVALUATOR is not None and depth >= max_depth:
-            result = HYBRID_LEAF_VALUE_EVALUATOR(node.game_state.make_copy())
-        else:
-            rollout_algo_name = "compact_rollout" if HYBRID_COMPACT_POLICY is not None else ROLLOUT_ALGO_NAME
-            rollout_kwargs = {"policy": HYBRID_COMPACT_POLICY} if HYBRID_COMPACT_POLICY is not None else ROLLOUT_ALGO_KWARGS
-            result, _, _ = simulate_game(
-                game_state=node.game_state.make_copy(),
-                algo_name=rollout_algo_name,
-                algo_kwargs=rollout_kwargs,
-                display_name="mcts_rollout"
-            )
+        rollout_algo_name = "compact_rollout" if HYBRID_COMPACT_POLICY is not None else ROLLOUT_ALGO_NAME
+        rollout_kwargs = {"policy": HYBRID_COMPACT_POLICY} if HYBRID_COMPACT_POLICY is not None else ROLLOUT_ALGO_KWARGS
+        result, _, _ = simulate_game(
+            game_state=node.game_state.make_copy(),
+            algo_name=rollout_algo_name,
+            algo_kwargs=rollout_kwargs,
+            display_name="mcts_rollout"
+        )
+        # Combine network evaluation with rollout results if a hybrid leaf value evaluator is provided.
+        if HYBRID_LEAF_VALUE_EVALUATOR is not None:
+            value = HYBRID_LEAF_VALUE_EVALUATOR(node.game_state.make_copy())
+            result = value * HYBRID_MODEL_RATIO + result * (1 - HYBRID_MODEL_RATIO)
+
         # result, _, _ = simulate_game(
         #     game_state=node.game_state,
         #     algo_name="play_dragon_cave",

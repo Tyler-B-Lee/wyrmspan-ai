@@ -27,6 +27,9 @@ def main() -> None:
         args.large_checkpoint,
         device=args.device,
         architecture=args.large_architecture,
+        value_scale=0.5,
+        value_bias=0.0,
+        value_clip=(0.0,1.0)
     )
     search.set_search_config(
         sims_per_move=args.sims_per_move,
